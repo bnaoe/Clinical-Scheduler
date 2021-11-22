@@ -1,0 +1,29 @@
+﻿@model Scheduler.Models.CodeSet
+
+<form method="post" asp-action="DeletePOST">
+    <input asp-for="Id" hidden />
+    <div class="border p-3 mt-4">
+        <div class="row pb-2 border">
+            <h2 class="text-primary">Delete Code Set</h2>
+            <hr/>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Name">Name</label>
+            <input disabled asp-for="Name" class="form-control"/>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Description">Description</label>
+            <input disabled asp-for="Description" class="form-control"/>
+        </div>
+        <button type="submit" class="btn btn-danger" style="width:150px">Delete</button>
+        <a asp-controller="CodeSet" asp-action="Index" class="btn btn-secondary" style="width:150px">
+            Back to list
+        </a>
+
+    </div>
+</form>
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial"/>
+    }
+}

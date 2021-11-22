@@ -1,0 +1,28 @@
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+}
+
+footer {
+    position: fixed;
+    margin-top: 15px; 
+    height: 3%;
+    width: 100%;
+    font-size: 0.8em;
+    bottom: 0;
+    text-align: center;
+}

@@ -1,0 +1,48 @@
+﻿@model IEnumerable<Scheduler.Models.CodeSet>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container p-3 border">
+    <div class="row pt-4 border">
+        <div class="col-6">
+            <h2 class="primary">Code Set List</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller ="CodeSet" asp-action="Create" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> &nbsp; Create New
+            </a> 
+        </div>
+    </div>
+
+
+<table class="table table-bordered table-striped" style="width:100%">
+    <thead>
+        <tr>
+            <th>Code Set No</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var obj in Model)
+        {
+            <tr>
+                <td width="10%">@obj.Id</td>
+                <td width="20%">@obj.Name</td>
+                <td width="50%">@obj.Description</td>
+                <td><div class="w-100 btn-group" role="group">
+                    <a asp-controller="CodeSet" asp-action="Edit" asp-route-id="@obj.Id" class="btn btn-primary small mx-2">
+                        <i class="bi bi-pencil-square"></i> Edit</a>
+                     <a asp-controller="CodeSet" asp-action="Delete" asp-route-id="@obj.Id" class="btn btn-danger small mx-2">
+                        <i class="bi bi-trash-fill"></i> Delete</a>
+                </div></td>
+            </tr>     
+        }
+    </tbody>
+</table>
+</div>
+
+
+
