@@ -19,11 +19,11 @@ namespace ClinicalScheduler.Controllers
 
         public IActionResult Index()
         {
-            IEnumerable<CodeSet> codeSetList = _unitOfWork.CodeSet.GetAll();
-            return View(codeSetList);
+            //IEnumerable<CodeSet> codeSetList = _unitOfWork.CodeSet.GetAll();
+            //return View(codeSetList);
+            return View();
         }
 
-       
         //get
         public IActionResult Upsert(int? id)
         {
@@ -44,10 +44,11 @@ namespace ClinicalScheduler.Controllers
             } else
             {
                 //Update Code Value
-
+                codeValueVM.CodeValue = _unitOfWork.CodeValue.GetFirstOrDefault(c => c.Id == id);
+                return View(codeValueVM);
             }
 
-            return View(codeValueVM);
+            
         }
 
         //post
@@ -57,42 +58,46 @@ namespace ClinicalScheduler.Controllers
         {
             if (ModelState.IsValid)
             {
-                _unitOfWork.CodeValue.Add(obj.CodeValue);
+                if (obj.CodeValue.Id==0) {
+                    _unitOfWork.CodeValue.Add(obj.CodeValue);
+                    TempData["Success"] = "Code Set added successfully";
+                } else
+                {
+                    _unitOfWork.CodeValue.Update(obj.CodeValue);
+                    TempData["Success"] = "Code Set edited successfully";
+                }
+
                 _unitOfWork.Save();
-                TempData["Success"] = "Code Set edited successfully";
                 return RedirectToAction("Index");
             }
             return View(obj);
         }
 
-        //get
-        public IActionResult Delete(int? id)
+        #region API CALLS
+        [HttpGet]
+        public IActionResult GetAll()
         {
-            if (id == null || id == 0) return NotFound();
-
-            var codeSetInDb = _unitOfWork.CodeSet.GetFirstOrDefault(c => c.Id == id);
-
-            if (codeSetInDb == null) return NotFound();
-
-            return View(codeSetInDb);
+            var codeValueList = _unitOfWork.CodeValue.GetAll(includeProperties:"CodeSet");
+            return Json(new { codeValueList });
         }
 
         //post
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult DeletePOST(int? id)
+        [HttpDelete]
+        public IActionResult Delete(int? id)
         {
 
-            var codeSetInDb = _unitOfWork.CodeSet.GetFirstOrDefault(c => c.Id == id);
-
-            if (codeSetInDb == null) return NotFound();
-
-            _unitOfWork.CodeSet.Remove(codeSetInDb);
+            var codeValueInDb = _unitOfWork.CodeValue.GetFirstOrDefault(c => c.Id == id);
+            if (codeValueInDb == null)
+            {
+                return Json(new { Success = false, message = "Error while deleting" });
+            }
+                   
+            _unitOfWork.CodeValue.Remove(codeValueInDb);
             _unitOfWork.Save();
-            TempData["Success"] = "Code Set deleted successfully";
 
-            return RedirectToAction("Index");
+            return Json(new { Success = true, message = "Delete successful" });
+
         }
-
+        #endregion
     }
 }

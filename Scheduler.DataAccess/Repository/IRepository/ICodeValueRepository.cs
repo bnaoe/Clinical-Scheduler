@@ -9,7 +9,7 @@ namespace Scheduler.DataAccess.Repository.IRepository
 {
     public interface ICodeValueRepository : IRepository<CodeValue>
     {
-        void Update(CodeValue codeValue);
+        void Update(CodeValue obj);
 
     }
 }

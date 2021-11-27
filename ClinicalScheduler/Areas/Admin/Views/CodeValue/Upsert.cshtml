@@ -26,15 +26,8 @@
         </div>
 
         <div class="col-12">
-            @if (Model.CodeValue.Id != 0)
-			{
-				<button type="submit" class="btn btn-primary" style="width:150px">Update</button>
-			}
-			else
-			{
-				<button type="submit" class="btn btn-primary" style="width:150px">Create</button>
-			}
-            <a asp-controller="CodeSet" asp-action="Index" class="btn btn-secondary" style="width:150px">
+			<button type="submit" class="btn btn-primary" style="width:150px">@(Model.CodeValue.Id!=0?"Update":"Create")</button>
+            <a asp-controller="CodeValue" asp-action="Index" class="btn btn-secondary" style="width:150px">
                 Back to list
             </a>
         </div>
@@ -44,4 +37,11 @@
     @{
         <partial name="_ValidationScriptsPartial"/>
     }
+   <script>
+    tinymce.init({
+      selector: 'textarea',
+      plugins: 'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+      toolbar_mode: 'floating',
+    });
+  </script>
 }

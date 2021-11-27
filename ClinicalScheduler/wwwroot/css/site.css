@@ -26,3 +26,13 @@ footer {
     bottom: 0;
     text-align: center;
 }
+
+#tblData tbody tr:hover {
+    background-color: skyblue;
+    cursor: pointer;
+}
+
+#tblData tr:hover td.sorting_1 {
+    background-color: skyblue;
+    cursor: pointer;
+}

@@ -22,14 +22,14 @@ namespace Scheduler.DataAccess.Repository
             _db.SaveChanges();
         }
 
-        public void Update(CodeValue codeValue)
+        public void Update(CodeValue obj)
         {
             //Another way to update class to update specific properties
-            var codeValueInDb = _db.CodeValues.FirstOrDefault(c => c.Id == codeValue.Id);
+            var codeValueInDb = _db.CodeValues.FirstOrDefault(c => c.Id == obj.Id);
             if (codeValueInDb != null)
             {
-                codeValue.Name = codeValueInDb.Name;
-                codeValue.Description = codeValueInDb.Description;
+                codeValueInDb.Name = obj.Name;
+                codeValueInDb.Description = obj.Description;
             }
         }
     }
