@@ -4,6 +4,7 @@ using System.Diagnostics;
 
 namespace ClinicalScheduler.Controllers
 {
+    [Area("Scheduler")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

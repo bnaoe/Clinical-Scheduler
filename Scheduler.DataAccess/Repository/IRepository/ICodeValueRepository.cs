@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Scheduler.DataAccess.Repository.IRepository
 {
-    public interface ICodeSetRepository : IRepository<CodeSet>
+    public interface ICodeValueRepository : IRepository<CodeValue>
     {
-        void Update(CodeSet codeSet);
+        void Update(CodeValue codeValue);
 
     }
 }

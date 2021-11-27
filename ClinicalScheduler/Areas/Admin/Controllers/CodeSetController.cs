@@ -1,21 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Scheduler.DataAccess;
+using Scheduler.DataAccess.Repository.IRepository;
 using Scheduler.Models;
 
 namespace ClinicalScheduler.Controllers
 {
+    [Area("Admin")]
     public class CodeSetController : Controller
     {
-        private readonly ApplicationDbContext _db;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public CodeSetController(ApplicationDbContext db)
+        public CodeSetController(IUnitOfWork unitOfWork)
         {
-            _db = db;
+            _unitOfWork = unitOfWork;
         }
 
         public IActionResult Index()
         {
-            IEnumerable<CodeSet> codeSetList = _db.CodeSets;
+            IEnumerable<CodeSet> codeSetList = _unitOfWork.CodeSet.GetAll();
             return View(codeSetList);
         }
 
@@ -33,8 +35,8 @@ namespace ClinicalScheduler.Controllers
         {
             if (ModelState.IsValid)
             {
-                _db.CodeSets.Add(codeSet);
-                _db.SaveChanges();
+                _unitOfWork.CodeSet.Add(codeSet);
+                _unitOfWork.Save();
                 TempData["Success"] = "Code Set created successfully";
                 return RedirectToAction("Index");
             }
@@ -46,7 +48,7 @@ namespace ClinicalScheduler.Controllers
         {
             if (id==null || id ==0) return NotFound();
 
-            var codeSetInDb = _db.CodeSets.FirstOrDefault(c => c.Id == id);
+            var codeSetInDb = _unitOfWork.CodeSet.GetFirstOrDefault(c => c.Id == id);
 
             if (codeSetInDb == null) return NotFound();
 
@@ -60,8 +62,8 @@ namespace ClinicalScheduler.Controllers
         {
             if (ModelState.IsValid)
             {
-                _db.CodeSets.Update(codeSet);
-                _db.SaveChanges();
+                _unitOfWork.CodeSet.Update(codeSet);
+                _unitOfWork.Save();
                 TempData["Success"] = "Code Set edited successfully";
                 return RedirectToAction("Index");
             }
@@ -73,7 +75,7 @@ namespace ClinicalScheduler.Controllers
         {
             if (id == null || id == 0) return NotFound();
 
-            var codeSetInDb = _db.CodeSets.FirstOrDefault(c => c.Id == id);
+            var codeSetInDb = _unitOfWork.CodeSet.GetFirstOrDefault(c => c.Id == id);
 
             if (codeSetInDb == null) return NotFound();
 
@@ -86,12 +88,12 @@ namespace ClinicalScheduler.Controllers
         public IActionResult DeletePOST(int? id)
         {
 
-            var codeSetInDb = _db.CodeSets.FirstOrDefault(c => c.Id == id);
+            var codeSetInDb = _unitOfWork.CodeSet.GetFirstOrDefault(c => c.Id == id);
 
             if (codeSetInDb == null) return NotFound();
 
-            _db.CodeSets.Remove(codeSetInDb);
-            _db.SaveChanges();
+            _unitOfWork.CodeSet.Remove(codeSetInDb);
+            _unitOfWork.Save();
             TempData["Success"] = "Code Set deleted successfully";
 
             return RedirectToAction("Index");

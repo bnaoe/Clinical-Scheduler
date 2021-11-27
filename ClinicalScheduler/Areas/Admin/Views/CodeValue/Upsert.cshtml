@@ -1,0 +1,47 @@
+﻿@model Scheduler.Models.ViewModels.CodeValueVM
+
+<form method="post" asp-action="Upsert">
+    <input asp-for="CodeValue.Id" hidden />
+    <div class="border p-3 mt-4">
+        <div class="row pb-2 border">
+            <h2 class="text-primary">@(Model.CodeValue.Id!=0?"Update":"Create") Code Value</h2>
+            <hr/>
+        </div>
+        <div class="mb-3">
+            <label asp-for="CodeValue.Name">Name</label>
+            <input asp-for="CodeValue.Name" class="form-control"/>
+            <span asp-validation-for="CodeValue.Name" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="CodeValue.Description">Description</label>
+            <textarea asp-for="CodeValue.Description" rows="3" class="form-control"></textarea>
+            <span asp-validation-for ="CodeValue.Description" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="CodeValue.CodeSetId">Code Set</label>
+            <select asp-for="CodeValue.CodeSetId" asp-items="@Model.CodeSetList" class="form-select">
+                <option disabled selected>- Select Code Set -</option>
+            </select>
+            <span asp-validation-for ="CodeValue.CodeSetId" class="text-danger"></span>
+        </div>
+
+        <div class="col-12">
+            @if (Model.CodeValue.Id != 0)
+			{
+				<button type="submit" class="btn btn-primary" style="width:150px">Update</button>
+			}
+			else
+			{
+				<button type="submit" class="btn btn-primary" style="width:150px">Create</button>
+			}
+            <a asp-controller="CodeSet" asp-action="Index" class="btn btn-secondary" style="width:150px">
+                Back to list
+            </a>
+        </div>
+    </div>
+</form>
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial"/>
+    }
+}

@@ -10,5 +10,6 @@ namespace Scheduler.DataAccess
         }
 
         public DbSet<CodeSet> CodeSets { get; set; }
+        public DbSet<CodeValue> CodeValues { get; set; }
     }
 }
