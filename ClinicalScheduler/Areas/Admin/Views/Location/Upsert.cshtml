@@ -1,0 +1,48 @@
+﻿@model Scheduler.Models.ViewModels.LocationVM
+
+<form method="post" asp-action="Upsert">
+    <input asp-for="Location.Id" hidden />
+    <div class="border p-3 mt-4 row">
+        <div class="row pb-2 border">
+            <h2 class="text-primary">@(Model.Location.Id!=0?"Update":"Create") Location</h2>
+            <hr/>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Location.Name">Name</label>
+            <input asp-for="Location.Name" class="form-control"/>
+            <span asp-validation-for="Location.Name" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Location.Street">Street Address</label>
+            <input asp-for="Location.Street" class="form-control"/>
+            <span asp-validation-for ="Location.Street" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-4">
+            <label asp-for="Location.City">City</label>
+            <input asp-for="Location.City" class="form-control"/>
+            <span asp-validation-for ="Location.City" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-4">
+            <label asp-for="Location.State">State</label>
+             <input asp-for="Location.State" class="form-control"/>
+            <span asp-validation-for ="Location.State" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-4">
+            <label asp-for="Location.Zip">Zip</label>
+             <input asp-for="Location.Zip" class="form-control"/>
+            <span asp-validation-for ="Location.Zip" class="text-danger"></span>
+        </div>
+
+        <div class="col-12">
+			<button type="submit" class="btn btn-primary" style="width:150px">@(Model.Location.Id!=0?"Update":"Create")</button>
+            <a asp-controller="Location" asp-action="Index" class="btn btn-secondary" style="width:150px">
+                Back to list
+            </a>
+        </div>
+    </div>
+</form>
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial"/>
+    }
+}

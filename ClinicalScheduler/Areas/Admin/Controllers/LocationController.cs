@@ -8,11 +8,11 @@ using Scheduler.Models.ViewModels;
 namespace ClinicalScheduler.Controllers
 {
     [Area("Admin")]
-    public class CodeValueController : Controller
+    public class LocationController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public CodeValueController(IUnitOfWork unitOfWork)
+        public LocationController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
@@ -27,25 +27,20 @@ namespace ClinicalScheduler.Controllers
         //get
         public IActionResult Upsert(int? id)
         {
-            CodeValueVM codeValueVM = new()
+            LocationVM locationVM = new()
             {
-                CodeValue = new(),
-                CodeSetList = _unitOfWork.CodeSet.GetAll().Select(c => new SelectListItem
-                {
-                    Text = c.Name,
-                    Value = c.Id.ToString()
-                })
+                Location = new(),
             };
             if (id==null || id ==0)
             {
                 //Create Code Value
                 //ViewBag.CodeSetList = CodeSetList; //This is used to pass temp data if data is not available form the model 
-                return View(codeValueVM);
+                return View(locationVM);
             } else
             {
                 //Update Code Value
-                codeValueVM.CodeValue = _unitOfWork.CodeValue.GetFirstOrDefault(c => c.Id == id);
-                return View(codeValueVM);
+                locationVM.Location = _unitOfWork.Location.GetFirstOrDefault(l => l.Id == id);
+                return View(locationVM);
             }
 
             
@@ -54,16 +49,16 @@ namespace ClinicalScheduler.Controllers
         //post
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Upsert(CodeValueVM obj)
+        public IActionResult Upsert(LocationVM obj)
         {
             if (ModelState.IsValid)
             {
-                if (obj.CodeValue.Id==0) {
-                    _unitOfWork.CodeValue.Add(obj.CodeValue);
+                if (obj.Location.Id==0) {
+                    _unitOfWork.Location.Add(obj.Location);
                     TempData["Success"] = "Added successfully";
                 } else
                 {
-                    _unitOfWork.CodeValue.Update(obj.CodeValue);
+                    _unitOfWork.Location.Update(obj.Location);
                     TempData["Success"] = "Updated successfully";
                 }
 
@@ -77,8 +72,8 @@ namespace ClinicalScheduler.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var codeValueList = _unitOfWork.CodeValue.GetAll(includeProperties:"CodeSet");
-            return Json(new { codeValueList });
+            var locationList = _unitOfWork.Location.GetAll();
+            return Json(new { locationList });
         }
 
         //post
@@ -86,13 +81,13 @@ namespace ClinicalScheduler.Controllers
         public IActionResult Delete(int? id)
         {
 
-            var codeValueInDb = _unitOfWork.CodeValue.GetFirstOrDefault(c => c.Id == id);
-            if (codeValueInDb == null)
+            var locationInDb = _unitOfWork.Location.GetFirstOrDefault(c => c.Id == id);
+            if (locationInDb == null)
             {
                 return Json(new { Success = false, message = "Error while deleting" });
             }
                    
-            _unitOfWork.CodeValue.Remove(codeValueInDb);
+            _unitOfWork.Location.Remove(locationInDb);
             _unitOfWork.Save();
 
             return Json(new { Success = true, message = "Delete successful" });

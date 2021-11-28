@@ -1,0 +1,37 @@
+﻿@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container p-3 border">
+    <div class="row pt-4 border">
+        <div class="col-6">
+            <h2 class="primary">Location List</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller ="Location" asp-action="Upsert" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> &nbsp; Create New
+            </a> 
+        </div>
+    </div>
+
+
+<table id ="tblData" class="table table-bordered table-striped" style="width:100%">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Street Address</th>
+            <th>City</th>
+            <th>State</th>
+            <th>Zip</th>
+            <th></th>
+        </tr>
+    </thead>
+    
+</table>
+</div>
+
+@section Scripts{
+    <script src="~/js/Location.js"></script>
+}
+
+
