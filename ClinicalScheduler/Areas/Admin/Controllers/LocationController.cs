@@ -19,8 +19,6 @@ namespace ClinicalScheduler.Controllers
 
         public IActionResult Index()
         {
-            //IEnumerable<CodeSet> codeSetList = _unitOfWork.CodeSet.GetAll();
-            //return View(codeSetList);
             return View();
         }
 
@@ -33,17 +31,13 @@ namespace ClinicalScheduler.Controllers
             };
             if (id==null || id ==0)
             {
-                //Create Code Value
-                //ViewBag.CodeSetList = CodeSetList; //This is used to pass temp data if data is not available form the model 
                 return View(locationVM);
             } else
             {
                 //Update Code Value
                 locationVM.Location = _unitOfWork.Location.GetFirstOrDefault(l => l.Id == id);
                 return View(locationVM);
-            }
-
-            
+            }   
         }
 
         //post
@@ -81,13 +75,14 @@ namespace ClinicalScheduler.Controllers
         public IActionResult Delete(int? id)
         {
 
-            var locationInDb = _unitOfWork.Location.GetFirstOrDefault(c => c.Id == id);
+            var locationInDb = _unitOfWork.Location.GetFirstOrDefault(l => l.Id == id);
             if (locationInDb == null)
             {
                 return Json(new { Success = false, message = "Error while deleting" });
             }
-                   
-            _unitOfWork.Location.Remove(locationInDb);
+
+            //_unitOfWork.Location.Remove(locationInDb);
+            locationInDb.IsDeleted = true;
             _unitOfWork.Save();
 
             return Json(new { Success = true, message = "Delete successful" });

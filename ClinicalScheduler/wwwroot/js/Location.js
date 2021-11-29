@@ -12,10 +12,23 @@ function loadDataTable() {
         },
         "columns": [
             { "data": "name", "width": "20%" },
-            { "data": "street", "width": "60%" },
+            { "data": "street", "width": "50%" },
             { "data": "city", "width": "10%" },
             { "data": "state", "width": "5%" },
             { "data": "zip", "width": "5%" },
+            {
+                "data": "isDeleted",
+                "render": function (data) {
+                    if (data) {
+                        return `<input type="checkbox" disabled checked/>`
+                    }
+                    else {
+                        return `<input type="checkbox" disabled/>`
+                    }
+                },
+                "width": "10%",
+                "className": "text-center"
+            },
             {
                 "data": "id",
                 "render": function (data) {

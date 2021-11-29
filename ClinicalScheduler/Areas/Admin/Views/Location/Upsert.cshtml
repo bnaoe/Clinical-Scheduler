@@ -32,7 +32,10 @@
              <input asp-for="Location.Zip" class="form-control"/>
             <span asp-validation-for ="Location.Zip" class="text-danger"></span>
         </div>
-
+        <div class="mb-3">
+            <label asp-for="Location.IsDeleted">Deleted</label>
+            <input asp-for="Location.IsDeleted" type="checkbox" data-val="true" data-val-required="Location.IsDeleted" id="IsDeleted" name="IsDeleted" value="true" />               
+        </div>
         <div class="col-12">
 			<button type="submit" class="btn btn-primary" style="width:150px">@(Model.Location.Id!=0?"Update":"Create")</button>
             <a asp-controller="Location" asp-action="Index" class="btn btn-secondary" style="width:150px">

@@ -20,5 +20,7 @@ namespace Scheduler.Models
         public string State { get; set; }
         public string Zip { get; set; }
         public DateTime CreatedDateTime { get; set; } = DateTime.Now;
+
+        public bool IsDeleted { get; set; } = false;
     }
 }

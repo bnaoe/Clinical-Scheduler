@@ -7,16 +7,15 @@ $(document).ready(function () {
 function loadDataTable() {
     dataTable = $('#tblData').DataTable({
         "ajax": {
-            "url": "/Admin/CodeValue/GetAll",
-            "dataSrc": "codeValueList"
+            "url": "/Admin/CodeSet/GetAll",
+            "dataSrc": "codeSetList"
         },
         "columns": [
             { "data": "id", "width": "10%" },
-            { "data": "codeSet.name", "width": "15%" },
             { "data": "name", "width": "15%" },
-            { "data": "description", "width": "20%" },
+            { "data": "description", "width": "35%" },
             {
-                "data": "codeValueList.isDeleted",
+                "data": "isDeleted",
                 "render": function (data) {
                     if (data) {
                         return `<input type="checkbox" disabled checked/>`
@@ -33,14 +32,14 @@ function loadDataTable() {
                 "render": function (data) {
                     return `
                         <td><div class="w-100 btn-group" role="group">
-                        <a href="/Admin/CodeValue/Upsert?id=${data}" class="btn btn-primary small mx-2">
+                        <a href="/Admin/CodeSet/Upsert?id=${data}" class="btn btn-primary small mx-2">
                         <i class="bi bi-pencil-square"></i> Edit</a>
-                        <a onClick=Delete('/Admin/CodeValue/Delete/${data}') class="btn btn-danger small mx-2">
+                        <a onClick=Delete('/Admin/CodeSet/Delete/${data}') class="btn btn-danger small mx-2">
                         <i class="bi bi-trash-fill"></i> Delete</a>
                 </div></td>
                     `
                 },
-                "width":"20%"
+                "width":"15%"
             }
         ]
     });

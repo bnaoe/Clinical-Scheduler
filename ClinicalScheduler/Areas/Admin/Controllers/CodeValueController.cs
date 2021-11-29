@@ -30,7 +30,7 @@ namespace ClinicalScheduler.Controllers
             CodeValueVM codeValueVM = new()
             {
                 CodeValue = new(),
-                CodeSetList = _unitOfWork.CodeSet.GetAll().Select(c => new SelectListItem
+                CodeSetList = _unitOfWork.CodeSet.GetAll().Where(c=>c.IsDeleted==false).Select(c => new SelectListItem
                 {
                     Text = c.Name,
                     Value = c.Id.ToString()
@@ -91,8 +91,9 @@ namespace ClinicalScheduler.Controllers
             {
                 return Json(new { Success = false, message = "Error while deleting" });
             }
-                   
-            _unitOfWork.CodeValue.Remove(codeValueInDb);
+
+            //_unitOfWork.CodeValue.Remove(codeValueInDb);
+            codeValueInDb.IsDeleted = true;
             _unitOfWork.Save();
 
             return Json(new { Success = true, message = "Delete successful" });

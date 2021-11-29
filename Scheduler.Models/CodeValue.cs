@@ -27,6 +27,8 @@ namespace Scheduler.Models
 
         [ValidateNever]
         public CodeSet CodeSet { get; set; }    
+
+        public bool IsDeleted { get; set; } = false;
         
     }
 }

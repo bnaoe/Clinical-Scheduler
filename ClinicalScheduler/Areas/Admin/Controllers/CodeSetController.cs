@@ -17,87 +17,157 @@ namespace ClinicalScheduler.Controllers
 
         public IActionResult Index()
         {
-            IEnumerable<CodeSet> codeSetList = _unitOfWork.CodeSet.GetAll();
-            return View(codeSetList);
-        }
-
-        //get
-        public IActionResult Create()
-        {
-            
+            //IEnumerable<CodeSet> codeSetList = _unitOfWork.CodeSet.GetAll();
+            //return View(codeSetList);
             return View();
         }
 
+        //get
+        //public IActionResult Create()
+        //{
+
+        //    return View();
+        //}
+
+        //post
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public IActionResult Create(CodeSet codeSet)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _unitOfWork.CodeSet.Add(codeSet);
+        //        _unitOfWork.Save();
+        //        TempData["Success"] = "Code Set created successfully";
+        //        return RedirectToAction("Index");
+        //    }
+        //    return View(codeSet);
+        //}
+
+        //get
+        //public IActionResult Edit(int? id)
+        //{
+        //    if (id==null || id ==0) return NotFound();
+
+        //    var codeSetInDb = _unitOfWork.CodeSet.GetFirstOrDefault(c => c.Id == id);
+
+        //    if (codeSetInDb == null) return NotFound();
+
+        //    return View(codeSetInDb);
+        //}
+
+        //get
+        public IActionResult Upsert(int? id)
+        {
+            CodeSet codeSet = new();
+
+            if (id == null || id == 0)
+            {
+                return View(codeSet);
+            }
+            else
+            {
+                //Update Code Value
+                codeSet = _unitOfWork.CodeSet.GetFirstOrDefault(l => l.Id == id);
+                return View(codeSet);
+            }
+        }
+
         //post
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(CodeSet codeSet)
+        public IActionResult Upsert(CodeSet obj)
         {
             if (ModelState.IsValid)
             {
-                _unitOfWork.CodeSet.Add(codeSet);
+                if (obj.Id == 0)
+                {
+                    _unitOfWork.CodeSet.Add(obj);
+                    TempData["Success"] = "Added successfully";
+                }
+                else
+                {
+                    _unitOfWork.CodeSet.Update(obj);
+                    TempData["Success"] = "Updated successfully";
+                }
+
                 _unitOfWork.Save();
-                TempData["Success"] = "Code Set created successfully";
                 return RedirectToAction("Index");
             }
-            return View(codeSet);
-        }
-
-        //get
-        public IActionResult Edit(int? id)
-        {
-            if (id==null || id ==0) return NotFound();
-
-            var codeSetInDb = _unitOfWork.CodeSet.GetFirstOrDefault(c => c.Id == id);
-
-            if (codeSetInDb == null) return NotFound();
-
-            return View(codeSetInDb);
+            return View(obj);
         }
 
         //post
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Edit(CodeSet codeSet)
-        {
-            if (ModelState.IsValid)
-            {
-                _unitOfWork.CodeSet.Update(codeSet);
-                _unitOfWork.Save();
-                TempData["Success"] = "Code Set edited successfully";
-                return RedirectToAction("Index");
-            }
-            return View(codeSet);
-        }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public IActionResult Edit(CodeSet codeSet)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _unitOfWork.CodeSet.Update(codeSet);
+        //        _unitOfWork.Save();
+        //        TempData["Success"] = "Code Set edited successfully";
+        //        return RedirectToAction("Index");
+        //    }
+        //    return View(codeSet);
+        //}
 
         //get
+        //public IActionResult Delete(int? id)
+        //{
+        //    if (id == null || id == 0) return NotFound();
+
+        //    var codeSetInDb = _unitOfWork.CodeSet.GetFirstOrDefault(c => c.Id == id);
+
+        //    if (codeSetInDb == null) return NotFound();
+
+        //    return View(codeSetInDb);
+        //}
+
+        ////post
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public IActionResult DeletePOST(int? id)
+        //{
+
+        //    var codeSetInDb = _unitOfWork.CodeSet.GetFirstOrDefault(c => c.Id == id);
+
+        //    if (codeSetInDb == null) return NotFound();
+
+        //    _unitOfWork.CodeSet.Remove(codeSetInDb);
+        //    _unitOfWork.Save();
+        //    TempData["Success"] = "Code Set deleted successfully";
+
+        //    return RedirectToAction("Index");
+        //}
+
+        #region API CALLS
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            var codeSetList = _unitOfWork.CodeSet.GetAll();
+            return Json(new { codeSetList });
+        }
+
+        //post
+        [HttpDelete]
         public IActionResult Delete(int? id)
         {
-            if (id == null || id == 0) return NotFound();
 
             var codeSetInDb = _unitOfWork.CodeSet.GetFirstOrDefault(c => c.Id == id);
+            if (codeSetInDb == null)
+            {
+                return Json(new { Success = false, message = "Error while deleting" });
+            }
 
-            if (codeSetInDb == null) return NotFound();
+            //_unitOfWork.CodeSet.Remove(codeSetInDb);
 
-            return View(codeSetInDb);
-        }
-
-        //post
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult DeletePOST(int? id)
-        {
-
-            var codeSetInDb = _unitOfWork.CodeSet.GetFirstOrDefault(c => c.Id == id);
-
-            if (codeSetInDb == null) return NotFound();
-
-            _unitOfWork.CodeSet.Remove(codeSetInDb);
+            codeSetInDb.IsDeleted = true;
             _unitOfWork.Save();
-            TempData["Success"] = "Code Set deleted successfully";
 
-            return RedirectToAction("Index");
+            return Json(new { Success = true, message = "Delete successful" });
         }
+        #endregion
 
     }
 }

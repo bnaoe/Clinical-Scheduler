@@ -24,7 +24,10 @@
             </select>
             <span asp-validation-for ="CodeValue.CodeSetId" class="text-danger"></span>
         </div>
-
+        <div class="mb-3">
+            <label asp-for="CodeValue.IsDeleted">Deleted</label>
+            <input asp-for="CodeValue.IsDeleted" type="checkbox" data-val="true" data-val-required="CodeValue.IsDeleted" id="IsDeleted" name="IsDeleted" value="true" />               
+        </div>
         <div class="col-12">
 			<button type="submit" class="btn btn-primary" style="width:150px">@(Model.CodeValue.Id!=0?"Update":"Create")</button>
             <a asp-controller="CodeValue" asp-action="Index" class="btn btn-secondary" style="width:150px">
