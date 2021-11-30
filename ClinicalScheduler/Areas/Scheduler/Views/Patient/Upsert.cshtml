@@ -1,0 +1,82 @@
+﻿@model Scheduler.Models.ViewModels.PatientVM
+
+<form method="post" asp-action="Upsert">
+    <input asp-for="Patient.Id" hidden />
+    <div class="border p-3 mt-4 row">
+        <div class="row pb-2 border">
+            <h2 class="text-primary">@(Model.Patient.Id!=0?"Update":"Register") Patient</h2>
+            <hr/>
+        </div>
+        <div class="mb-3 col-3" >
+            <label asp-for="Patient.FirstName">First Name</label>
+            <input asp-for="Patient.FirstName" class="form-control"/>
+            <span asp-validation-for="Patient.FirstName" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-3">
+            <label asp-for="Patient.MiddleName">Middle Name</label>
+            <input asp-for="Patient.MiddleName" class="form-control"/>
+            <span asp-validation-for ="Patient.MiddleName" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-3">
+            <label asp-for="Patient.LastName">Last Name</label>
+            <input asp-for="Patient.LastName" class="form-control"/>
+            <span asp-validation-for ="Patient.LastName" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-3">
+            <label asp-for="Patient.BirthDate">Birth Date</label>
+            <input asp-for="Patient.BirthDate" class="form-control"/>
+            <span asp-validation-for ="Patient.BirthDate" class="text-danger"></span>
+        </div>
+         <div class="mb-3">
+            <label asp-for="Patient.StreetAddress">Street Address</label>
+            <input asp-for="Patient.StreetAddress" class="form-control"/>
+            <span asp-validation-for ="Patient.StreetAddress" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-4">
+            <label asp-for="Patient.City">City</label>
+            <input asp-for="Patient.City" class="form-control"/>
+            <span asp-validation-for ="Patient.City" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-4">
+            <label asp-for="Patient.State">State</label>
+             <input asp-for="Patient.State" class="form-control"/>
+            <span asp-validation-for ="Patient.State" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-4">
+            <label asp-for="Patient.Zip">Zip</label>
+             <input asp-for="Patient.Zip" class="form-control"/>
+            <span asp-validation-for ="Patient.Zip" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-4">
+            <label asp-for="Patient.PhoneNumber">Phone Number</label>
+            <input asp-for="Patient.PhoneNumber" class="form-control" onKeyup="formatPhone(this)"/>
+            <span asp-validation-for ="Patient.PhoneNumber" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-4">
+            <label asp-for="Patient.MobileNumber">Mobile Number</label>
+             <input asp-for="Patient.MobileNumber" class="form-control" onKeyup="formatPhone(this)"/>
+            <span asp-validation-for ="Patient.MobileNumber" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-4">
+            <label asp-for="Patient.WorkNumber">Work Number</label>
+             <input asp-for="Patient.WorkNumber" class="form-control" onKeyup="formatPhone(this)"/>
+            <span asp-validation-for ="Patient.WorkNumber" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Patient.IsDeleted">Deleted</label>
+            <input asp-for="Patient.IsDeleted" type="checkbox" data-val="true" data-val-required="Location.IsDeleted" id="IsDeleted" name="IsDeleted" value="true" />               
+        </div>
+        <div class="col-12">
+			<button type="submit" class="btn btn-primary" style="width:150px">@(Model.Patient.Id!=0?"Update":"Register")</button>
+            <a asp-controller="Location" asp-action="Index" class="btn btn-secondary" style="width:150px">
+                Back to list
+            </a>
+        </div>
+    </div>
+</form>
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial"/>
+        <script src="~/js/CustomMask.js"></script>
+    }
+}

@@ -11,6 +11,8 @@ namespace Scheduler.DataAccess.Repository.IRepository
         ICodeSetRepository CodeSet { get; }
         ICodeValueRepository CodeValue { get; }
         ILocationRepository Location { get; }
+        IPatientRepository Patient { get; }
+
 
         void Save();
     }
