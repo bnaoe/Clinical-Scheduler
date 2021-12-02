@@ -13,6 +13,7 @@ namespace Scheduler.DataAccess
         public DbSet<CodeValue> CodeValues { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<Patient> Patients { get; set; }
+        public DbSet<OrderCatalog> OrderCatalogs { get; set; }
 
     }
 }

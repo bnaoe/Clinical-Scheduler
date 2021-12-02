@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Scheduler.DataAccess;
 
@@ -11,9 +12,10 @@ using Scheduler.DataAccess;
 namespace ClinicalScheduler.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211201213100_AddOrderCatalogToDb")]
+    partial class AddOrderCatalogToDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -126,9 +128,6 @@ namespace ClinicalScheduler.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("CodeValueId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("CreatedDateTime")
                         .HasColumnType("datetime2");
 
@@ -144,8 +143,6 @@ namespace ClinicalScheduler.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CodeValueId");
 
                     b.ToTable("OrderCatalogs");
                 });
@@ -214,17 +211,6 @@ namespace ClinicalScheduler.Migrations
                         .IsRequired();
 
                     b.Navigation("CodeSet");
-                });
-
-            modelBuilder.Entity("Scheduler.Models.OrderCatalog", b =>
-                {
-                    b.HasOne("Scheduler.Models.CodeValue", "CodeValue")
-                        .WithMany()
-                        .HasForeignKey("CodeValueId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CodeValue");
                 });
 #pragma warning restore 612, 618
         }

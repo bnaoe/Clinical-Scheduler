@@ -68,8 +68,11 @@
         </div>
         <div class="col-12">
 			<button type="submit" class="btn btn-primary" style="width:150px">@(Model.Patient.Id!=0?"Update":"Register")</button>
-            <a asp-controller="Location" asp-action="Index" class="btn btn-secondary" style="width:150px">
-                Back to list
+            <a asp-area="Shared" asp-controller="Search" asp-action="PatientSearch" class="btn btn-secondary" style="width:150px">
+               Patient search
+            </a>
+            <a asp-area="Shared" asp-controller="Search" asp-action="PatientSearch" class="btn btn-danger" style="width:150px">
+               Cancel
             </a>
         </div>
     </div>

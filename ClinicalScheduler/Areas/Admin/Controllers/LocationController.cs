@@ -34,7 +34,7 @@ namespace ClinicalScheduler.Controllers
                 return View(locationVM);
             } else
             {
-                //Update Code Value
+                //Update Location
                 locationVM.Location = _unitOfWork.Location.GetFirstOrDefault(l => l.Id == id);
                 return View(locationVM);
             }   

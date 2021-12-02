@@ -18,6 +18,8 @@ namespace Scheduler.DataAccess.Repository
             CodeValue = new CodeValueRepository(_db);
             Location = new LocationRepository(_db);
             Patient = new PatientRepository(_db);
+            OrderCatalog = new OrderCatalogRepository(_db);
+
         }
 
         public ICodeSetRepository CodeSet { get; private set; }
@@ -27,6 +29,8 @@ namespace Scheduler.DataAccess.Repository
         public ILocationRepository Location { get; private set; }
 
         public IPatientRepository Patient { get; private set; }
+
+        public IOrderCatalogRepository OrderCatalog { get; private set; }
 
         public void Save()
         {

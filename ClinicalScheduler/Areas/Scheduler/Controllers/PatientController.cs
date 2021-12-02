@@ -34,7 +34,7 @@ namespace ClinicalScheduler.Controllers
                 return View(patientVM);
             } else
             {
-                //Update Code Value
+                //Update Patient
                 patientVM.Patient = _unitOfWork.Patient.GetFirstOrDefault(p => p.Id == id);
                 return View(patientVM);
             }   

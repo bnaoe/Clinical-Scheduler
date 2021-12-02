@@ -33,6 +33,13 @@
                     <a class="dropdown-item text-btn-close-white" asp-area="Scheduler" asp-controller="Patient" asp-action="Upsert">Registration</a>
                     <a class="dropdown-item text-btn-close-white" asp-area="Shared" asp-controller="Search" asp-action="PatientSearch">Patient Search</a>
                   </div>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Scheduling</a>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item text-btn-close-white" asp-area="Scheduler" asp-controller="SchAppt" asp-action="">Scheduler</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item text-btn-close-white" asp-area="Scheduler" asp-controller="SchTemplates" asp-action="">Schedule Templates</a>
+                  </div>
 
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Management Tools</a>
@@ -41,7 +48,7 @@
                     <a class="dropdown-item text-btn-close-white" asp-area="Admin" asp-controller="CodeValue" asp-action="Index">Code Values</a>
                     <a class="dropdown-item text-btn-close-white" asp-area="Admin" asp-controller="Location" asp-action="Index">Locations</a>
                   <div class="dropdown-divider"></div>
-
+                    <a class="dropdown-item text-btn-close-white" asp-area="Admin" asp-controller="OrderCatalog" asp-action="Index">Order Catalog</a>
                   </div>
                 </li>
               </ul>
@@ -74,6 +81,8 @@
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="//cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+
     <script src="https://cdn.tiny.cloud/1/ehosc5fpybaur115lp9p1n0k9kr32m17fk608yyi4ig6pjmk/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

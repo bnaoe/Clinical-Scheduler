@@ -29,7 +29,7 @@ namespace ClinicalScheduler.Controllers
         public IActionResult GetAllPatients(String firstName, String lastName, DateTime birthDate)
         {
             var patientList = _unitOfWork.Patient.GetAll(p=> p.LastName==lastName 
-            && p.FirstName==firstName && p.BirthDate==birthDate);
+            || p.FirstName==firstName || p.BirthDate==birthDate);
             return Json(new { patientList });
         }
         #endregion

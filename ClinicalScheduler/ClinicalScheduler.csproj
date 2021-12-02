@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Scheduler.DataAccess\Scheduler.DataAccess.csproj" />
+    <ProjectReference Include="..\Scheduler.Utility\Scheduler.Utility.csproj" />
   </ItemGroup>
 
 </Project>

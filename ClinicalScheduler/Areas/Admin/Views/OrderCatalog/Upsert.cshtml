@@ -1,0 +1,50 @@
+﻿@model Scheduler.Models.ViewModels.OrderCatalogVM
+
+<form method="post" asp-action="Upsert">
+    <input asp-for="OrderCatalog.Id" hidden />
+    <div class="border p-3 mt-4">
+        <div class="row pb-2 border">
+            <h2 class="text-primary">@(Model.OrderCatalog.Id!=0?"Update":"Create") Code Value</h2>
+            <hr/>
+        </div>
+        <div class="mb-3">
+            <label asp-for="OrderCatalog.Name">Name</label>
+            <input asp-for="OrderCatalog.Name" class="form-control"/>
+            <span asp-validation-for="OrderCatalog.Name" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="OrderCatalog.Description">Description</label>
+            <textarea asp-for="OrderCatalog.Description" rows="3" class="form-control"></textarea>
+            <span asp-validation-for ="OrderCatalog.Description" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="OrderCatalog.CodeValueId">Order Type</label>
+            <select asp-for="OrderCatalog.CodeValueId" asp-items="@Model.CodeValueList" class="form-select">
+                <option disabled selected>- Select Order Type -</option>
+            </select>
+            <span asp-validation-for ="OrderCatalog.CodeValueId" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="OrderCatalog.IsDeleted">Deleted</label>
+            <input asp-for="OrderCatalog.IsDeleted" type="checkbox" data-val="true" data-val-required="OrderCatalog.IsDeleted" id="IsDeleted" name="IsDeleted" value="true" />               
+        </div>
+        <div class="col-12">
+			<button type="submit" class="btn btn-primary" style="width:150px">@(Model.OrderCatalog.Id!=0?"Update":"Create")</button>
+            <a asp-controller="OrderCatalog" asp-action="Index" class="btn btn-secondary" style="width:150px">
+                Back to list
+            </a>
+        </div>
+    </div>
+</form>
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial"/>
+    }
+   <script>
+    tinymce.init({
+      selector: 'textarea',
+      plugins: 'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+      toolbar_mode: 'floating',
+    });
+  </script>
+}

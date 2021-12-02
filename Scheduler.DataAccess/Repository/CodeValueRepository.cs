@@ -30,6 +30,8 @@ namespace Scheduler.DataAccess.Repository
             {
                 codeValueInDb.Name = obj.Name;
                 codeValueInDb.Description = obj.Description;
+                codeValueInDb.CodeSetId = obj.CodeSetId;
+                codeValueInDb.IsDeleted = obj.IsDeleted;
             }
         }
     }

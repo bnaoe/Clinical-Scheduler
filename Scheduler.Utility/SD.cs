@@ -8,5 +8,7 @@ namespace Scheduler.Utility
 {
     public static class SD
     {
+        public const string OrderType = "Order Type";
+
     }
 }
