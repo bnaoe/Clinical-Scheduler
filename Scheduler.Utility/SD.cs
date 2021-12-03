@@ -10,5 +10,12 @@ namespace Scheduler.Utility
     {
         public const string OrderType = "Order Type";
 
+        public const string Role_Admin = "Admin";
+        public const string Role_Scheduler = "Resgistration";
+        public const string Role_Physician = "Physician";
+        public const string Role_NP = "Nurse Practitioner";
+        public const string Role_PA = "Physician Assistant";
+        public const string Role_MA = "Medical Assistant";
+        public const string Role_RN = "Registered Nurse";
     }
 }

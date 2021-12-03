@@ -15,6 +15,6 @@ namespace Scheduler.DataAccess
         public DbSet<Location> Locations { get; set; }
         public DbSet<Patient> Patients { get; set; }
         public DbSet<OrderCatalog> OrderCatalogs { get; set; }
-
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
     }
 }
