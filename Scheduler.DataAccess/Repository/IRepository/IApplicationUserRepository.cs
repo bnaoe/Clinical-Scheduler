@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace Scheduler.DataAccess.Repository.IRepository
 {
-    public interface ILocationRepository : IRepositoryAsync<Location>
+    public interface IApplicationUserRepository : IRepository<ApplicationUser>
     {
-        void Update(Location obj);
 
     }
 }

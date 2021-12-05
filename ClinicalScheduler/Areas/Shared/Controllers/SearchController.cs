@@ -22,13 +22,11 @@ namespace ClinicalScheduler.Controllers
             return View();
         }
 
-       
-
-        #region API CALLS
+       #region API CALLS
         [HttpGet]
-        public IActionResult GetAllPatients(String firstName, String lastName, DateTime birthDate)
+        public async Task<IActionResult> GetAllPatients(String firstName, String lastName, DateTime birthDate)
         {
-            var patientList = _unitOfWork.Patient.GetAll(p=> p.LastName==lastName 
+            var patientList = await _unitOfWork.Patient.GetAllAsync(p=> p.LastName==lastName 
             || p.FirstName==firstName || p.BirthDate==birthDate);
             return Json(new { patientList });
         }

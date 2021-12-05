@@ -25,12 +25,14 @@ namespace ClinicalScheduler.Controllers
         }
 
         //get
-        public IActionResult Upsert(int? id)
+        public async Task<IActionResult> Upsert(int? id)
         {
+            IEnumerable<CodeSet> CodeSetList = await _unitOfWork.CodeSet.GetAllAsync();
+
             CodeValueVM codeValueVM = new()
             {
                 CodeValue = new(),
-                CodeSetList = _unitOfWork.CodeSet.GetAll().Where(c=>c.IsDeleted==false).Select(c => new SelectListItem
+                CodeSetList = CodeSetList.Where(c => c.IsDeleted == false).OrderBy(c => c.Name).Select(c => new SelectListItem
                 {
                     Text = c.Name,
                     Value = c.Id.ToString()
@@ -44,7 +46,7 @@ namespace ClinicalScheduler.Controllers
             } else
             {
                 //Update Code Value
-                codeValueVM.CodeValue = _unitOfWork.CodeValue.GetFirstOrDefault(c => c.Id == id);
+                codeValueVM.CodeValue = await _unitOfWork.CodeValue.GetFirstOrDefaultAsync(c => c.Id == id);
                 return View(codeValueVM);
             }
 
@@ -54,12 +56,12 @@ namespace ClinicalScheduler.Controllers
         //post
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Upsert(CodeValueVM obj)
+        public async Task<IActionResult> Upsert(CodeValueVM obj)
         {
             if (ModelState.IsValid)
             {
                 if (obj.CodeValue.Id==0) {
-                    _unitOfWork.CodeValue.Add(obj.CodeValue);
+                    await _unitOfWork.CodeValue.AddAsync(obj.CodeValue);
                     TempData["Success"] = "Added successfully";
                 } else
                 {
@@ -75,18 +77,18 @@ namespace ClinicalScheduler.Controllers
 
         #region API CALLS
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var codeValueList = _unitOfWork.CodeValue.GetAll(includeProperties:"CodeSet");
+            var codeValueList = await _unitOfWork.CodeValue.GetAllAsync(includeProperties:"CodeSet");
             return Json(new { codeValueList });
         }
 
         //post
         [HttpDelete]
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
 
-            var codeValueInDb = _unitOfWork.CodeValue.GetFirstOrDefault(c => c.Id == id);
+            var codeValueInDb = await _unitOfWork.CodeValue.GetFirstOrDefaultAsync(c => c.Id == id);
             if (codeValueInDb == null)
             {
                 return Json(new { Success = false, message = "Error while deleting" });

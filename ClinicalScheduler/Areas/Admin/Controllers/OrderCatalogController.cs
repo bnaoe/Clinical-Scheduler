@@ -24,14 +24,17 @@ namespace ClinicalScheduler.Controllers
         }
 
         //get
-        public IActionResult Upsert(int? id)
+        public async Task<IActionResult> Upsert(int? id)
         {
-            var OrderTypeCodeSetId = _unitOfWork.CodeSet.GetFirstOrDefault(c => c.Name == SD.OrderType).Id;
+            var OrderTypeCodeSetId = await _unitOfWork.CodeSet.GetFirstOrDefaultAsync(c => c.Name == SD.OrderType);
+            var CodeSetId = OrderTypeCodeSetId.Id;
+
+            var CodeValues = await _unitOfWork.CodeValue.GetAllAsync();
 
             OrderCatalogVM orderCatalogVM = new()
             {
                 OrderCatalog = new(),
-                CodeValueList = _unitOfWork.CodeValue.GetAll().Where(c=>c.IsDeleted==false && c.CodeSetId == OrderTypeCodeSetId).Select(c => new SelectListItem
+                CodeValueList = CodeValues.Where(c=>c.IsDeleted==false && c.CodeSetId == CodeSetId).Select(c => new SelectListItem
                 {
                     Text = c.Name,
                     Value = c.Id.ToString()
@@ -45,7 +48,7 @@ namespace ClinicalScheduler.Controllers
             } else
             {
                 //Update OrderCatalog
-                orderCatalogVM.OrderCatalog = _unitOfWork.OrderCatalog.GetFirstOrDefault(c => c.Id == id);
+                orderCatalogVM.OrderCatalog = await _unitOfWork.OrderCatalog.GetFirstOrDefaultAsync(c => c.Id == id);
                 return View(orderCatalogVM);
             }
 
@@ -55,12 +58,12 @@ namespace ClinicalScheduler.Controllers
         //post
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Upsert(OrderCatalogVM obj)
+        public async Task<IActionResult> Upsert(OrderCatalogVM obj)
         {
             if (ModelState.IsValid)
             {
                 if (obj.OrderCatalog.Id==0) {
-                    _unitOfWork.OrderCatalog.Add(obj.OrderCatalog);
+                    await _unitOfWork.OrderCatalog.AddAsync(obj.OrderCatalog);
                     TempData["Success"] = "Added successfully";
                 } else
                 {
@@ -76,18 +79,18 @@ namespace ClinicalScheduler.Controllers
 
         #region API CALLS
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var orderCatalogList = _unitOfWork.OrderCatalog.GetAll(includeProperties:"CodeValue");
+            var orderCatalogList = await _unitOfWork.OrderCatalog.GetAllAsync(includeProperties:"CodeValue");
             return Json(new { orderCatalogList });
         }
 
         //post
         [HttpDelete]
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
 
-            var orderCatalogInDb = _unitOfWork.OrderCatalog.GetFirstOrDefault(c => c.Id == id);
+            var orderCatalogInDb = await _unitOfWork.OrderCatalog.GetFirstOrDefaultAsync(c => c.Id == id);
             if (orderCatalogInDb == null)
             {
                 return Json(new { Success = false, message = "Error while deleting" });

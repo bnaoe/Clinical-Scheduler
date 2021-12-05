@@ -23,7 +23,7 @@ namespace ClinicalScheduler.Controllers
         }
 
         //get
-        public IActionResult Upsert(int? id)
+        public async Task<IActionResult> Upsert(int? id)
         {
             LocationVM locationVM = new()
             {
@@ -35,7 +35,7 @@ namespace ClinicalScheduler.Controllers
             } else
             {
                 //Update Location
-                locationVM.Location = _unitOfWork.Location.GetFirstOrDefault(l => l.Id == id);
+                locationVM.Location = await _unitOfWork.Location.GetFirstOrDefaultAsync(l => l.Id == id);
                 return View(locationVM);
             }   
         }
@@ -43,12 +43,12 @@ namespace ClinicalScheduler.Controllers
         //post
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Upsert(LocationVM obj)
+        public async Task<IActionResult> Upsert(LocationVM obj)
         {
             if (ModelState.IsValid)
             {
                 if (obj.Location.Id==0) {
-                    _unitOfWork.Location.Add(obj.Location);
+                    await _unitOfWork.Location.AddAsync(obj.Location);
                     TempData["Success"] = "Added successfully";
                 } else
                 {
@@ -64,18 +64,18 @@ namespace ClinicalScheduler.Controllers
 
         #region API CALLS
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var locationList = _unitOfWork.Location.GetAll();
+            var locationList = await _unitOfWork.Location.GetAllAsync();
             return Json(new { locationList });
         }
 
         //post
         [HttpDelete]
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
 
-            var locationInDb = _unitOfWork.Location.GetFirstOrDefault(l => l.Id == id);
+            var locationInDb = await _unitOfWork.Location.GetFirstOrDefaultAsync(l => l.Id == id);
             if (locationInDb == null)
             {
                 return Json(new { Success = false, message = "Error while deleting" });

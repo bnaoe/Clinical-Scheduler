@@ -15,7 +15,7 @@ function loadDataTable() {
             { "data": "description", "width": "20%" },
             { "data": "codeValue.name", "width": "20%" },
             {
-                "data": "orderCatalogList.isDeleted",
+                "data": "isDeleted",
                 "render": function (data) {
                     if (data) {
                         return `<input type="checkbox" disabled checked/>`

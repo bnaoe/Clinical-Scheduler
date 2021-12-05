@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Scheduler.DataAccess.Repository
 {
-    public class PatientRepository : Repository<Patient>, IPatientRepository
+    public class PatientRepository : RepositoryAsync<Patient>, IPatientRepository
     {
         private ApplicationDbContext _db;
 

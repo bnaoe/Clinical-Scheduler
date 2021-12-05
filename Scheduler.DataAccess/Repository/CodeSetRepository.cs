@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Scheduler.DataAccess.Repository
 {
-    public class CodeSetRepository : Repository<CodeSet>, ICodeSetRepository
+    public class CodeSetRepository : RepositoryAsync<CodeSet>, ICodeSetRepository
     {
         private ApplicationDbContext _db;
 

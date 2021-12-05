@@ -57,7 +57,7 @@ namespace ClinicalScheduler.Controllers
         //}
 
         //get
-        public IActionResult Upsert(int? id)
+        public async Task<IActionResult> Upsert(int? id)
         {
             CodeSet codeSet = new();
 
@@ -68,7 +68,7 @@ namespace ClinicalScheduler.Controllers
             else
             {
                 //Update Code Value
-                codeSet = _unitOfWork.CodeSet.GetFirstOrDefault(l => l.Id == id);
+                codeSet = await _unitOfWork.CodeSet.GetFirstOrDefaultAsync(l => l.Id == id);
                 return View(codeSet);
             }
         }
@@ -76,13 +76,13 @@ namespace ClinicalScheduler.Controllers
         //post
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Upsert(CodeSet obj)
+        public async Task<IActionResult> Upsert(CodeSet obj)
         {
             if (ModelState.IsValid)
             {
                 if (obj.Id == 0)
                 {
-                    _unitOfWork.CodeSet.Add(obj);
+                    await _unitOfWork.CodeSet.AddAsync(obj);
                     TempData["Success"] = "Added successfully";
                 }
                 else
@@ -143,18 +143,18 @@ namespace ClinicalScheduler.Controllers
 
         #region API CALLS
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var codeSetList = _unitOfWork.CodeSet.GetAll();
+            var codeSetList = await _unitOfWork.CodeSet.GetAllAsync();
             return Json(new { codeSetList });
         }
 
         //post
         [HttpDelete]
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
 
-            var codeSetInDb = _unitOfWork.CodeSet.GetFirstOrDefault(c => c.Id == id);
+            var codeSetInDb = await _unitOfWork.CodeSet.GetFirstOrDefaultAsync(c => c.Id == id);
             if (codeSetInDb == null)
             {
                 return Json(new { Success = false, message = "Error while deleting" });

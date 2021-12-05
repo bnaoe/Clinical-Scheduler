@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Scheduler.DataAccess.Repository.IRepository
 {
-    public interface ICodeValueRepository : IRepository<CodeValue>
+    public interface ICodeValueRepository : IRepositoryAsync<CodeValue>
     {
         void Update(CodeValue obj);
 

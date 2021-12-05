@@ -145,6 +145,7 @@ namespace ClinicalScheduler.Areas.Identity.Pages.Account
 
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            var Locations = await _unitOfWork.Location.GetAllAsync();
             Input = new InputModel()
             {
                 RoleList = _roleManager.Roles.Select(r => r.Name).Select(i => new SelectListItem
@@ -152,7 +153,7 @@ namespace ClinicalScheduler.Areas.Identity.Pages.Account
                     Text = i,
                     Value = i
                 }),
-                LocationList = _unitOfWork.Location.GetAll().Select(i => new SelectListItem
+                LocationList = Locations.Select(i => new SelectListItem
                 {
                     Text = i.Name,
                     Value = i.Id.ToString()

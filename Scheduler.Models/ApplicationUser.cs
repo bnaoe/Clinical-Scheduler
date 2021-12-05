@@ -25,5 +25,8 @@ namespace Scheduler.Models
         [ValidateNever]
 
         public Location Location { get; set; }
+
+        [NotMapped]
+        public string Role { get; set; }
     }
 }

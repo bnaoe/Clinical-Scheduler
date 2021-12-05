@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Scheduler.DataAccess.Repository.IRepository
 {
-    public interface IOrderCatalogRepository : IRepository<OrderCatalog>
+    public interface IOrderCatalogRepository : IRepositoryAsync<OrderCatalog>
     {
         void Update(OrderCatalog obj);
 

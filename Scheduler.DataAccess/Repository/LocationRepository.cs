@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Scheduler.DataAccess.Repository
 {
-    public class LocationRepository : Repository<Location>, ILocationRepository
+    public class LocationRepository : RepositoryAsync<Location>, ILocationRepository
     {
         private ApplicationDbContext _db;
 

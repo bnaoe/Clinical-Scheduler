@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Scheduler.DataAccess.Repository.IRepository
 {
-    public interface IPatientRepository : IRepository<Patient>
+    public interface IPatientRepository : IRepositoryAsync<Patient>
     {
         void Update(Patient obj);
 

@@ -13,6 +13,7 @@ namespace Scheduler.DataAccess.Repository.IRepository
         ILocationRepository Location { get; }
         IPatientRepository Patient { get; }
         IOrderCatalogRepository OrderCatalog { get; }
+        IApplicationUserRepository ApplicationUser { get; }
 
         void Save();
     }
