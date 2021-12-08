@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Scheduler.DataAccess.Repository
 {
-    public class ApplicationUserRepository : Repository<ApplicationUser>, IApplicationUserRepository
+    public class ApplicationUserRepository : RepositoryAsync<ApplicationUser>, IApplicationUserRepository
     {
         private readonly ApplicationDbContext _db;
 

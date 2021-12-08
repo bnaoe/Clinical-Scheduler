@@ -1,0 +1,50 @@
+﻿    <div class="border p-3 mt-4 row">
+        <div class="row pb-2">
+            <h2 class="text-primary">Provider Search</h2>
+            <hr/>
+        </div>
+        <div class="mb-3 col-6" >
+            <label>First Name</label>
+            <input id="firstName" name="firstName" class="form-control"/>
+        </div>
+        <div class="mb-3 col-6">
+            <label>Last Name</label>
+            <input id="lastName" name="lastName" class="form-control"/>
+        </div>
+        <div class="col-12">
+            <button id="find" class="btn btn-primary">
+                <i class=""bi bi-binoculars"></i> &nbsp; Find
+            </button> 
+        </div>
+    </div>
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-12">
+            <h2 class="primary">Provider List</h2>
+        </div>
+        <hr/>
+    </div>
+
+<table id ="tblData" class="table table-bordered table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th>Provider ID</th>
+                <th>First Name</th>
+                <th>Middle Name</th>
+                <th>Last Name</th>
+                <th>Suffix</th>
+                <th>Specialization</th>
+                <th>Location</th>
+                <th>Schedule Profile</th>
+            </tr>
+        </thead>
+    
+    </table>
+</div>
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial"/>
+        <script src="~/js/ProviderSearchResults.js"></script>
+
+    }
+}

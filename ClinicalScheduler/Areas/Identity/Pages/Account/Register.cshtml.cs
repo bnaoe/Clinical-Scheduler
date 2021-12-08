@@ -148,12 +148,12 @@ namespace ClinicalScheduler.Areas.Identity.Pages.Account
             var Locations = await _unitOfWork.Location.GetAllAsync();
             Input = new InputModel()
             {
-                RoleList = _roleManager.Roles.Select(r => r.Name).Select(i => new SelectListItem
+                RoleList = _roleManager.Roles.OrderBy(r=>r.Name).Select(r => r.Name).Select(i => new SelectListItem
                 {
                     Text = i,
                     Value = i
                 }),
-                LocationList = Locations.Select(i => new SelectListItem
+                LocationList = Locations.OrderBy(l=>l.Name).Select(i => new SelectListItem
                 {
                     Text = i.Name,
                     Value = i.Id.ToString()

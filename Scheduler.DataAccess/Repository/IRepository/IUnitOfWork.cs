@@ -14,6 +14,7 @@ namespace Scheduler.DataAccess.Repository.IRepository
         IPatientRepository Patient { get; }
         IOrderCatalogRepository OrderCatalog { get; }
         IApplicationUserRepository ApplicationUser { get; }
+        IProviderScheduleProfileRepository ProviderScheduleProfile { get; }
 
         void Save();
     }

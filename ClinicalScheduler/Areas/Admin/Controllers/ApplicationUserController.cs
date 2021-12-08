@@ -29,9 +29,9 @@ namespace ClinicalScheduler.Controllers
 
         #region API CALLS
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var users =  _unitOfWork.ApplicationUser.GetAll(includeProperties: "Location");
+            var users =  await _unitOfWork.ApplicationUser.GetAllAsync(includeProperties: "Location");
             foreach (var user in users)
             {
                 user.Role = _userManager.GetRolesAsync(user).Result.FirstOrDefault();
@@ -49,9 +49,9 @@ namespace ClinicalScheduler.Controllers
 
         //post
         [HttpPost]
-        public IActionResult LockUnlock([FromBody] string id)
+        public async Task<IActionResult> LockUnlock([FromBody] string id)
         {
-            var objInDb = _unitOfWork.ApplicationUser.GetFirstOrDefault(a=>a.Id==id);
+            var objInDb = await _unitOfWork.ApplicationUser.GetFirstOrDefaultAsync(a=>a.Id==id);
             if (objInDb == null)
             {
                 return Json(new { success = false, message = "Error while locking/unlocking." });

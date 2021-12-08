@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace Scheduler.DataAccess.Repository.IRepository
 {
-    public interface IApplicationUserRepository : IRepositoryAsync<ApplicationUser>
+    public interface IProviderScheduleProfileRepository : IRepositoryAsync<ProviderScheduleProfile>
     {
+        void Update(ProviderScheduleProfile obj);
 
     }
 }

@@ -3,7 +3,7 @@
 <form method="post" asp-action="Upsert">
     <input asp-for="Patient.Id" hidden />
     <div class="border p-3 mt-4 row">
-        <div class="row pb-2 border">
+        <div class="row pb-2">
             <h2 class="text-primary">@(Model.Patient.Id!=0?"Update":"Register") Patient</h2>
             <hr/>
         </div>

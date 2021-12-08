@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Scheduler.DataAccess;
 
@@ -11,9 +12,10 @@ using Scheduler.DataAccess;
 namespace ClinicalScheduler.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211206003042_AddProviderScheduleProfileToDb")]
+    partial class AddProviderScheduleProfileToDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -424,32 +426,32 @@ namespace ClinicalScheduler.Migrations
                     b.Property<TimeSpan>("EndTime")
                         .HasColumnType("time");
 
-                    b.Property<bool>("Friday")
+                    b.Property<bool?>("Friday")
                         .HasColumnType("bit");
 
                     b.Property<int?>("LocationId")
                         .IsRequired()
                         .HasColumnType("int");
 
-                    b.Property<bool>("Monday")
+                    b.Property<bool?>("Monday")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("Saturday")
+                    b.Property<bool?>("Saturday")
                         .HasColumnType("bit");
 
                     b.Property<TimeSpan>("StartTime")
                         .HasColumnType("time");
 
-                    b.Property<bool>("Sunday")
+                    b.Property<bool?>("Sunday")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("Thursday")
+                    b.Property<bool?>("Thursday")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("Tuesday")
+                    b.Property<bool?>("Tuesday")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("Wednesday")
+                    b.Property<bool?>("Wednesday")
                         .HasColumnType("bit");
 
                     b.Property<bool>("isDeleted")

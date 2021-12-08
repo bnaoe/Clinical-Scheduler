@@ -1,0 +1,100 @@
+﻿@using Scheduler.Models
+@using Scheduler.Models.ViewModels
+@model CollectionClassScheduleProfile
+
+<form method="post" asp-action="Upsert">
+    <input asp-for="applicationUser.Id" id="userId" hidden />
+    <input asp-for="applicationUser.Role" hidden />
+
+    <div class="border p-3 mt-4 row">
+        <div class="row pb-2 border">
+            <h2 class="text-primary">Provider Details</h2>
+            <hr/>
+        </div>
+        <div class="mb-3 col-3" >
+            <label asp-for="applicationUser.FirstName">First Name</label>
+            <input asp-for="applicationUser.FirstName" class="form-control"/>
+        </div>
+        <div class="mb-3 col-3">
+            <label asp-for="applicationUser.MiddleName">Middle Name</label>
+            <input asp-for="applicationUser.MiddleName" class="form-control"/>
+        </div>
+        <div class="mb-3 col-3">
+           <label asp-for="applicationUser.LastName">Last Name</label>
+           <input asp-for="applicationUser.LastName" class="form-control"/>
+        </div>
+        <div class="mb-3 col-3">
+           <label asp-for="applicationUser.Specialization">Specialization</label>
+           <input asp-for="applicationUser.Specialization" class="form-control"/>
+        </div>
+    </div>
+
+    <input asp-for="providerScheduleProfileVM.ProviderScheduleProfile.Id" hidden />
+    <input asp-for="providerScheduleProfileVM.ProviderScheduleProfile.ApplicationUserId" hidden />
+    <div class="border p-3 mt-4 row">
+        <div class="row pb-2 border">
+            <h2 class="text-primary">@(Model.providerScheduleProfileVM.ProviderScheduleProfile.Id!=0?"Update":"Create") Code Set</h2>
+            <hr/>
+        </div>
+        <div class="mb-3 col-4">
+            <label asp-for="providerScheduleProfileVM.ProviderScheduleProfile.Location">Location</label>
+             <select asp-for="providerScheduleProfileVM.ProviderScheduleProfile.LocationId" asp-items="@Model.providerScheduleProfileVM.LocationList" class="form-select">
+                <option disabled selected>- Select Location -</option>
+            </select>
+            <span asp-validation-for ="providerScheduleProfileVM.ProviderScheduleProfile.LocationId" class="text-danger"></span>
+        </div>
+         <div class="mb-3 col-4">
+            <label asp-for="providerScheduleProfileVM.ProviderScheduleProfile.StartTime">Start Time</label>
+            <input asp-for="providerScheduleProfileVM.ProviderScheduleProfile.StartTime" type="time" step="3600" class="form-control"/>
+            <span asp-validation-for ="providerScheduleProfileVM.ProviderScheduleProfile.StartTime" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-4">
+            <label asp-for="providerScheduleProfileVM.ProviderScheduleProfile.EndTime">End Time</label>
+            <input asp-for="providerScheduleProfileVM.ProviderScheduleProfile.EndTime" type="time" step="3600" class="form-control"/>
+            <span asp-validation-for ="providerScheduleProfileVM.ProviderScheduleProfile.EndTime" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-1">
+            <label asp-for="providerScheduleProfileVM.ProviderScheduleProfile.Monday">Mon</label>
+            <input asp-for="providerScheduleProfileVM.ProviderScheduleProfile.Monday" type="checkbox" data-val="true" data-val-required="providerScheduleProfileVM.ProviderScheduleProfile.Monday" id="providerScheduleProfileVM.ProviderScheduleProfile.Monday" name="providerScheduleProfileVM.ProviderScheduleProfile.Monday" value="true" />               
+        </div>
+        <div class="mb-3 col-1">
+            <label asp-for="providerScheduleProfileVM.ProviderScheduleProfile.Tuesday">Tues</label>
+            <input asp-for="providerScheduleProfileVM.ProviderScheduleProfile.Tuesday" type="checkbox" data-val="true" data-val-required="providerScheduleProfileVM.ProviderScheduleProfile.Tuesday" id="providerScheduleProfileVM.ProviderScheduleProfile.Tuesday" name="providerScheduleProfileVM.ProviderScheduleProfile.Tuesday" value="true" />               
+        </div>
+        <div class="mb-3 col-1">
+            <label asp-for="providerScheduleProfileVM.ProviderScheduleProfile.Wednesday">Wed</label>
+            <input asp-for="providerScheduleProfileVM.ProviderScheduleProfile.Wednesday" type="checkbox" data-val="true" data-val-required="providerScheduleProfileVM.ProviderScheduleProfile.Wednesday" id="providerScheduleProfileVM.ProviderScheduleProfile.Wednesday" name="providerScheduleProfileVM.ProviderScheduleProfile.Wednesday" value="true" />               
+        </div>
+        <div class="mb-3 col-1">
+            <label asp-for="providerScheduleProfileVM.ProviderScheduleProfile.Thursday">Thur</label>
+            <input asp-for="providerScheduleProfileVM.ProviderScheduleProfile.Thursday" type="checkbox" data-val="true" data-val-required="providerScheduleProfileVM.ProviderScheduleProfile.Thursday" id="providerScheduleProfileVM.ProviderScheduleProfile.Thursday" name="providerScheduleProfileVM.ProviderScheduleProfile.Thursday" value="true" />               
+        </div>
+        <div class="mb-3 col-1">
+            <label asp-for="providerScheduleProfileVM.ProviderScheduleProfile.Friday">Fri</label>
+            <input asp-for="providerScheduleProfileVM.ProviderScheduleProfile.Friday" type="checkbox" data-val="true" data-val-required="providerScheduleProfileVM.ProviderScheduleProfile.Friday" id="providerScheduleProfileVM.ProviderScheduleProfile.Friday" name="providerScheduleProfileVM.ProviderScheduleProfile.Friday" value="true" />               
+        </div>
+        <div class="mb-3 col-1">
+            <label asp-for="providerScheduleProfileVM.ProviderScheduleProfile.Saturday">Sat</label>
+            <input asp-for="providerScheduleProfileVM.ProviderScheduleProfile.Saturday" type="checkbox" data-val="true" data-val-required="providerScheduleProfileVM.ProviderScheduleProfile.Saturday" id="providerScheduleProfileVM.ProviderScheduleProfile.Saturday" name="providerScheduleProfileVM.ProviderScheduleProfile.Saturday" value="true" />               
+        </div>
+        <div class="mb-3 col-1">
+            <label asp-for="providerScheduleProfileVM.ProviderScheduleProfile.Sunday">Sun</label>
+            <input asp-for="providerScheduleProfileVM.ProviderScheduleProfile.Sunday" type="checkbox" data-val="true" data-val-required="providerScheduleProfileVM.ProviderScheduleProfile.Sunday" id="providerScheduleProfileVM.ProviderScheduleProfile.Sunday" name="providerScheduleProfileVM.ProviderScheduleProfile.Sunday" value="true" />               
+        </div>
+        <div class="mb-3">
+            <label asp-for="providerScheduleProfileVM.ProviderScheduleProfile.isDeleted">Deleted</label>
+            <input asp-for="providerScheduleProfileVM.ProviderScheduleProfile.isDeleted" type="checkbox" data-val="true" data-val-required="providerScheduleProfileVM.ProviderScheduleProfile.isDeleted" id="providerScheduleProfileVM.ProviderScheduleProfile.isDeleted" name="providerScheduleProfileVM.ProviderScheduleProfile.isDeleted" value="true" />               
+        </div>
+        <div class="col-12">
+			<button type="submit" class="btn btn-primary" style="width:150px">@(Model.providerScheduleProfileVM.ProviderScheduleProfile.Id!=0?"Update":"Create")</button>
+            <a asp-action="GetProviderDetails" asp-route-id="@Model.applicationUser.Id" class="btn btn-secondary" style="width:150px">
+                Back to list
+            </a>
+        </div>
+    </div>
+</form>
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial"/>
+    }
+}
