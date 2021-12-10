@@ -33,6 +33,7 @@ namespace Scheduler.DataAccess.Repository
                 locationInDb.City = obj.City;
                 locationInDb.State = obj.State;
                 locationInDb.Zip = obj.Zip;
+                locationInDb.IsDeleted = obj.IsDeleted;
             }
         }
     }

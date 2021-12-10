@@ -40,6 +40,7 @@ namespace Scheduler.DataAccess.Repository
                 patientInDb.PhoneNumber = obj.PhoneNumber;
                 patientInDb.WorkNumber = obj.WorkNumber;
                 patientInDb.MobileNumber = obj.MobileNumber;
+                patientInDb.IsDeleted = obj.IsDeleted;
             }
         }
     }

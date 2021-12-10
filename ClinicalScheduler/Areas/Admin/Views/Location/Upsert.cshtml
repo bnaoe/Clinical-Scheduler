@@ -34,7 +34,7 @@
         </div>
         <div class="mb-3">
             <label asp-for="Location.IsDeleted">Deleted</label>
-            <input asp-for="Location.IsDeleted" type="checkbox" data-val="true" data-val-required="Location.IsDeleted" id="IsDeleted" name="IsDeleted" value="true" />               
+            <input asp-for="Location.IsDeleted" type="checkbox" data-val="true" data-val-required="Location.IsDeleted" id="Location.IsDeleted" name="Location.IsDeleted" value="true" />               
         </div>
         <div class="col-12">
 			<button type="submit" class="btn btn-primary" style="width:150px">@(Model.Location.Id!=0?"Update":"Create")</button>

@@ -1,0 +1,53 @@
+﻿@model Scheduler.Models.ViewModels.PatientVM
+
+<input asp-for="Patient.Id" id="patientId" name="patientId" hidden/>   
+    <div class="border p-3 mt-4 row">
+        <div class="row pb-2">
+            <h2 class="text-primary">Patient Details</h2>
+            <hr/>
+        </div>
+        <div class="mb-3 col-3" >
+            <label asp-for="Patient.FirstName">First Name</label>
+            <input asp-for="Patient.FirstName" class="form-control"/>
+        </div>
+        <div class="mb-3 col-3">
+            <label asp-for="Patient.MiddleName">Middle Name</label>
+            <input asp-for="Patient.MiddleName" class="form-control"/>
+        </div>
+        <div class="mb-3 col-3">
+           <label asp-for="Patient.LastName">Last Name</label>
+           <input asp-for="Patient.LastName" class="form-control"/>
+        </div>
+        <div class="mb-3 col-3">
+            <label asp-for="Patient.BirthDate">Birth Date</label>
+            <input asp-for="Patient.BirthDate" class="form-control"/>
+        </div>
+         <div class="mb-3">
+            <label asp-for="Patient.StreetAddress">Street Address</label>
+            <input asp-for="Patient.StreetAddress" class="form-control"/>
+        </div>
+        <div class="mb-3 col-4">
+            <label asp-for="Patient.City">City</label>
+            <input asp-for="Patient.City" class="form-control"/>
+        </div>
+        <div class="mb-3 col-4">
+            <label asp-for="Patient.State">State</label>
+             <input asp-for="Patient.State" class="form-control"/>
+        </div>
+        <div class="mb-3 col-4">
+            <label asp-for="Patient.Zip">Zip</label>
+             <input asp-for="Patient.Zip" class="form-control"/>
+        </div>
+        <div class="mb-3 col-4">
+            <label asp-for="Patient.PhoneNumber">Phone Number</label>
+            <input asp-for="Patient.PhoneNumber" class="form-control" onKeyup="formatPhone(this)"/>
+        </div>
+        <div class="mb-3 col-4">
+            <label asp-for="Patient.MobileNumber">Mobile Number</label>
+             <input asp-for="Patient.MobileNumber" class="form-control" onKeyup="formatPhone(this)"/>
+        </div>
+        <div class="mb-3 col-4">
+            <label asp-for="Patient.WorkNumber">Work Number</label>
+             <input asp-for="Patient.WorkNumber" class="form-control" onKeyup="formatPhone(this)"/>
+        </div>
+    </div>

@@ -56,7 +56,7 @@ function loadDataTable() {
                         <td><div class="w-100 btn-group" role="group">
                         <a href="/Scheduler/Patient/Upsert?id=${data}" class="btn btn-primary small mx-2">
                         <i class="bi bi-pencil-square"></i> Edit</a>
-                        <a href="" class="btn btn-success small mx-2">
+                        <a href="/Scheduler/ScheduleSearch/GetPatientDetails?id=${data}" class="btn btn-success small mx-2">
                         <i class="bi bi-calendar-plus"></i> Schedule</a>
                         <a href="" class="btn btn-info small mx-2">
                         <i class="bi bi-file-earmark-text"></i> Chart</a>

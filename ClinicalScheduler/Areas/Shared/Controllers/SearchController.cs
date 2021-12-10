@@ -58,10 +58,12 @@ namespace ClinicalScheduler.Controllers
                 || p.FirstName.Contains(firstName) || p.BirthDate == birthDate);
 
             }
+            patientList = patientList.Where(p => p.IsDeleted == false);
 
             return Json(new { patientList });
         }
 
+        [HttpGet]
         public async Task<IActionResult> GetAllProviders(string firstName, string lastName)
         {
             IEnumerable<ApplicationUser> users;
@@ -82,7 +84,7 @@ namespace ClinicalScheduler.Controllers
                 user.Role = _userManager.GetRolesAsync(user).Result.FirstOrDefault();
             }
 
-            var providerList = users.Where(u => u.Role == SD.Role_Physician);
+            var providerList = users.Where(u => u.Role == SD.Role_Physician||u.Role== SD.Role_NP);
             return Json(new { providerList });
         }
 

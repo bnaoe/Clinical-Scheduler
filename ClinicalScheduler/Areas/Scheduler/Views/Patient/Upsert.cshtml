@@ -64,7 +64,7 @@
         </div>
         <div class="mb-3">
             <label asp-for="Patient.IsDeleted">Deleted</label>
-            <input asp-for="Patient.IsDeleted" type="checkbox" data-val="true" data-val-required="Location.IsDeleted" id="IsDeleted" name="IsDeleted" value="true" />               
+            <input asp-for="Patient.IsDeleted" type="checkbox" data-val="true" data-val-required="Patient.IsDeleted" id="Patient.IsDeleted" name="Patient.IsDeleted" value="true" />               
         </div>
         <div class="col-12">
 			<button type="submit" class="btn btn-primary" style="width:150px">@(Model.Patient.Id!=0?"Update":"Register")</button>

@@ -26,7 +26,7 @@
         </div>
         <div class="mb-3">
             <label asp-for="OrderCatalog.IsDeleted">Deleted</label>
-            <input asp-for="OrderCatalog.IsDeleted" type="checkbox" data-val="true" data-val-required="OrderCatalog.IsDeleted" id="IsDeleted" name="IsDeleted" value="true" />               
+            <input asp-for="OrderCatalog.IsDeleted" type="checkbox" data-val="true" data-val-required="OrderCatalog.IsDeleted" id="OrderCatalog.IsDeleted" name="OrderCatalog.IsDeleted" value="true" />               
         </div>
         <div class="col-12">
 			<button type="submit" class="btn btn-primary" style="width:150px">@(Model.OrderCatalog.Id!=0?"Update":"Create")</button>

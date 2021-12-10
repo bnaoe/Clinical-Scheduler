@@ -1,13 +1,21 @@
-﻿    <div class="border p-3 mt-4 row">
+﻿@model Scheduler.Models.ViewModels.PatientVM
+
+<partial name="_PatientDetails" model="Model" />
+
+ <div class="border p-3 mt-4 row">
         <div class="row pb-2">
-            <h2 class="text-primary">Provider Search</h2>
+            <h2 class="text-primary">Schedule Search</h2>
             <hr/>
         </div>
-        <div class="mb-3 col-6" >
+        <div class="mb-3 col-3" >
+            <label>Location</label>
+            <input id="loc" name="loc" class="form-control"/>
+        </div>
+        <div class="mb-3 col-3">
             <label>First Name</label>
             <input id="firstName" name="firstName" class="form-control"/>
         </div>
-        <div class="mb-3 col-6">
+        <div class="mb-3 col-3">
             <label>Last Name</label>
             <input id="lastName" name="lastName" class="form-control"/>
         </div>
@@ -16,36 +24,33 @@
                 <i class=""bi bi-binoculars"></i> &nbsp; Find
             </button> 
         </div>
-    </div>
+</div>
 <div class="container p-3">
     <div class="row pt-4">
-        <div class="col-12">
-            <h2 class="primary">Provider List</h2>
+        <div class="col-6">
+            <h2 class="primary">Schedule List</h2>
         </div>
-        <hr/>
     </div>
 
 <table id ="tblData" class="table table-bordered table-striped" style="width:100%">
         <thead>
             <tr>
-                <th>Provider ID</th>
+                <th>Id</th>
+                <th>Location Name</th>
+                <th>Start Time</th>
+                <th>End Time</th>
                 <th>First Name</th>
-                <th>Middle Name</th>
                 <th>Last Name</th>
-                <th>Suffix</th>
                 <th>Specialization</th>
-                <th>Location</th>
-                <th>Schedule Profile</th>
+                <th>Actions</th>
             </tr>
         </thead>
     
     </table>
 </div>
-
 @section Scripts{
     @{
-        <partial name="_ValidationScriptsPartial"/>
-        <script src="~/js/ProviderSearchResults.js"></script>
+        <script src="~/js/ScheduleProfileSearchResults.js"></script>
 
     }
 }
