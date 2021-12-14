@@ -1,0 +1,35 @@
+﻿@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container mt-4 p-3 border">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="primary">Insurance List</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller ="Insurance" asp-action="Upsert" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> &nbsp; Create New
+            </a> 
+        </div>
+    </div>
+
+
+    <table id ="tblData" class="table table-bordered table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Deleted</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+    
+    </table>
+</div>
+
+@section Scripts{
+    <script src="~/js/Insurance.js"></script>
+}
+
+

@@ -41,14 +41,14 @@ namespace ClinicalScheduler.Controllers
                 })
             };
 
-            ApplicationUser applicationUser = await _unitOfWork.ApplicationUser.GetFirstOrDefaultAsync(a => a.Id == userId);
-            applicationUser.Role = _userManager.GetRolesAsync(applicationUser).Result.FirstOrDefault();
+            ApplicationUser providerUser = await _unitOfWork.ApplicationUser.GetFirstOrDefaultAsync(a => a.Id == userId);
+            providerUser.Role = _userManager.GetRolesAsync(providerUser).Result.FirstOrDefault();
             CollectionClassScheduleProfile collectionModel = new CollectionClassScheduleProfile();
-            collectionModel.applicationUser = applicationUser;
+            collectionModel.providerUser = providerUser;
 
             if (id==null || id ==0)
             {
-                providerScheduleProfileVM.ProviderScheduleProfile.ApplicationUserId = userId;
+                providerScheduleProfileVM.ProviderScheduleProfile.ProviderUserId = userId;
                 collectionModel.providerScheduleProfileVM = providerScheduleProfileVM;
 
                 return View(collectionModel);
@@ -61,22 +61,6 @@ namespace ClinicalScheduler.Controllers
                 return View(collectionModel);
 
             }         
-        }
-
-        //get
-        public async Task<IActionResult> GetProviderDetails(string id)
-        {
-            ApplicationUser applicationUser = new();
-            {
-                applicationUser = await _unitOfWork.ApplicationUser.GetFirstOrDefaultAsync(a => a.Id == id);
-                if (applicationUser == null)
-                {
-                    TempData["Error"] = "Not Found";
-                }
-                
-                return View("ProviderScheduleProfile", applicationUser);
-                
-            }
         }
 
         //post
@@ -97,14 +81,31 @@ namespace ClinicalScheduler.Controllers
 
                 _unitOfWork.Save();
             }
-            return RedirectToAction("GetProviderDetails", new { id = obj.providerScheduleProfileVM.ProviderScheduleProfile.ApplicationUserId } );
+            return RedirectToAction("GetProviderDetails", new { id = obj.providerScheduleProfileVM.ProviderScheduleProfile.ProviderUserId } );
         }
 
         #region API CALLS
+        //get
+        [HttpGet]
+        public async Task<IActionResult> GetProviderDetails(string id)
+        {
+            ApplicationUser providerUser = new();
+            {
+                providerUser = await _unitOfWork.ApplicationUser.GetFirstOrDefaultAsync(a => a.Id == id);
+                if (providerUser == null)
+                {
+                    TempData["Error"] = "Not Found";
+                }
+
+                return View("ProviderScheduleProfile", providerUser);
+
+            }
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetAll(string id)
         {
-            var providerScheduleProfileList = await _unitOfWork.ProviderScheduleProfile.GetAllAsync(p=>p.ApplicationUserId == id, includeProperties:"Location");
+            var providerScheduleProfileList = await _unitOfWork.ProviderScheduleProfile.GetAllAsync(p=>p.ProviderUserId == id, includeProperties:"Location");
             return Json(new { providerScheduleProfileList });
         }
 

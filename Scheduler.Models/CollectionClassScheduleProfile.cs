@@ -9,7 +9,7 @@ namespace Scheduler.Models
 {
     public class CollectionClassScheduleProfile
     {
-        public ApplicationUser applicationUser { get; set; }
+        public ApplicationUser providerUser { get; set; }
         public ProviderScheduleProfileVM providerScheduleProfileVM { get; set; } 
     }
 }

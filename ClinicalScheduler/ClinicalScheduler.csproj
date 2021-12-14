@@ -18,11 +18,16 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="6.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.0" />
+    <PackageReference Include="Twitter.Typeahead" Version="0.11.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Scheduler.DataAccess\Scheduler.DataAccess.csproj" />
     <ProjectReference Include="..\Scheduler.Utility\Scheduler.Utility.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controller\" />
   </ItemGroup>
 
 </Project>

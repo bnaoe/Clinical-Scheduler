@@ -21,6 +21,10 @@ namespace Scheduler.DataAccess.Repository
             OrderCatalog = new OrderCatalogRepository(_db);
             ApplicationUser = new ApplicationUserRepository(_db);
             ProviderScheduleProfile = new ProviderScheduleProfileRepository(_db);
+            Insurance = new InsuranceRepository(_db);
+            Encounter = new EncounterRepository(_db);
+            SchAppt = new SchApptRepository(_db);
+
         }
 
         public ICodeSetRepository CodeSet { get; private set; }
@@ -36,6 +40,10 @@ namespace Scheduler.DataAccess.Repository
         public IApplicationUserRepository ApplicationUser { get; private set; }
 
         public IProviderScheduleProfileRepository ProviderScheduleProfile { get; private set; }
+        public IInsuranceRepository Insurance { get; private set; }
+
+        public IEncounterRepository Encounter { get; private set; }
+        public ISchApptRepository SchAppt { get; private set; }
 
         public void Save()
         {

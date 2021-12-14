@@ -37,12 +37,12 @@ namespace ClinicalScheduler.Areas.Scheduler.Controllers
             if (location != null && firstName != null && lastName != null)
             {
                 providerScheduleProfileList = await _unitOfWork.ProviderScheduleProfile.GetAllAsync(p => p.Location.Name.Contains(location)
-                && p.ApplicationUser.FirstName.Contains(firstName) && p.ApplicationUser.LastName.Contains(lastName), includeProperties: "Location,ApplicationUser");
+                && p.ProviderUser.FirstName.Contains(firstName) && p.ProviderUser.LastName.Contains(lastName), includeProperties: "Location,ProviderUser");
             }
             else
             {
                 providerScheduleProfileList = await _unitOfWork.ProviderScheduleProfile.GetAllAsync(p => p.Location.Name.Contains(location)
-                || p.ApplicationUser.FirstName.Contains(firstName) || p.ApplicationUser.LastName.Contains(lastName), includeProperties: "Location,ApplicationUser");
+                || p.ProviderUser.FirstName.Contains(firstName) || p.ProviderUser.LastName.Contains(lastName), includeProperties: "Location,ProviderUser");
             }
 
             providerScheduleProfileList = providerScheduleProfileList.OrderBy(p => p.Location.Name);

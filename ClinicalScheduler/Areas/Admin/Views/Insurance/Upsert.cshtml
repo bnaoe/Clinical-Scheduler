@@ -1,0 +1,38 @@
+﻿@model Scheduler.Models.ViewModels.InsuranceVM
+
+<form method="post" asp-action="Upsert">
+    <input asp-for="Insurance.Id" hidden />
+    <div class="border p-3 mt-4 row">
+        <div class="row pb-2 border">
+            <h2 class="text-primary">@(Model.Insurance.Id!=0?"Update":"Create") Insurance</h2>
+            <hr/>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Insurance.Name">Name</label>
+            <input asp-for="Insurance.Name" class="form-control"/>
+            <span asp-validation-for="Insurance.Name" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Insurance.Description">Description</label>
+            <textarea asp-for="Insurance.Description" rows="3" class="form-control"></textarea>
+            <span asp-validation-for ="Insurance.Description" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Insurance.IsDeleted">Deleted</label>
+            <input asp-for="Insurance.IsDeleted" type="checkbox" data-val="true" data-val-required="Insurance.IsDeleted" id="Insurance.IsDeleted" name="Location.IsDeleted" value="true" />               
+        </div>
+        <div class="col-12">
+			<button type="submit" class="btn btn-primary" style="width:150px">@(Model.Insurance.Id!=0?"Update":"Create")</button>
+            <a asp-controller="Insurance" asp-action="Index" class="btn btn-secondary" style="width:150px">
+                Back to list
+            </a>
+        </div>
+    </div>
+</form>
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial"/>
+    }
+        <script src="~/js/TypeAheadSearch.js"></script>
+
+}

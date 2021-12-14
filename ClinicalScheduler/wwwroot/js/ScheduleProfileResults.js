@@ -136,7 +136,6 @@ function loadDataTable() {
                     "width": "5%",
                     "className": "text-center"
                 },
-
                 {
                     "data": "id",
                     "render": function (data) {

@@ -1,0 +1,125 @@
+﻿@using Scheduler.Models
+@using Scheduler.Models.ViewModels
+@model CcApptSched
+
+<partial name="_PatientDetails" model="Model.patientVM" />
+
+ <div class="border p-3 mt-4 row">
+    <div class="row pb-2">
+        <h4>@Model.providerScheduleProfileVM.ProviderScheduleProfile.ProviderUser.FirstName 
+            @Model.providerScheduleProfileVM.ProviderScheduleProfile.ProviderUser.LastName,  
+            @Model.providerScheduleProfileVM.ProviderScheduleProfile.ProviderUser.Suffix Calendar</h4>
+        <hr/>
+        <div id="scheduler_here" class="dhx_cal_container" 
+            style='width:100%; height:400px;'>
+            <div class="dhx_cal_navline">
+                <div class="dhx_cal_prev_button">&nbsp;</div>
+                <div class="dhx_cal_next_button">&nbsp;</div>
+                <div class="dhx_cal_today_button"></div>
+                <div class="dhx_cal_date"></div>
+                <div class="dhx_cal_tab" name="day_tab"></div>
+                <div class="dhx_cal_tab" name="week_tab"></div>
+                <div class="dhx_cal_tab" name="month_tab"></div>
+            </div>
+            <div class="dhx_cal_header"></div>
+            <div class="dhx_cal_data"></div>
+        </div> 
+    </div>
+</div>
+
+<form method="post" asp-action="Upsert">
+    <input asp-for="schApptVM.Patient.Id" id="pId" name="pId"/>
+    <input asp-for="providerScheduleProfileVM.ProviderScheduleProfile.Id" id="pSchedProfileId" name="pSchedProfileId"/>
+    <input asp-for="providerScheduleProfileVM.ProviderScheduleProfile.ProviderUserId" id="providerId" name="providerId"/>
+    <input asp-for="encounterVM.Encounter.Id"/>
+    <input asp-for="schApptVM.SchAppt.Id"/>
+    <input asp-for="providerScheduleProfileVM.ProviderScheduleProfile.StartTime.Hours" id="start" name="start"/>
+     <input asp-for="providerScheduleProfileVM.ProviderScheduleProfile.EndTime.Hours" id="end" name="end"/>
+
+    <div class="border p-3 mt-4 row">
+         <div class="mb-3 col-6" >
+            <label asp-for="providerScheduleProfileVM.ProviderScheduleProfile.Location.Name">Location</label>
+            <input asp-for="providerScheduleProfileVM.ProviderScheduleProfile.Location.Name" class="form-control" readonly/>
+            <span asp-validation-for="providerScheduleProfileVM.ProviderScheduleProfile.Location.Name" class="text-danger"></span>
+         </div>
+        <div class="mb-3 col-3">
+            <label asp-for="schApptVM.SchAppt.start_date">Start Date</label>
+            <input asp-for="schApptVM.SchAppt.start_date" class="form-control"/>
+            <span asp-validation-for ="schApptVM.SchAppt.start_date" class="text-danger"></span>
+        </div>
+         <div class="mb-3 col-3">
+            <label asp-for="schApptVM.SchAppt.end_date">End Date</label>
+            <input asp-for="schApptVM.SchAppt.end_date" class="form-control"/>
+            <span asp-validation-for ="schApptVM.SchAppt.end_date" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-3">
+            <label asp-for="schApptVM.SchAppt.ApptTypeId">Appoinment Type</label>
+            <select asp-for="schApptVM.SchAppt.ApptTypeId" asp-items="@Model.schApptVM.ApptTypeList" class="form-select">
+                <option disabled selected>- Select Appointment Type -</option>
+            </select>
+            <span asp-validation-for ="schApptVM.SchAppt.ApptTypeId" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-3">
+            <label asp-for="schApptVM.SchAppt.ApptStatusId">Appointment Status</label>
+            <select asp-for="schApptVM.SchAppt.ApptStatusId" asp-items="@Model.schApptVM.ApptStatusList" class="form-select">
+                <option disabled selected>- Select Appointment Status -</option>
+            </select>
+            <span asp-validation-for ="schApptVM.SchAppt.ApptTypeId" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-6">
+            <label asp-for="encounterVM.Encounter.ReasonForVisit">Reason for Visit</label>
+            <input asp-for="encounterVM.Encounter.ReasonForVisit" class="form-control"/>
+            <span asp-validation-for ="encounterVM.Encounter.ReasonForVisit" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-4">
+            <label asp-for="encounterVM.Encounter.Insurance.Name">Insurance Name</label>
+            <input type="text" id="select" class="form-control"  placeholder="Type Insruance Name to seacrh" autocomplete="off"/>
+            <span asp-validation-for ="encounterVM.Encounter.Insurance.Name" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-2">
+            <input asp-for="encounterVM.Encounter.InsuranceId" id="update" disabled class="form-control"/>
+        </div>
+         <div class="mb-3 col-3">
+            <label asp-for="encounterVM.Encounter.HealthPlanName">Health Plan Name</label>
+            <input asp-for="encounterVM.Encounter.HealthPlanName" class="form-control"/>
+            <span asp-validation-for ="encounterVM.Encounter.HealthPlanName" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-3">
+            <label asp-for="encounterVM.Encounter.MemberNo">Member No.</label>
+            <input asp-for="encounterVM.Encounter.MemberNo" class="form-control"/>
+            <span asp-validation-for ="encounterVM.Encounter.MemberNo" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-3">
+            <label asp-for="encounterVM.Encounter.GroupNo">Group No.</label>
+            <input asp-for="encounterVM.Encounter.GroupNo" class="form-control"/>
+            <span asp-validation-for ="encounterVM.Encounter.GroupNo" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-3">
+            <label asp-for="encounterVM.Encounter.InsDate">Insurance Start Date</label>
+            <input asp-for="encounterVM.Encounter.InsDate" class="form-control"/>
+            <span asp-validation-for ="encounterVM.Encounter.InsDate" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-6">
+            <label asp-for="encounterVM.Encounter.GuarantorName">Guarantor Name</label>
+            <input asp-for="encounterVM.Encounter.GuarantorName" class="form-control"/>
+            <span asp-validation-for ="encounterVM.Encounter.GuarantorName" class="text-danger"></span>
+        </div>
+         <div class="mb-3 col-2">
+            <label asp-for="encounterVM.Encounter.ConsentGiven">Consent Signed</label>
+            <input asp-for="encounterVM.Encounter.ConsentGiven" type="checkbox" data-val="true" data-val-required="encounterVM.Encounter.ConsentGiven" 
+            id="encounterVM.Encounter.ConsentGiven" name="encounterVM.Encounter.ConsentGiven" value="true" />               
+        </div>
+         <div class="mb-3 col-2">
+            <label asp-for="encounterVM.Encounter.PrivacyNotice">Privacy Notice Given</label>
+            <input asp-for="encounterVM.Encounter.PrivacyNotice" type="checkbox" data-val="true" data-val-required="encounterVM.Encounter.PrivacyNotice" 
+            id="encounterVM.Encounter.PrivacyNotice" name="encounterVM.Encounter.PrivacyNotice" value="true" />               
+        </div>
+    </div>
+</form>
+
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial"/>
+    <script src="~/js/Calendar.js"></script>
+    <script src="~/js/TypeAheadSearch.js"></script>
+}

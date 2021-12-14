@@ -28,7 +28,7 @@ namespace Scheduler.DataAccess.Repository
             var scheduleProfileInDb = _db.ProviderScheduleProfiles.FirstOrDefault(p => p.Id == obj.Id);
             if (scheduleProfileInDb != null)
             {
-                scheduleProfileInDb.ApplicationUserId = obj.ApplicationUserId;
+                scheduleProfileInDb.ProviderUserId = obj.ProviderUserId;
                 scheduleProfileInDb.LocationId = obj.LocationId;
                 scheduleProfileInDb.Monday = obj.Monday;
                 scheduleProfileInDb.Tuesday = obj.Tuesday;

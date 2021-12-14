@@ -3,8 +3,8 @@
 @model CollectionClassScheduleProfile
 
 <form method="post" asp-action="Upsert">
-    <input asp-for="applicationUser.Id" id="userId" hidden />
-    <input asp-for="applicationUser.Role" hidden />
+    <input asp-for="providerUser.Id" id="userId" hidden />
+    <input asp-for="providerUser.Role" hidden />
 
     <div class="border p-3 mt-4 row">
         <div class="row pb-2 border">
@@ -12,25 +12,25 @@
             <hr/>
         </div>
         <div class="mb-3 col-3" >
-            <label asp-for="applicationUser.FirstName">First Name</label>
-            <input asp-for="applicationUser.FirstName" class="form-control"/>
+            <label asp-for="providerUser.FirstName">First Name</label>
+            <input asp-for="providerUser.FirstName" class="form-control"/>
         </div>
         <div class="mb-3 col-3">
-            <label asp-for="applicationUser.MiddleName">Middle Name</label>
-            <input asp-for="applicationUser.MiddleName" class="form-control"/>
+            <label asp-for="providerUser.MiddleName">Middle Name</label>
+            <input asp-for="providerUser.MiddleName" class="form-control"/>
         </div>
         <div class="mb-3 col-3">
-           <label asp-for="applicationUser.LastName">Last Name</label>
-           <input asp-for="applicationUser.LastName" class="form-control"/>
+           <label asp-for="providerUser.LastName">Last Name</label>
+           <input asp-for="providerUser.LastName" class="form-control"/>
         </div>
         <div class="mb-3 col-3">
-           <label asp-for="applicationUser.Specialization">Specialization</label>
-           <input asp-for="applicationUser.Specialization" class="form-control"/>
+           <label asp-for="providerUser.Specialization">Specialization</label>
+           <input asp-for="providerUser.Specialization" class="form-control"/>
         </div>
     </div>
 
     <input asp-for="providerScheduleProfileVM.ProviderScheduleProfile.Id" hidden />
-    <input asp-for="providerScheduleProfileVM.ProviderScheduleProfile.ApplicationUserId" hidden />
+    <input asp-for="providerScheduleProfileVM.ProviderScheduleProfile.ProviderUserId" hidden />
     <div class="border p-3 mt-4 row">
         <div class="row pb-2 border">
             <h2 class="text-primary">@(Model.providerScheduleProfileVM.ProviderScheduleProfile.Id!=0?"Update":"Create") Code Set</h2>
@@ -87,7 +87,7 @@
         </div>
         <div class="col-12">
 			<button type="submit" class="btn btn-primary" style="width:150px">@(Model.providerScheduleProfileVM.ProviderScheduleProfile.Id!=0?"Update":"Create")</button>
-            <a asp-action="GetProviderDetails" asp-route-id="@Model.applicationUser.Id" class="btn btn-secondary" style="width:150px">
+            <a asp-action="GetProviderDetails" asp-route-id="@Model.providerUser.Id" class="btn btn-secondary" style="width:150px">
                 Back to list
             </a>
         </div>

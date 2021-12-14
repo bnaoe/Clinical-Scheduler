@@ -8,63 +8,51 @@ using Scheduler.Models.ViewModels;
 namespace ClinicalScheduler.Controllers
 {
     [Area("Admin")]
-    public class CodeValueController : Controller
+    public class InsuranceController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public CodeValueController(IUnitOfWork unitOfWork)
+        public InsuranceController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
         public IActionResult Index()
         {
-            //IEnumerable<CodeSet> codeSetList = _unitOfWork.CodeSet.GetAll();
-            //return View(codeSetList);
             return View();
         }
 
         //get
         public async Task<IActionResult> Upsert(int? id)
         {
-            IEnumerable<CodeSet> CodeSetList = await _unitOfWork.CodeSet.GetAllAsync();
-
-            CodeValueVM codeValueVM = new()
+            InsuranceVM insuranceVM = new()
             {
-                CodeValue = new(),
-                CodeSetList = CodeSetList.Where(c => c.IsDeleted == false).OrderBy(c => c.Name).Select(c => new SelectListItem
-                {
-                    Text = c.Name,
-                    Value = c.Id.ToString()
-                })
+                Insurance = new(),
             };
             if (id==null || id ==0)
             {
-                //Create Code Value
-                return View(codeValueVM);
+                return View(insuranceVM);
             } else
             {
-                //Update Code Value
-                codeValueVM.CodeValue = await _unitOfWork.CodeValue.GetFirstOrDefaultAsync(c => c.Id == id);
-                return View(codeValueVM);
-            }
-
-            
+                //Update Location
+                insuranceVM.Insurance = await _unitOfWork.Insurance.GetFirstOrDefaultAsync(i => i.Id == id);
+                return View(insuranceVM);
+            }   
         }
 
         //post
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Upsert(CodeValueVM obj)
+        public async Task<IActionResult> Upsert(InsuranceVM obj)
         {
             if (ModelState.IsValid)
             {
-                if (obj.CodeValue.Id==0) {
-                    await _unitOfWork.CodeValue.AddAsync(obj.CodeValue);
+                if (obj.Insurance.Id==0) {
+                    await _unitOfWork.Insurance.AddAsync(obj.Insurance);
                     TempData["Success"] = "Added successfully";
                 } else
                 {
-                    _unitOfWork.CodeValue.Update(obj.CodeValue);
+                    _unitOfWork.Insurance.Update(obj.Insurance);
                     TempData["Success"] = "Updated successfully";
                 }
 
@@ -74,12 +62,19 @@ namespace ClinicalScheduler.Controllers
             return View(obj);
         }
 
+        public async Task<JsonResult> GetList(string name)
+        {
+            var insuranceList = await _unitOfWork.Insurance.GetAllAsync(x => x.Name.StartsWith(name) && x.IsDeleted==false);
+            return Json(new { insuranceList });
+
+        }
+
         #region API CALLS
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var codeValueList = await _unitOfWork.CodeValue.GetAllAsync(includeProperties:"CodeSet");
-            return Json(new { codeValueList });
+            var insuranceList = await _unitOfWork.Insurance.GetAllAsync();
+            return Json(new { insuranceList });
         }
 
         //post
@@ -87,14 +82,14 @@ namespace ClinicalScheduler.Controllers
         public async Task<IActionResult> Delete(int? id)
         {
 
-            var codeValueInDb = await _unitOfWork.CodeValue.GetFirstOrDefaultAsync(c => c.Id == id);
-            if (codeValueInDb == null)
+            var insuranceInDb = await _unitOfWork.Insurance.GetFirstOrDefaultAsync(i => i.Id == id);
+            if (insuranceInDb == null)
             {
                 return Json(new { Success = false, message = "Error while deleting" });
             }
 
-            //_unitOfWork.CodeValue.Remove(codeValueInDb);
-            codeValueInDb.IsDeleted = true;
+            //_unitOfWork.Location.Remove(locationInDb);
+            insuranceInDb.IsDeleted = true;
             _unitOfWork.Save();
 
             return Json(new { Success = true, message = "Delete successful" });

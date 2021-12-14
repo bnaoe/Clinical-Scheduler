@@ -18,6 +18,9 @@ namespace Scheduler.DataAccess
         public DbSet<OrderCatalog> OrderCatalogs { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<ProviderScheduleProfile> ProviderScheduleProfiles { get; set; }
+        public DbSet<Insurance> Insurances { get; set; }
+        public DbSet<Encounter> Encounters { get; set; }
+        public DbSet<SchAppt> SchAppts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -25,10 +28,39 @@ namespace Scheduler.DataAccess
 
             modelBuilder
                 .Entity<ProviderScheduleProfile>()
-                .HasOne(l => l.Location)
+                .HasOne(m => m.Location)
                 .WithMany()
-                .HasForeignKey(l => l.LocationId)
+                .HasForeignKey(m => m.LocationId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder
+                .Entity<Encounter>()
+                .HasOne(m => m.Location)
+                .WithMany()
+                .HasForeignKey(m => m.LocationId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder
+                .Entity<Encounter>()
+                .HasOne(m => m.SchAppt)
+                .WithMany()
+                .HasForeignKey(m => m.SchApptId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder
+               .Entity<SchAppt>()
+               .HasOne(m => m.ApptType)
+               .WithMany()
+               .HasForeignKey(m => m.ApptTypeId)
+               .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder
+                .Entity<SchAppt>()
+                .HasOne(m => m.ProviderScheduleProfile)
+                .WithMany()
+                .HasForeignKey(m => m.ProviderScheduleProfileId)
+                .OnDelete(DeleteBehavior.Restrict);
+
         }
     }
 }

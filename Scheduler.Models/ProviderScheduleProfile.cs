@@ -14,17 +14,17 @@ namespace Scheduler.Models
         [Key]
         public int Id { get; set; }
 
-        public string ApplicationUserId { get; set; }
-        [ForeignKey("ApplicationUserId")]
+        public string ProviderUserId { get; set; }
+        [ForeignKey("ProviderUserId")]
         
         [ValidateNever]
-        public ApplicationUser ApplicationUser { get; set; }
+        public ApplicationUser ProviderUser { get; set; }
         
         [Required]
-        public int? LocationId { get; set; }
+        public int LocationId { get; set; }
 
         [ValidateNever]
-        public Location? Location { get; set; }
+        public Location Location { get; set; }
 
         public bool Monday { get; set; }
         public bool Tuesday { get; set; }

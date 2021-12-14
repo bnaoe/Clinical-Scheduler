@@ -6,14 +6,11 @@ $(document).ready(function () {
 
 function loadDataTable() {
     dataTable = $('#tblData').DataTable({
-        "pageLength": 3,
-        "bLengthChange": false,
         "ajax": {
-            "url": "/Admin/CodeSet/GetAll",
-            "dataSrc": "codeSetList"
+            "url": "/Admin/Insurance/GetAll",
+            "dataSrc": "insuranceList"
         },
         "columns": [
-            { "data": "id", "width": "10%" },
             { "data": "name", "width": "15%" },
             { "data": "description", "width": "35%" },
             {
@@ -34,9 +31,9 @@ function loadDataTable() {
                 "render": function (data) {
                     return `
                         <td><div class="w-100 btn-group" role="group">
-                        <a href="/Admin/CodeSet/Upsert?id=${data}" class="btn btn-primary small mx-2">
+                        <a href="/Admin/Insurance/Upsert?id=${data}" class="btn btn-primary small mx-2">
                         <i class="bi bi-pencil-square"></i> Edit</a>
-                        <a onClick=Delete('/Admin/CodeSet/Delete/${data}') class="btn btn-danger small mx-2">
+                        <a onClick=Delete('/Admin/Insurance/Delete/${data}') class="btn btn-danger small mx-2">
                         <i class="bi bi-trash-fill"></i> Delete</a>
                 </div></td>
                     `

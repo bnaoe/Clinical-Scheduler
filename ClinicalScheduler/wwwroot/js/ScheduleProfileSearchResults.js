@@ -2,6 +2,7 @@
 var loc;
 var lastName;
 var firstName;
+var patientId;
 
 $(document).ready(function () {
     loadDataTable();
@@ -11,6 +12,7 @@ $('#find').click(function () {
     lastName = $('#lastName').val();
     firstName = $('#firstName').val();
     loc = $('#loc').val();
+    patientId = $('#patientId').val();
     loadDataTable();
 });
 
@@ -30,7 +32,7 @@ function loadDataTable() {
                         newData = moment(data,["h:mm A"]).format('LT')
                         return newData;
                     },
-                    "width": "5%"
+                    "width": "10%"
                 },
                 {
                     "data": "endTime",
@@ -38,11 +40,23 @@ function loadDataTable() {
                         newData = moment(data, ["h:mm A"]).format('LT')
                         return newData;
                     },
-                    "width": "5%"
+                    "width": "10%"
                 },
-                { "data": "applicationUser.firstName", "width": "15%" },
-                { "data": "applicationUser.lastName", "width": "15%" },
-                { "data": "applicationUser.specialization", "width": "20%" }
+                { "data": "providerUser.firstName", "width": "15%" },
+                { "data": "providerUser.lastName", "width": "15%" },
+                { "data": "providerUser.specialization", "width": "20%" },
+                {
+                    "data": "id",
+                    "render": function (data) {
+                        return `
+                        <td><div class="w-100 btn-group" role="group">
+                        <a href="/Scheduler/ScheduleAppointment/Upsert?schApptId=0&enctrId=0&patientId=${patientId}&providerScheduleProfileId=${data}" class="btn btn-primary small mx-2">
+                        <i class="bi bi-check2-circle"></i> Select</a>
+                </div></td>
+                    `
+                    },
+                    "width": "10%"
+                },
             ]
     });
 }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Scheduler.DataAccess;
 
@@ -11,9 +12,10 @@ using Scheduler.DataAccess;
 namespace ClinicalScheduler.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211210203626_AddInsuranceToDb")]
+    partial class AddInsuranceToDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -283,83 +285,6 @@ namespace ClinicalScheduler.Migrations
                     b.ToTable("CodeValues");
                 });
 
-            modelBuilder.Entity("Scheduler.Models.Encounter", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime?>("AdmitDateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("ConsentGiven")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("DschDateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("GroupNo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("GuarantorName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("HealthPlanName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("InsDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("InsuranceId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("LocationId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("MemberNo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PatientId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("PrivacyNotice")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("ProviderUserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ReasonForVisit")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("SchApptId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("InsuranceId");
-
-                    b.HasIndex("LocationId");
-
-                    b.HasIndex("PatientId");
-
-                    b.HasIndex("ProviderUserId");
-
-                    b.HasIndex("SchApptId");
-
-                    b.ToTable("Encounters");
-                });
-
             modelBuilder.Entity("Scheduler.Models.Insurance", b =>
                 {
                     b.Property<int>("Id")
@@ -518,21 +443,22 @@ namespace ClinicalScheduler.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("ApplicationUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<TimeSpan>("EndTime")
                         .HasColumnType("time");
 
                     b.Property<bool>("Friday")
                         .HasColumnType("bit");
 
-                    b.Property<int>("LocationId")
+                    b.Property<int?>("LocationId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<bool>("Monday")
                         .HasColumnType("bit");
-
-                    b.Property<string>("ProviderUserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("Saturday")
                         .HasColumnType("bit");
@@ -557,60 +483,11 @@ namespace ClinicalScheduler.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ApplicationUserId");
+
                     b.HasIndex("LocationId");
 
-                    b.HasIndex("ProviderUserId");
-
                     b.ToTable("ProviderScheduleProfiles");
-                });
-
-            modelBuilder.Entity("Scheduler.Models.SchAppt", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("ApptStatusId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ApptTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PatientId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProviderScheduleProfileId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("RegistrarUserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("end_date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("start_date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("text")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApptStatusId");
-
-                    b.HasIndex("ApptTypeId");
-
-                    b.HasIndex("PatientId");
-
-                    b.HasIndex("ProviderScheduleProfileId");
-
-                    b.HasIndex("RegistrarUserId");
-
-                    b.ToTable("SchAppts");
                 });
 
             modelBuilder.Entity("Scheduler.Models.ApplicationUser", b =>
@@ -704,49 +581,6 @@ namespace ClinicalScheduler.Migrations
                     b.Navigation("CodeSet");
                 });
 
-            modelBuilder.Entity("Scheduler.Models.Encounter", b =>
-                {
-                    b.HasOne("Scheduler.Models.Insurance", "Insurance")
-                        .WithMany()
-                        .HasForeignKey("InsuranceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Scheduler.Models.Location", "Location")
-                        .WithMany()
-                        .HasForeignKey("LocationId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Scheduler.Models.Patient", "Patient")
-                        .WithMany()
-                        .HasForeignKey("PatientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Scheduler.Models.ApplicationUser", "ProviderUser")
-                        .WithMany()
-                        .HasForeignKey("ProviderUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Scheduler.Models.SchAppt", "SchAppt")
-                        .WithMany()
-                        .HasForeignKey("SchApptId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Insurance");
-
-                    b.Navigation("Location");
-
-                    b.Navigation("Patient");
-
-                    b.Navigation("ProviderUser");
-
-                    b.Navigation("SchAppt");
-                });
-
             modelBuilder.Entity("Scheduler.Models.OrderCatalog", b =>
                 {
                     b.HasOne("Scheduler.Models.CodeValue", "CodeValue")
@@ -760,64 +594,21 @@ namespace ClinicalScheduler.Migrations
 
             modelBuilder.Entity("Scheduler.Models.ProviderScheduleProfile", b =>
                 {
+                    b.HasOne("Scheduler.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Scheduler.Models.Location", "Location")
                         .WithMany()
                         .HasForeignKey("LocationId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Scheduler.Models.ApplicationUser", "ProviderUser")
-                        .WithMany()
-                        .HasForeignKey("ProviderUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("ApplicationUser");
 
                     b.Navigation("Location");
-
-                    b.Navigation("ProviderUser");
-                });
-
-            modelBuilder.Entity("Scheduler.Models.SchAppt", b =>
-                {
-                    b.HasOne("Scheduler.Models.CodeValue", "ApptStatus")
-                        .WithMany()
-                        .HasForeignKey("ApptStatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Scheduler.Models.CodeValue", "ApptType")
-                        .WithMany()
-                        .HasForeignKey("ApptTypeId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Scheduler.Models.Patient", "Patient")
-                        .WithMany()
-                        .HasForeignKey("PatientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Scheduler.Models.ProviderScheduleProfile", "ProviderScheduleProfile")
-                        .WithMany()
-                        .HasForeignKey("ProviderScheduleProfileId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Scheduler.Models.ApplicationUser", "RegistrarUser")
-                        .WithMany()
-                        .HasForeignKey("RegistrarUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ApptStatus");
-
-                    b.Navigation("ApptType");
-
-                    b.Navigation("Patient");
-
-                    b.Navigation("ProviderScheduleProfile");
-
-                    b.Navigation("RegistrarUser");
                 });
 
             modelBuilder.Entity("Scheduler.Models.ApplicationUser", b =>

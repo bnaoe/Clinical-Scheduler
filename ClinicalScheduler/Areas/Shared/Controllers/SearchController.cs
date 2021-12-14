@@ -88,6 +88,8 @@ namespace ClinicalScheduler.Controllers
             return Json(new { providerList });
         }
 
+
+
         #endregion
     }
 }

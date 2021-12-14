@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Scheduler.DataAccess;
 
@@ -11,9 +12,10 @@ using Scheduler.DataAccess;
 namespace ClinicalScheduler.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211212152457_UpdateEncounterAddSchApptId")]
+    partial class UpdateEncounterAddSchApptId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -524,7 +526,8 @@ namespace ClinicalScheduler.Migrations
                     b.Property<bool>("Friday")
                         .HasColumnType("bit");
 
-                    b.Property<int>("LocationId")
+                    b.Property<int?>("LocationId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<bool>("Monday")
@@ -578,6 +581,9 @@ namespace ClinicalScheduler.Migrations
                     b.Property<int>("ApptTypeId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("EndDateTime")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("PatientId")
                         .HasColumnType("int");
 
@@ -588,15 +594,8 @@ namespace ClinicalScheduler.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTime>("end_date")
+                    b.Property<DateTime>("StartDateTime")
                         .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("start_date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("text")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

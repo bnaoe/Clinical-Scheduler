@@ -96,7 +96,6 @@ namespace ClinicalScheduler.Controllers
                 return Json(new { Success = false, message = "Error while deleting" });
             }
 
-            //_unitOfWork.CodeValue.Remove(codeValueInDb);
             orderCatalogInDb.IsDeleted = true;
             _unitOfWork.Save();
 

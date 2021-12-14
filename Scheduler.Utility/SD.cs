@@ -9,6 +9,8 @@ namespace Scheduler.Utility
     public static class SD
     {
         public const string OrderType = "Order Type";
+        public const string ApptType = "Appointment Type";
+        public const string ApptStatus = "Appointment Status";
 
         public const string Role_Admin = "Admin";
         public const string Role_Scheduler = "Resgistration";
