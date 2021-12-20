@@ -4,10 +4,8 @@ var firstName;
 var birthDate;
 
 
-$(document).ready(function () {
-   
+$(document).ready(function () {  
     loadDataTable();
-
 })
 
 $('#find').click(function () {
@@ -58,8 +56,8 @@ function loadDataTable() {
                         <i class="bi bi-pencil-square"></i> Edit</a>
                         <a href="/Scheduler/ScheduleSearch/GetPatientDetails?id=${data}" class="btn btn-success small mx-2">
                         <i class="bi bi-calendar-plus"></i> Schedule</a>
-                        <a href="" class="btn btn-info small mx-2">
-                        <i class="bi bi-file-earmark-text"></i> Chart</a>
+                        <a onClick=GetEncounters(${data}) class="btn btn-info small mx-2">
+                        <i class="bi bi-file-earmark-text"></i> Encounter</a>
                 </div></td>
                     `
                     },
@@ -71,31 +69,93 @@ function loadDataTable() {
 }
 
 
-function Delete(url) {
-    Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            $.ajax({
-                url: url,
-                type: 'DELETE',
-                success: function (data) {
-                    if (data.success) {
-                        dataTable.ajax.reload();
-                        toastr.success(data.message);
-                    }
-                    else {
-                        toastr.error(data.message);
-                    }
-
-                }
-            })
-        }
-    })
+function encounterTbl_Header() {
+    return '<table id="encounterTbl" class="table table-bordered table-striped" style="width:100%">' +
+           ' <thead>' +
+           '     <tr>' +
+           '         <th>schApptId</th>' +
+           '         <th>encntrId</th>' +
+           '         <th>patientId</th>' +
+           '         <th>scheduleProfileId</th>' +
+           '         <th>Start Date</th>' +
+           '         <th>End Date</th>' +
+           '         <th>Location</th>' +
+           '         <th>First Name</th>' +
+           '         <th>Provider Name</th>' +
+           '         <th>Appt. Type</th>' +
+           '         <th>Appt. Status</th>' +
+           '         <th>Action</th>' +
+           '     </tr>' +
+           ' </thead>' +
+        '</table>'
 }
+
+$html = encounterTbl_Header();
+
+function GetEncounters(id) {
+    Swal.fire({
+        title: 'Encounters',
+        heightAuto: false,
+        html: $html,
+        width: '2000px',
+        height: '4000px',
+        showCancelButton: true,
+        showConfirmButton: false
+    });
+    $('#encounterTbl').DataTable({
+        "destroy": true,
+        "ajax": {
+            "url": "/Shared/Search/GetAllEncounters?id=" + id,
+            "dataSrc": "patientEncounterSchApptList"
+        },
+        "columns": [
+            { "data": "result.schApptId", "visible":false },
+            { "data": "result.id", "visible": false },
+            { "data": "result.patientId", "visible": false },
+            { "data": "result.providerScheduleProfileId", "visible": false },
+            {
+                "data": "result.start_date",
+                "render": function (data) {
+                    var newDate = new Date(data);
+                    return moment(newDate).format("YYYY-MM-DD hh:mm");
+                },
+                "width": "15%"
+            },
+
+            {
+                "data": "result.end_date",
+                "render": function (data) {
+                    var newDate = new Date(data);
+                    return moment(newDate).format("YYYY-MM-DD hh:mm");
+                },
+                "width": "15%"
+            },
+            { "data": "result.name", "width": "20%" },
+            { "data": "result.firstName", "visible":false},
+            {
+                "data": "result.lastName",
+                "render": function (data, type, row, meta) {
+                    return row.result.lastName + ', ' + row.result.firstName
+                },
+                "width": "20%"
+            },
+            { "data": "result.apptType.name", "width": "15%" },
+            { "data": "result.apptStatus.name", "width": "15%" },
+            {
+                "data": "id",
+                "render": function (data) {
+                    return `
+                        <td><div class="w-100 btn-group" role="group">
+                        <a href="" class="btn btn-primary small mx-2">
+                        <i class="bi bi-pencil-square"></i> Edit</a>
+                        <a href="" class="btn btn-info small mx-2">
+                        <i class="bi bi-file-earmark-text"></i> chart</a>
+                </div></td>
+                    `
+                },
+                "width": "15%"
+            },
+
+        ]
+    })
+};

@@ -10,6 +10,5 @@ namespace Scheduler.DataAccess.Repository.IRepository
     public interface IEncounterRepository : IRepositoryAsync<Encounter>
     {
         void Update(Encounter obj);
-        
     }
 }

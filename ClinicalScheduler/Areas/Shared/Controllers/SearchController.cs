@@ -63,6 +63,38 @@ namespace ClinicalScheduler.Controllers
             return Json(new { patientList });
         }
 
+        public async Task<IActionResult> GetAllEncounters(int id)
+        {
+            IEnumerable<Encounter> encounterSchApptList;
+            var ApptTypeCSId = await _unitOfWork.CodeSet.GetFirstOrDefaultAsync(c => c.Name == SD.ApptType);
+            var ApptTypeCVs = await _unitOfWork.CodeValue.GetAllAsync(c => c.CodeSetId == ApptTypeCSId.Id && c.IsDeleted == false);
+
+            var ApptStatusCSId = await _unitOfWork.CodeSet.GetFirstOrDefaultAsync(c => c.Name == SD.ApptStatus);
+            var ApptStatusCVs = await _unitOfWork.CodeValue.GetAllAsync(c => c.CodeSetId == ApptStatusCSId.Id && c.IsDeleted == false);
+
+            encounterSchApptList = await _unitOfWork.Encounter.GetAllAsync(e=>e.PatientId== id,includeProperties: "ProviderUser,SchAppt,Location");
+
+            // encounterSchApptList.Select(p => { p.SchAppt.ApptType.Name = "TEST" ; return p; });
+            var patientEncounterSchApptList = encounterSchApptList.Select(async i => new
+            {
+                i.SchApptId,
+                i.Id,
+                i.PatientId,
+                i.SchAppt.ProviderScheduleProfileId,
+                i.ProviderUser.FirstName,
+                i.ProviderUser.LastName,
+                i.ProviderUser.MiddleName,
+                i.SchAppt.start_date,
+                i.SchAppt.end_date,
+                i.Location.Name,
+                i.SchAppt.ApptType,
+                i.SchAppt.ApptStatus
+            });
+
+            return Json(new { patientEncounterSchApptList });
+
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetAllProviders(string firstName, string lastName)
         {

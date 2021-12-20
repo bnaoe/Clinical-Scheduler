@@ -12631,3 +12631,21 @@ fieldset:disabled .btn {
     overflow: hidden;
     transition: max-height 0.2s ease-out;
 }
+
+.align-left, .swal-title {
+    text-align: left;
+}
+
+.swal-title {
+    margin: 0px;
+    font-size: 20px;
+    box-shadow: 0px 1px 1px;
+    margin-bottom: 20px;
+    align-self: top;
+    text-align: left;
+    margin-top: 0 !important;
+}
+
+.swal-wide {
+    width: 1500px !important;
+}

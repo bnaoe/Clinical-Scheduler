@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Scheduler.DataAccess;
 using Scheduler.DataAccess.Repository.IRepository;
 using Scheduler.Models;
 using Scheduler.Models.ViewModels;
 using Scheduler.Utility;
+using System.Globalization;
 
 namespace ClinicalScheduler.Controllers
 {
@@ -29,14 +31,11 @@ namespace ClinicalScheduler.Controllers
         //get
         public async Task<IActionResult> Upsert(int? schApptId, int? enctrId, int patientId,int providerScheduleProfileId)
         {
-            //Load data for Drop Downs
             var ApptTypeCSId = await _unitOfWork.CodeSet.GetFirstOrDefaultAsync(c => c.Name == SD.ApptType);
-            var ApptTypeCodeSetId = ApptTypeCSId.Id;
-            var ApptTypeCVs = await _unitOfWork.CodeValue.GetAllAsync();
+            var ApptTypeCVs = await _unitOfWork.CodeValue.GetAllAsync(c => c.CodeSetId == ApptTypeCSId.Id && c.IsDeleted == false);
 
             var ApptStatusCSId = await _unitOfWork.CodeSet.GetFirstOrDefaultAsync(c => c.Name == SD.ApptStatus);
-            var ApptStatusCodeSetId = ApptStatusCSId.Id;
-            var ApptStatusCVs = await _unitOfWork.CodeValue.GetAllAsync();
+            var ApptStatusCVs = await _unitOfWork.CodeValue.GetAllAsync(c => c.CodeSetId == ApptStatusCSId.Id && c.IsDeleted == false);
 
             //Declare Collection Class
             CcApptSched cCApptSched = new()
@@ -45,67 +44,54 @@ namespace ClinicalScheduler.Controllers
                 {
                     Patient = await _unitOfWork.Patient.GetFirstOrDefaultAsync(p => p.Id == patientId)
                 }, // _PatientDetails View
-                schApptVM = new() //SchAppt View
+                schApptVM = new() 
                 {
                     SchAppt = new(),
-                    ApptTypeList = ApptTypeCVs.Where(c => c.IsDeleted == false && c.CodeSetId == ApptTypeCodeSetId).Select(c => new SelectListItem
+                    ApptTypeList = ApptTypeCVs.Select(c => new SelectListItem
                     {
                         Text = c.Name,
                         Value = c.Id.ToString()
                     }),
-                    ApptStatusList = ApptStatusCVs.Where(c => c.IsDeleted == false && c.CodeSetId == ApptStatusCodeSetId).Select(c => new SelectListItem
+                    ApptStatusList = ApptStatusCVs.Select(c => new SelectListItem
                     {
                         Text = c.Name,
                         Value = c.Id.ToString()
                     }),
-                    Patient = await _unitOfWork.Patient.GetFirstOrDefaultAsync(p => p.Id == patientId),
-                    ProviderScheduleProfile = await _unitOfWork.ProviderScheduleProfile.GetFirstOrDefaultAsync(p => p.Id == providerScheduleProfileId)
                 },
-                encounterVM = new() // Encounter View ///////////////////////>>>>>>>>> institiate properties
+                encounterVM = new() 
                 {
                     Encounter = new(),
-                    Patient = await _unitOfWork.Patient.GetFirstOrDefaultAsync(p => p.Id == patientId),
-                    ProviderUser = new(),
-                    SchAppt =new(),
-                    Insurance = new(),
-                    Location = new()
                 },
                 providerScheduleProfileVM = new()
                 {
                     ProviderScheduleProfile = await _unitOfWork.ProviderScheduleProfile.GetFirstOrDefaultAsync(p => p.Id == providerScheduleProfileId,includeProperties:"ProviderUser,Location")
-                } // May not need this?
+                } 
             };
 
-            // Prepare for view 
-            ///_PatientDetails uneditable
-            //cCApptSched.patientVM.Patient = await _unitOfWork.Patient.GetFirstOrDefaultAsync(p => p.Id == patientId);
-
-            /// Schedule Profile details uneditable
-            //cCApptSched.providerScheduleProfileVM.ProviderScheduleProfile =
-           //     await _unitOfWork.ProviderScheduleProfile.GetFirstOrDefaultAsync(p => p.Id == providerScheduleProfileId);
-
             if ((schApptId == null || schApptId == 0) && (enctrId == null || enctrId == 0))
-            {
-               
+            { 
                 // Assign Ids needed
-                /// Prefill Data needed for Encounter and SchAppt
-                //cCApptSched.schApptVM.SchAppt.PatientId = patientId;
-               // cCApptSched.schApptVM.SchAppt.ProviderScheduleProfileId = providerScheduleProfileId;
-
+                // Prefill Data needed for Encounter and SchAppt for repository operations
                 
+                cCApptSched.schApptVM.SchAppt.PatientId = patientId;
+                cCApptSched.schApptVM.SchAppt.ProviderScheduleProfileId = providerScheduleProfileId;                
                 cCApptSched.schApptVM.SchAppt.RegistrarUserId = _userManager.GetUserId(User);
                 cCApptSched.schApptVM.SchAppt.start_date = DateTime.Now;
                 cCApptSched.schApptVM.SchAppt.end_date = DateTime.Now;
+                cCApptSched.encounterVM.Encounter.PatientId = patientId;
 
-                //cCApptSched.encounterVM.Encounter.PatientId = patientId;
                 cCApptSched.encounterVM.Encounter.ProviderUserId = cCApptSched.providerScheduleProfileVM.ProviderScheduleProfile.ProviderUserId;
                 cCApptSched.encounterVM.Encounter.LocationId = cCApptSched.providerScheduleProfileVM.ProviderScheduleProfile.LocationId;
 
                 return View(cCApptSched);
             } else
             {
+                cCApptSched.patientVM.Patient = await _unitOfWork.Patient.GetFirstOrDefaultAsync(p => p.Id == patientId);
                 cCApptSched.schApptVM.SchAppt = await _unitOfWork.SchAppt.GetFirstOrDefaultAsync(s => s.Id == schApptId);
                 cCApptSched.encounterVM.Encounter = await _unitOfWork.Encounter.GetFirstOrDefaultAsync(e => e.Id == enctrId);
+                cCApptSched.providerScheduleProfileVM.ProviderScheduleProfile = await _unitOfWork.ProviderScheduleProfile.GetFirstOrDefaultAsync(p=>p.Id== providerScheduleProfileId);
+                cCApptSched.encounterVM.Insurance = await _unitOfWork.Insurance.GetFirstOrDefaultAsync(i => i.Id == cCApptSched.encounterVM.Encounter.InsuranceId);
+
                 return View(cCApptSched);
             }
         }
@@ -113,58 +99,136 @@ namespace ClinicalScheduler.Controllers
         //post
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Upsert(PatientVM obj)
+        public async Task<IActionResult> Upsert([Bind(Prefix = "encounterVM")] EncounterVM encntrObj, [Bind(Prefix = "schApptVM")] SchApptVM schApptObj, 
+            [Bind(Prefix = "providerScheduleProfileVM")] ProviderScheduleProfileVM providerScheduleProfileObj)
         {
+
+            var apptType = await _unitOfWork.CodeValue.GetFirstOrDefaultAsync(c => c.Id == schApptObj.SchAppt.ApptTypeId);
+            var patient = await _unitOfWork.Patient.GetFirstOrDefaultAsync(p => p.Id == encntrObj.Encounter.PatientId);
+            var loction = providerScheduleProfileObj.ProviderScheduleProfile.Location;
+
+            //Update schAppt.color property
+            if (apptType.Name.Contains("Initial"))
+            {
+                //ModelState.SetModelValue("schApptVM.SchAppt.color", new ValueProviderResult("#9575CD", CultureInfo.InvariantCulture));
+                schApptObj.SchAppt.color = "#9575CD";
+            }
+            else if (apptType.Name.Contains("Follow-Up"))
+            {
+                //ModelState.SetModelValue("schApptVM.SchAppt.color", new ValueProviderResult("#FF9633", CultureInfo.InvariantCulture));
+                schApptObj.SchAppt.color = "#FF9633";
+            }
+            else 
+            { 
+                //ModelState.SetModelValue("schApptVM.SchAppt.color", new ValueProviderResult("CadetBlue", CultureInfo.InvariantCulture));
+                schApptObj.SchAppt.color = "#CadetBlue";
+            }
+            
+            ModelState["schApptVM.SchAppt.color"].ValidationState = ModelValidationState.Valid;
+
+            //Update schAppt.text property
+            //ModelState.SetModelValue("schApptVM.SchAppt.text", new ValueProviderResult(patient.FirstName + " " 
+            //    + patient.LastName + "\n" + loction.Name + " " + apptType.Name, CultureInfo.InvariantCulture));
+
+            schApptObj.SchAppt.text = patient.FirstName + " " + patient.LastName + "\n" + loction.Name + " " + apptType.Name;
+            
+            ModelState["schApptVM.SchAppt.text"].ValidationState = ModelValidationState.Valid;
+
+            //Validate schAppt.start_date and schAppt.end_date
+            if (schApptObj.SchAppt.start_date.TimeOfDay< providerScheduleProfileObj.ProviderScheduleProfile.StartTime ||
+                schApptObj.SchAppt.end_date.TimeOfDay < providerScheduleProfileObj.ProviderScheduleProfile.StartTime)
+            {
+                ModelState.SetModelValue("schApptVM.SchAppt.start_valid", new ValueProviderResult("false", CultureInfo.InvariantCulture));
+            }
+            if (schApptObj.SchAppt.end_date.TimeOfDay > providerScheduleProfileObj.ProviderScheduleProfile.EndTime ||
+                schApptObj.SchAppt.start_date.TimeOfDay > providerScheduleProfileObj.ProviderScheduleProfile.EndTime)
+            {
+                ModelState.SetModelValue("schApptVM.SchAppt.end_valid", new ValueProviderResult("false", CultureInfo.InvariantCulture));
+            }
+
             if (ModelState.IsValid)
             {
-                if (obj.Patient.Id==0) {
-                    await _unitOfWork.Patient.AddAsync(obj.Patient);
-                    TempData["Success"] = "Added successfully";
+                if (schApptObj.SchAppt.Id == 0) {
+                    await _unitOfWork.SchAppt.AddAsync(schApptObj.SchAppt);
                 } else
                 {
-                    _unitOfWork.Patient.Update(obj.Patient);
+                    _unitOfWork.SchAppt.Update(schApptObj.SchAppt);
+                }
+
+                _unitOfWork.Save();
+
+                encntrObj.Encounter.SchApptId = schApptObj.SchAppt.Id;
+                encntrObj.Encounter.Insurance = null;
+                if (encntrObj.Encounter.Id == 0)
+                {
+                    await _unitOfWork.Encounter.AddAsync(encntrObj.Encounter);
+                    TempData["Success"] = "Added successfully";
+                }
+                else
+                {
+                    _unitOfWork.Encounter.Update(encntrObj.Encounter);
                     TempData["Success"] = "Updated successfully";
                 }
 
                 _unitOfWork.Save();
-                return RedirectToAction("Upsert", new { id = obj.Patient.Id});
+
+
+                return RedirectToAction("Upsert", new
+                {
+                    schApptId = schApptObj.SchAppt.Id,
+                    enctrId = encntrObj.Encounter.Id,
+                    patientId = encntrObj.Encounter.PatientId,
+                    providerScheduleProfileId = schApptObj.SchAppt.ProviderScheduleProfileId
+
+                });
             }
-            return View(obj);
+
+            encntrObj.Encounter.Insurance = await _unitOfWork.Insurance.GetFirstOrDefaultAsync(i => i.Id == encntrObj.Encounter.InsuranceId);
+
+            var ApptTypeCSId = await _unitOfWork.CodeSet.GetFirstOrDefaultAsync(c => c.Name == SD.ApptType);
+            var ApptTypeCVs = await _unitOfWork.CodeValue.GetAllAsync(c=>c.CodeSetId == ApptTypeCSId.Id && c.IsDeleted==false);
+
+            var ApptStatusCSId = await _unitOfWork.CodeSet.GetFirstOrDefaultAsync(c => c.Name == SD.ApptStatus);
+            var ApptStatusCVs = await _unitOfWork.CodeValue.GetAllAsync(c=>c.CodeSetId == ApptStatusCSId.Id && c.IsDeleted==false);
+
+            CcApptSched cCApptSched = new()
+            {
+                patientVM = new()
+                {
+                    Patient = patient
+                },
+                schApptVM = new()
+                {
+                    SchAppt = schApptObj.SchAppt,
+                    ApptTypeList = ApptTypeCVs.Select(c => new SelectListItem
+                    {
+                        Text = c.Name,
+                        Value = c.Id.ToString()
+                    }),
+                    ApptStatusList = ApptStatusCVs.Select(c => new SelectListItem
+                    {
+                        Text = c.Name,
+                        Value = c.Id.ToString()
+                    })
+                },
+                encounterVM = encntrObj,
+                providerScheduleProfileVM = new()
+                {
+                    ProviderScheduleProfile = await _unitOfWork.ProviderScheduleProfile.GetFirstOrDefaultAsync(p => p.Id == schApptObj.SchAppt.ProviderScheduleProfileId, includeProperties: "ProviderUser,Location")
+                }
+            };
+ 
+            return View(cCApptSched);
         }
 
         #region API CALLS
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
-        {
-            var patientList = await _unitOfWork.Patient.GetAllAsync();
-            return Json(new { patientList });
-        }
         
         [HttpGet]
         public async Task<IActionResult> GetProviderAppointments(string providerId)
         {
             var schApptList = await _unitOfWork.SchAppt.GetAllAsync(c=>c.ProviderScheduleProfile.ProviderUserId==providerId);
-            var appointmentList = schApptList.Select(a => new { a.start_date, a.end_date, a.text });
+            var appointmentList = schApptList.Select(a => new { a.start_date, a.end_date, a.text, a.color });
             return Ok(appointmentList );
-        }
-
-
-        //post
-        [HttpDelete]
-        public async Task<IActionResult> Delete(int? id)
-        {
-
-            var patientInDb = await _unitOfWork.Patient.GetFirstOrDefaultAsync(p => p.Id == id);
-            if (patientInDb == null)
-            {
-                return Json(new { Success = false, message = "Error while deleting" });
-            }
-
-            patientInDb.IsDeleted = true;
-            _unitOfWork.Save();
-
-            return Json(new { Success = true, message = "Delete successful" });
-
         }
         #endregion
     }

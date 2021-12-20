@@ -28,33 +28,42 @@
 </div>
 
 <form method="post" asp-action="Upsert">
-    <input asp-for="schApptVM.Patient.Id" id="pId" name="pId"/>
-    <input asp-for="providerScheduleProfileVM.ProviderScheduleProfile.Id" id="pSchedProfileId" name="pSchedProfileId"/>
-    <input asp-for="providerScheduleProfileVM.ProviderScheduleProfile.ProviderUserId" id="providerId" name="providerId"/>
-    <input asp-for="encounterVM.Encounter.Id"/>
-    <input asp-for="schApptVM.SchAppt.Id"/>
-    <input asp-for="providerScheduleProfileVM.ProviderScheduleProfile.StartTime.Hours" id="start" name="start"/>
-     <input asp-for="providerScheduleProfileVM.ProviderScheduleProfile.EndTime.Hours" id="end" name="end"/>
+    @*<input asp-for="schApptVM.Patient.Id" id="pId" name="pId"/>*@
+    <input asp-for="providerScheduleProfileVM.ProviderScheduleProfile.Id" id="pSchedProfileId" name="pSchedProfileId" hidden/>
+    <input asp-for="providerScheduleProfileVM.ProviderScheduleProfile.ProviderUserId" id="providerId" name="providerId" hidden/>
+    <input asp-for="encounterVM.Encounter.Id" hidden/>
+    <input asp-for="schApptVM.SchAppt.Id" id="schApptId" hidden/>
+    <input asp-for="providerScheduleProfileVM.ProviderScheduleProfile.StartTime.Hours" id="start" name="start" hidden/>
+    <input asp-for="providerScheduleProfileVM.ProviderScheduleProfile.EndTime.Hours" id="end" name="end" hidden/>
+    <input asp-for="providerScheduleProfileVM.ProviderScheduleProfile.StartTime" hidden/>
+    <input asp-for="providerScheduleProfileVM.ProviderScheduleProfile.EndTime" hidden/>
+    <input asp-for="providerScheduleProfileVM.ProviderScheduleProfile.ProviderUserId" hidden/>
+
+    <input asp-for="encounterVM.Encounter.LocationId" hidden/>
+    <input asp-for="encounterVM.Encounter.PatientId" hidden/>
+    <input asp-for="encounterVM.Encounter.ProviderUserId" hidden/>
+
+    <input asp-for="schApptVM.SchAppt.PatientId" hidden/>
+    <input asp-for="schApptVM.SchAppt.ProviderScheduleProfileId" hidden/>
+    <input asp-for="schApptVM.SchAppt.RegistrarUserId" hidden/>
+    <input asp-for="providerScheduleProfileVM.ProviderScheduleProfile.Location.Name" hidden/>
+    <input asp-for="patientVM.Patient.FirstName" hidden/>
+    <input asp-for="patientVM.Patient.MiddleName" hidden/>
+    <input asp-for="patientVM.Patient.LastName" hidden/>
+    <input asp-for="patientVM.Patient.BirthDate" hidden/>
+
 
     <div class="border p-3 mt-4 row">
+            <h4 class="text-primary">@(Model.schApptVM.SchAppt.Id!=0?"Update":"Create") Appointment</h4>
+            <hr/>
          <div class="mb-3 col-6" >
             <label asp-for="providerScheduleProfileVM.ProviderScheduleProfile.Location.Name">Location</label>
             <input asp-for="providerScheduleProfileVM.ProviderScheduleProfile.Location.Name" class="form-control" readonly/>
             <span asp-validation-for="providerScheduleProfileVM.ProviderScheduleProfile.Location.Name" class="text-danger"></span>
          </div>
-        <div class="mb-3 col-3">
-            <label asp-for="schApptVM.SchAppt.start_date">Start Date</label>
-            <input asp-for="schApptVM.SchAppt.start_date" class="form-control"/>
-            <span asp-validation-for ="schApptVM.SchAppt.start_date" class="text-danger"></span>
-        </div>
          <div class="mb-3 col-3">
-            <label asp-for="schApptVM.SchAppt.end_date">End Date</label>
-            <input asp-for="schApptVM.SchAppt.end_date" class="form-control"/>
-            <span asp-validation-for ="schApptVM.SchAppt.end_date" class="text-danger"></span>
-        </div>
-        <div class="mb-3 col-3">
             <label asp-for="schApptVM.SchAppt.ApptTypeId">Appoinment Type</label>
-            <select asp-for="schApptVM.SchAppt.ApptTypeId" asp-items="@Model.schApptVM.ApptTypeList" class="form-select">
+            <select asp-for="schApptVM.SchAppt.ApptTypeId" id="apptType" asp-items="@Model.schApptVM.ApptTypeList" class="form-select">
                 <option disabled selected>- Select Appointment Type -</option>
             </select>
             <span asp-validation-for ="schApptVM.SchAppt.ApptTypeId" class="text-danger"></span>
@@ -66,6 +75,16 @@
             </select>
             <span asp-validation-for ="schApptVM.SchAppt.ApptTypeId" class="text-danger"></span>
         </div>
+        <div class="mb-3 col-3">
+            <label asp-for="schApptVM.SchAppt.start_date">Start Date</label>
+            <input asp-for="schApptVM.SchAppt.start_date" id="startDate" class="form-control"/>
+            <span asp-validation-for ="schApptVM.SchAppt.start_date" class="text-danger"></span>
+        </div>
+         <div class="mb-3 col-3">
+            <label asp-for="schApptVM.SchAppt.end_date">End Date</label>
+            <input asp-for="schApptVM.SchAppt.end_date" id="endDate" class="form-control"/>
+            <span asp-validation-for ="schApptVM.SchAppt.end_date" class="text-danger"></span>
+        </div>
         <div class="mb-3 col-6">
             <label asp-for="encounterVM.Encounter.ReasonForVisit">Reason for Visit</label>
             <input asp-for="encounterVM.Encounter.ReasonForVisit" class="form-control"/>
@@ -73,11 +92,13 @@
         </div>
         <div class="mb-3 col-4">
             <label asp-for="encounterVM.Encounter.Insurance.Name">Insurance Name</label>
-            <input type="text" id="select" class="form-control"  placeholder="Type Insruance Name to seacrh" autocomplete="off"/>
+            <input asp-for="encounterVM.Encounter.Insurance.Name" type="text" id="select" class="form-control"  placeholder="Type Insruance Name to search" autocomplete="off"/>
             <span asp-validation-for ="encounterVM.Encounter.Insurance.Name" class="text-danger"></span>
         </div>
         <div class="mb-3 col-2">
-            <input asp-for="encounterVM.Encounter.InsuranceId" id="update" disabled class="form-control"/>
+            <input asp-for="encounterVM.Encounter.InsuranceId" id="update" class="form-control"/>
+            <span asp-validation-for ="encounterVM.Encounter.Insurance.Id" class="text-danger"></span>
+
         </div>
          <div class="mb-3 col-3">
             <label asp-for="encounterVM.Encounter.HealthPlanName">Health Plan Name</label>
@@ -114,6 +135,12 @@
             <input asp-for="encounterVM.Encounter.PrivacyNotice" type="checkbox" data-val="true" data-val-required="encounterVM.Encounter.PrivacyNotice" 
             id="encounterVM.Encounter.PrivacyNotice" name="encounterVM.Encounter.PrivacyNotice" value="true" />               
         </div>
+         <div class="col-12">
+			<button type="submit" class="btn btn-primary" style="width:150px">@(Model.schApptVM.SchAppt.Id!=0?"Update":"Create")</button>
+            <a asp-controller="CodeValue" asp-action="Index" class="btn btn-secondary" style="width:150px">
+                Back to list
+            </a>
+        </div>
     </div>
 </form>
 
@@ -122,4 +149,5 @@
     <partial name="_ValidationScriptsPartial"/>
     <script src="~/js/Calendar.js"></script>
     <script src="~/js/TypeAheadSearch.js"></script>
+    <script src="~/js/ScheduleAppointment.js"></script>"
 }
