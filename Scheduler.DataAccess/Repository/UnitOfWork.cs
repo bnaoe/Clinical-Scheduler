@@ -24,7 +24,7 @@ namespace Scheduler.DataAccess.Repository
             Insurance = new InsuranceRepository(_db);
             Encounter = new EncounterRepository(_db);
             SchAppt = new SchApptRepository(_db);
-
+            FinancialNumAlias = new FinancialNumAliasRepository(_db);
         }
 
         public ICodeSetRepository CodeSet { get; private set; }
@@ -43,7 +43,10 @@ namespace Scheduler.DataAccess.Repository
         public IInsuranceRepository Insurance { get; private set; }
 
         public IEncounterRepository Encounter { get; private set; }
+        
         public ISchApptRepository SchAppt { get; private set; }
+
+        public IFinancialNumAliasRepository FinancialNumAlias { get; private set; }
 
         public void Save()
         {

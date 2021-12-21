@@ -127,9 +127,6 @@ namespace ClinicalScheduler.Controllers
             ModelState["schApptVM.SchAppt.color"].ValidationState = ModelValidationState.Valid;
 
             //Update schAppt.text property
-            //ModelState.SetModelValue("schApptVM.SchAppt.text", new ValueProviderResult(patient.FirstName + " " 
-            //    + patient.LastName + "\n" + loction.Name + " " + apptType.Name, CultureInfo.InvariantCulture));
-
             schApptObj.SchAppt.text = patient.FirstName + " " + patient.LastName + "\n" + loction.Name + " " + apptType.Name;
             
             ModelState["schApptVM.SchAppt.text"].ValidationState = ModelValidationState.Valid;
@@ -157,8 +154,17 @@ namespace ClinicalScheduler.Controllers
 
                 _unitOfWork.Save();
 
+                //Create Financial Number for the Encounter
+                FinancialNumAlias financialNumAlias = new FinancialNumAlias();
+                financialNumAlias.Fin = DateTime.Now.Year.ToString() + schApptObj.SchAppt.Id + DateTime.Now.Millisecond.ToString();
+
+                await _unitOfWork.FinancialNumAlias.AddAsync(financialNumAlias);
+                _unitOfWork.Save();
+
                 encntrObj.Encounter.SchApptId = schApptObj.SchAppt.Id;
                 encntrObj.Encounter.Insurance = null;
+                encntrObj.Encounter.FinancialNumAliasId = financialNumAlias.Id;
+
                 if (encntrObj.Encounter.Id == 0)
                 {
                     await _unitOfWork.Encounter.AddAsync(encntrObj.Encounter);

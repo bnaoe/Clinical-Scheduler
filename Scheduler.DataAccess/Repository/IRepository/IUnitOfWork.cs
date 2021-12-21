@@ -18,7 +18,10 @@ namespace Scheduler.DataAccess.Repository.IRepository
         IInsuranceRepository Insurance { get; }
         IEncounterRepository Encounter { get; }
         ISchApptRepository SchAppt { get; }
+        IFinancialNumAliasRepository FinancialNumAlias { get; }
 
         void Save();
+
+        
     }
 }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Scheduler.DataAccess;
 
@@ -11,9 +12,10 @@ using Scheduler.DataAccess;
 namespace ClinicalScheduler.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211220042223_UpdateFinancialNumAliasCreatedDateTimeAddIsDeleted")]
+    partial class UpdateFinancialNumAliasCreatedDateTimeAddIsDeleted
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -300,9 +302,6 @@ namespace ClinicalScheduler.Migrations
                     b.Property<DateTime?>("DschDateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("FinancialNumAliasId")
-                        .HasColumnType("int");
-
                     b.Property<string>("GroupNo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -349,8 +348,6 @@ namespace ClinicalScheduler.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("FinancialNumAliasId");
 
                     b.HasIndex("InsuranceId");
 
@@ -737,10 +734,6 @@ namespace ClinicalScheduler.Migrations
 
             modelBuilder.Entity("Scheduler.Models.Encounter", b =>
                 {
-                    b.HasOne("Scheduler.Models.FinancialNumAlias", "FinancialNumAlias")
-                        .WithMany()
-                        .HasForeignKey("FinancialNumAliasId");
-
                     b.HasOne("Scheduler.Models.Insurance", "Insurance")
                         .WithMany()
                         .HasForeignKey("InsuranceId")
@@ -770,8 +763,6 @@ namespace ClinicalScheduler.Migrations
                         .HasForeignKey("SchApptId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("FinancialNumAlias");
 
                     b.Navigation("Insurance");
 

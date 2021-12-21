@@ -56,6 +56,8 @@ namespace Scheduler.DataAccess.Repository
                     query = query.Include(includeProp);
                 }
             }
+
+
             return query.FirstOrDefault();
         }
 

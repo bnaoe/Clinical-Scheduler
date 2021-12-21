@@ -21,6 +21,7 @@ namespace Scheduler.DataAccess
         public DbSet<Insurance> Insurances { get; set; }
         public DbSet<Encounter> Encounters { get; set; }
         public DbSet<SchAppt> SchAppts { get; set; }
+        public DbSet<FinancialNumAlias> FinancialNumAliases { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

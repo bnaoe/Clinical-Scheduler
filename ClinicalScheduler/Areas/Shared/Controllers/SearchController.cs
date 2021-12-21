@@ -72,7 +72,7 @@ namespace ClinicalScheduler.Controllers
             var ApptStatusCSId = await _unitOfWork.CodeSet.GetFirstOrDefaultAsync(c => c.Name == SD.ApptStatus);
             var ApptStatusCVs = await _unitOfWork.CodeValue.GetAllAsync(c => c.CodeSetId == ApptStatusCSId.Id && c.IsDeleted == false);
 
-            encounterSchApptList = await _unitOfWork.Encounter.GetAllAsync(e=>e.PatientId== id,includeProperties: "ProviderUser,SchAppt,Location");
+            encounterSchApptList = await _unitOfWork.Encounter.GetAllAsync(e=>e.PatientId== id,includeProperties: "ProviderUser,SchAppt,Location,FinancialNumAlias");
 
             // encounterSchApptList.Select(p => { p.SchAppt.ApptType.Name = "TEST" ; return p; });
             var patientEncounterSchApptList = encounterSchApptList.Select(async i => new
@@ -81,6 +81,7 @@ namespace ClinicalScheduler.Controllers
                 i.Id,
                 i.PatientId,
                 i.SchAppt.ProviderScheduleProfileId,
+                i.FinancialNumAlias.Fin,
                 i.ProviderUser.FirstName,
                 i.ProviderUser.LastName,
                 i.ProviderUser.MiddleName,

@@ -77,6 +77,7 @@ function encounterTbl_Header() {
            '         <th>encntrId</th>' +
            '         <th>patientId</th>' +
            '         <th>scheduleProfileId</th>' +
+           '         <th>FIN</th>' +
            '         <th>Start Date</th>' +
            '         <th>End Date</th>' +
            '         <th>Location</th>' +
@@ -113,13 +114,14 @@ function GetEncounters(id) {
             { "data": "result.id", "visible": false },
             { "data": "result.patientId", "visible": false },
             { "data": "result.providerScheduleProfileId", "visible": false },
+            { "data": "result.fin", "width": "10%" },
             {
                 "data": "result.start_date",
                 "render": function (data) {
                     var newDate = new Date(data);
                     return moment(newDate).format("YYYY-MM-DD hh:mm");
                 },
-                "width": "15%"
+                "width": "10%"
             },
 
             {
@@ -128,19 +130,19 @@ function GetEncounters(id) {
                     var newDate = new Date(data);
                     return moment(newDate).format("YYYY-MM-DD hh:mm");
                 },
-                "width": "15%"
+                "width": "10%"
             },
-            { "data": "result.name", "width": "20%" },
+            { "data": "result.name", "width": "10%" },
             { "data": "result.firstName", "visible":false},
             {
                 "data": "result.lastName",
                 "render": function (data, type, row, meta) {
                     return row.result.lastName + ', ' + row.result.firstName
                 },
-                "width": "20%"
+                "width": "10%"
             },
-            { "data": "result.apptType.name", "width": "15%" },
-            { "data": "result.apptStatus.name", "width": "15%" },
+            { "data": "result.apptType.name", "width": "10%" },
+            { "data": "result.apptStatus.name", "width": "10%" },
             {
                 "data": "id",
                 "render": function (data) {
@@ -153,7 +155,7 @@ function GetEncounters(id) {
                 </div></td>
                     `
                 },
-                "width": "15%"
+                "width": "20%"
             },
 
         ]

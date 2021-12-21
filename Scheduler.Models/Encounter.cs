@@ -42,6 +42,12 @@ namespace Scheduler.Models
         [ValidateNever]
         public Insurance Insurance { get; set; }
 
+        public int? FinancialNumAliasId { get; set; }
+        [ForeignKey("FinancialNumAliasId")]
+
+        [ValidateNever]
+        public FinancialNumAlias? FinancialNumAlias { get; set; }
+
         [Display(Name ="Health Plan Name")]
         public string HealthPlanName { get; set; }
 
