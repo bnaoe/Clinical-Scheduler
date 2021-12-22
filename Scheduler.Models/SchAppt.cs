@@ -57,6 +57,7 @@ namespace Scheduler.Models
         public DateTime start_date { get; set; }
 
         [NotMapped]
+        [ValidateAppointmentDateTime]
         public bool start_valid { get; set; } = true;
 
         [Required]
@@ -65,6 +66,7 @@ namespace Scheduler.Models
         public DateTime end_date { get; set; }
 
         [NotMapped]
+        [ValidateAppointmentDateTime]
         public bool end_valid { get; set; } = true;
 
         public string text { get; set; }

@@ -39,14 +39,20 @@ function changeEndDateTime(startDate) {
     var selectedValue = $("#apptType option:selected").text();
     var [dates, hours, minutes] = myEndDtTmpicker.value.split(/[T:]/);
 
-    if (selectedValue.includes("Initial")) { ++hours % 24; }
+    if (selectedValue.includes("Initial"))
+    {
+        ++hours % 24;
+        hours = pad(parseInt(hours))
+    }
     else {
-        if (minutes + 30 >= 60) {
+        if (parseInt(minutes) + 30 >= 60) {
             ++hours % 24;
+            hours = pad(parseInt(hours))
             minutes = (parseInt(minutes) + 30) - 60;
             if (minutes == 0) {minutes="00"}
         } else { minutes = parseInt(minutes) + 30; }
     }
+    
     myEndDtTmpicker.value = dates + "T" + hours + ":" + minutes;
 }
 
@@ -54,3 +60,7 @@ function changeEndDateTime(startDate) {
 $("#apptType").change(function () {
     changeStartDateTime();
 })
+
+function pad(n) {
+    return (n < 10) ? ("0" + n) : n;
+}
