@@ -65,7 +65,55 @@ function loadDataTable() {
                 },
             ]
     });
-   
+    dataTable = $('#tblData2').DataTable({
+        "destroy": true,
+        "ajax": {
+            "url": "/Shared/Search/GetAllPatients?firstName=" + firstName + "&lastName=" + lastName + "&birthDate=" + birthDate,
+            "dataSrc": "patientList"
+        },
+        "columns": [
+            { "data": "id", "visible": false },
+            { "data": "firstName", "width": "20%" },
+            { "data": "lastName", "width": "20%" },
+            {
+                "data": "birthDate",
+                "render": function (data) {
+                    var newDate = new Date(data);
+                    return moment(newDate).format("YYYY-MM-DD");
+                },
+                "width": "15%"
+            },
+            {
+                "data": "isDeleted",
+                "render": function (data) {
+                    if (data) {
+                        return `<input type="checkbox" disabled checked/>`
+                    }
+                    else {
+                        return `<input type="checkbox" disabled/>`
+                    }
+                },
+                "width": "10%",
+                "className": "text-center"
+            },
+            {
+                "data": "id",
+                "render": function (data) {
+                    return `
+                        <td><div class="w-100 btn-group" role="group">
+                        <a href="/Scheduler/Patient/Upsert?id=${data}" class="btn btn-primary small mx-2">
+                        <i class="bi bi-pencil-square"></i> Edit</a>
+                        <a href="/Scheduler/ScheduleSearch/GetPatientDetails?id=${data}" class="btn btn-success small mx-2">
+                        <i class="bi bi-calendar-plus"></i> Schedule</a>
+                        <a onClick=GetEncounters(${data}) class="btn btn-info small mx-2">
+                        <i class="bi bi-file-earmark-text"></i> Encounter</a>
+                </div></td>
+                    `
+                },
+                "width": "35%"
+            },
+        ]
+    });
 }
 
 
@@ -144,11 +192,14 @@ function GetEncounters(id) {
             { "data": "result.apptType.name", "width": "10%" },
             { "data": "result.apptStatus.name", "width": "10%" },
             {
-                "data": "id",
+                "data": {
+                    schApptId: "result.schApptId", id: "result.id", patientId: "result.patientId",
+                    providerScheduleProfileId: "result.providerScheduleProfileId"
+                },
                 "render": function (data) {
                     return `
                         <td><div class="w-100 btn-group" role="group">
-                        <a href="" class="btn btn-primary small mx-2">
+                        <a href="/Scheduler/ScheduleAppointment/Upsert?schApptId=${data.result.schApptId}&enctrId=${data.result.id}&patientId=${data.result.patientId}&providerScheduleProfileId=${data.result.providerScheduleProfileId}" class="btn btn-primary small mx-2">
                         <i class="bi bi-pencil-square"></i> Edit</a>
                         <a href="" class="btn btn-info small mx-2">
                         <i class="bi bi-file-earmark-text"></i> chart</a>

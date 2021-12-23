@@ -3,6 +3,9 @@ var lastName;
 var firstName;
 var birthDate;
 
+$(document).ready(function () {
+    loadDataTable();
+})
 
 $('#find').click(function () {
     lastName = $('#lastName').val();

@@ -7,27 +7,28 @@ $(document).ready(function () {
 function loadDataTable() {
     dataTable = $('#tblData').DataTable({
         "ajax": {
-            "url": "/Admin/ApplicationUser/GetAll"
+            "url": "/Admin/ApplicationUser/GetAll",
+            "dataSrc": "userList"
         },
         "columns": [
-            { "data": "firstName", "width": "15%" },
-            { "data": "middleName", "width": "15%" },
-            { "data": "lastName", "width": "15%" },
-            { "data": "email", "width": "15%" },
-            { "data": "location.name", "width": "15%" },
-            { "data": "role", "width": "15%" },
+            { "data": "result.firstName", "width": "15%" },
+            { "data": "result.middleName", "width": "15%" },
+            { "data": "result.lastName", "width": "15%" },
+            { "data": "result.email", "width": "15%" },
+            { "data": "result.location.name", "width": "15%" },
+            { "data": "result.role", "width": "15%" },
             {
                 "data": {
-                    id: "id", lockoutEnd: "lockoutEnd"
+                    id: "result.id", lockoutEnd: "result.lockoutEnd"
                 },
                 "render": function (data) {
                     var today = new Date().getTime();
-                    var lockout = new Date(data.lockoutEnd).getTime();
+                    var lockout = new Date(data.result.lockoutEnd).getTime();
                     if (lockout > today) {
                         //user is currently locked
                         return `
                             <div class="text-center">
-                                <a onclick=LockUnlock('${data.id}') class="btn btn-danger text-white" style="cursor:pointer; width:100px;">
+                                <a onclick=LockUnlock('${data.result.id}') class="btn btn-danger text-white" style="cursor:pointer; width:100px;">
                                     <i class="fas fa-lock-open"></i>  Unlock
                                 </a>
                             </div>
@@ -36,7 +37,7 @@ function loadDataTable() {
                     else {
                         return `
                             <div class="text-center">
-                                <a onclick=LockUnlock('${data.id}') class="btn btn-success text-white" style="cursor:pointer; width:100px;">
+                                <a onclick=LockUnlock('${data.result.id}') class="btn btn-success text-white" style="cursor:pointer; width:100px;">
                                     <i class="fas fa-lock"></i>  Lock
                                 </a>
                             </div>
@@ -48,7 +49,6 @@ function loadDataTable() {
         ]
     });
 }
-
 function LockUnlock(id) {
     $.ajax({
         type: "POST",

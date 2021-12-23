@@ -131,23 +131,6 @@ namespace ClinicalScheduler.Controllers
             
             ModelState["schApptVM.SchAppt.text"].ValidationState = ModelValidationState.Valid;
 
-            //Validate schAppt.start_date and schAppt.end_date
-            if (schApptObj.SchAppt.start_date.TimeOfDay< providerScheduleProfileObj.ProviderScheduleProfile.StartTime ||
-                schApptObj.SchAppt.end_date.TimeOfDay < providerScheduleProfileObj.ProviderScheduleProfile.StartTime)
-            {
-                ModelState.SetModelValue("schApptVM.SchAppt.start_valid", new ValueProviderResult("false", CultureInfo.InvariantCulture));
-                schApptObj.SchAppt.start_valid = false;
-                ModelState["schApptVM.SchAppt.start_valid"].ValidationState = ModelValidationState.Unvalidated;
-
-            }
-            if (schApptObj.SchAppt.end_date.TimeOfDay > providerScheduleProfileObj.ProviderScheduleProfile.EndTime ||
-                schApptObj.SchAppt.start_date.TimeOfDay > providerScheduleProfileObj.ProviderScheduleProfile.EndTime)
-            {
-                ModelState.SetModelValue("schApptVM.SchAppt.end_valid", new ValueProviderResult("false", CultureInfo.InvariantCulture));
-                schApptObj.SchAppt.end_valid = false;
-
-            }
-
             if (ModelState.IsValid)
             {
                 if (schApptObj.SchAppt.Id == 0) {

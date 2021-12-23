@@ -11,7 +11,7 @@ namespace ClinicalScheduler.CustomValidation
 
             if (schAppt.start_valid == false || schAppt.end_valid == false) 
             {
-                return new ValidationResult("Appointment date and time is outside providers operational hours.");
+                return new ValidationResult("Appointment date and time is outside providers clinic hours.");
             };
 
             int[] minList = { 0, 15, 30, 45 };

@@ -9,6 +9,7 @@ $(document).ready(function () {
 })
 
 window.onload = function () {
+
     myStartDtTmpicker.addEventListener("change", function () {
         changeStartDateTime();
     });
@@ -20,6 +21,8 @@ function changeDateTime(d, h, m) {
     if (m == 60) { m = "00"; ++h % 24; }
 
     var newValue = d + "T" + h + ":" + m;
+
+    validateStartTime(h);
 
     return newValue;
 }
@@ -54,8 +57,25 @@ function changeEndDateTime(startDate) {
     }
     
     myEndDtTmpicker.value = dates + "T" + hours + ":" + minutes;
+    validateEndTime(h);
+
 }
 
+function validateStartTime(h) {
+    if (parseInt(h) < parseInt($('#start').val())) {
+        $("#startValid").prop("checked", false);
+    } else {
+        $("#startValid").prop("checked", true);
+    }
+}
+
+function validateEndTime(h) {
+    if (parseInt(h) < parseInt($('#end').val())) {
+        $("#endValid").prop("checked", false);
+    } else {
+        $("#endValid").prop("checked", true);
+    }
+}
 
 $("#apptType").change(function () {
     changeStartDateTime();

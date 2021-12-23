@@ -3,8 +3,8 @@
 <form method="post" asp-action="Upsert">
     <input asp-for="Location.Id" hidden />
     <div class="border p-3 mt-4 row">
-        <div class="row pb-2 border">
-            <h2 class="text-primary">@(Model.Location.Id!=0?"Update":"Create") Location</h2>
+        <div class="row pb-2">
+            <h4 class="text-primary">@(Model.Location.Id!=0?"Update":"Create") Location</h4>
             <hr/>
         </div>
         <div class="mb-3">

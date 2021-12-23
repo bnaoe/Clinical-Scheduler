@@ -44,7 +44,22 @@ namespace ClinicalScheduler.Controllers
                     };
                 }
             }
-            return Json(new { data = users });
+
+            var userList = users.Select(async i => new
+            {
+                i.Id,
+                i.FirstName,
+                i.MiddleName,
+                i.LastName,
+                i.Suffix,
+                i.Specialization,
+                i.Email,
+                i.Location,
+                i.Role,
+                i.LockoutEnd
+            });
+
+            return Json(new { userList });
         }
 
         //post
