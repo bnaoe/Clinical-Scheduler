@@ -25,6 +25,7 @@ namespace Scheduler.DataAccess.Repository
             Encounter = new EncounterRepository(_db);
             SchAppt = new SchApptRepository(_db);
             FinancialNumAlias = new FinancialNumAliasRepository(_db);
+            Document = new DocumentRepository(_db);
         }
 
         public ICodeSetRepository CodeSet { get; private set; }
@@ -48,6 +49,7 @@ namespace Scheduler.DataAccess.Repository
 
         public IFinancialNumAliasRepository FinancialNumAlias { get; private set; }
 
+        public IDocumentRepository Document { get; private set; }
         public void Save()
         {
             _db.SaveChanges();

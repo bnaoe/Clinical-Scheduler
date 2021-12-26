@@ -22,6 +22,7 @@ namespace Scheduler.DataAccess
         public DbSet<Encounter> Encounters { get; set; }
         public DbSet<SchAppt> SchAppts { get; set; }
         public DbSet<FinancialNumAlias> FinancialNumAliases { get; set; }
+        public DbSet<Document> Documents { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -61,6 +62,13 @@ namespace Scheduler.DataAccess
                 .WithMany()
                 .HasForeignKey(m => m.ProviderScheduleProfileId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder
+               .Entity<Document>()
+               .HasOne(m => m.DocType)
+               .WithMany()
+               .HasForeignKey(m => m.DocTypeId)
+               .OnDelete(DeleteBehavior.Restrict);
 
         }
     }

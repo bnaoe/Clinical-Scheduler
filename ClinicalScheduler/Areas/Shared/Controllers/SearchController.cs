@@ -63,6 +63,33 @@ namespace ClinicalScheduler.Controllers
             return Json(new { patientList });
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetAllDocuments(int encntrId)
+        {
+            IEnumerable<Document> docList;
+
+            docList = await _unitOfWork.Document.GetAllAsync(d => d.EncounterId == encntrId, orderBy: d=>d.OrderByDescending(x => x.CreateDateTime)
+            ,includeProperties: "ProviderUser,DocType,DocStatus") ;
+
+            var encounterDocList = docList.Select(async i => new
+            {
+                i.Id,
+                i.Title,
+                i.EncounterId,
+                i.CreateDateTime,
+                i.ModifiedDateTime,
+                i.ProviderUser.LastName,
+                i.ProviderUser.FirstName,
+                i.ProviderUser.MiddleName,
+                i.ProviderUser.Suffix,
+                i.DocType,
+                i.DocStatus,
+                i.InError
+            });
+            
+            return Json(new { encounterDocList });
+        }
+
         public async Task<IActionResult> GetAllEncounters(int id)
         {
             IEnumerable<Encounter> encounterSchApptList;
@@ -120,9 +147,6 @@ namespace ClinicalScheduler.Controllers
             var providerList = users.Where(u => u.Role == SD.Role_Physician||u.Role== SD.Role_NP);
             return Json(new { providerList });
         }
-
-
-
         #endregion
     }
 }

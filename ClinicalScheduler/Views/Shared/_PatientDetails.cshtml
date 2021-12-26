@@ -2,25 +2,16 @@
 
 <input asp-for="Patient.Id" id="patientId" name="patientId" hidden/>   
     <div class="border p-3 mt-4 row">
-        <div class="row pb-2">
-            <h4 class="text-primary">Patient Details</h4>
-            <label asp-for="Patient.Id" class="col-md-2 control-label">MRN: @(Model.Patient.Id)</label> 
-            <hr/>
+        <h4 class="text-primary">Patient Details</h4>
+        <hr/>
+         <div class="mb-3 col-4" >
+             <label asp-for="Patient.Id" class="row-md-2 control-label" style="font-size:20px;font-weight: bold">Patient Name: @(Model.Patient.LastName) , @(Model.Patient.FirstName) @(Model.Patient.MiddleName) </label> 
         </div>
-        <div class="mb-3 col-3" >
-            <label asp-for="Patient.FirstName">First Name</label>
-            <input asp-for="Patient.FirstName" class="form-control" readonly/>
+
+        <div class="mb-3 col-4">
+            <label asp-for="Patient.Id" class="row-md-2 control-label">MRN: @(Model.Patient.Id)</label> 
         </div>
-        <div class="mb-3 col-3">
-            <label asp-for="Patient.MiddleName">Middle Name</label>
-            <input asp-for="Patient.MiddleName" class="form-control" readonly/>
-        </div>
-        <div class="mb-3 col-3">
-           <label asp-for="Patient.LastName">Last Name</label>
-           <input asp-for="Patient.LastName" class="form-control" readonly/>
-        </div>
-        <div class="mb-3 col-3">
-            <label asp-for="Patient.BirthDate">Birth Date</label>
-            <input asp-for="Patient.BirthDate" class="form-control" readonly/>
+        <div class="mb-3 col-4">
+            <label asp-for="Patient.Id" class="row-md-2 control-label">DOB: @(Model.Patient.BirthDate.ToString("dd/MM/yyyy"))</label> 
         </div>
     </div>

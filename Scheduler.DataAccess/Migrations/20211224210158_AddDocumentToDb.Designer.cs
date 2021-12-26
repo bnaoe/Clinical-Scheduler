@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Scheduler.DataAccess;
 
@@ -11,9 +12,10 @@ using Scheduler.DataAccess;
 namespace ClinicalScheduler.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211224210158_AddDocumentToDb")]
+    partial class AddDocumentToDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -321,9 +323,6 @@ namespace ClinicalScheduler.Migrations
                     b.Property<bool?>("InError")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime?>("ModifiedDateTime")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Narrative")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -337,9 +336,6 @@ namespace ClinicalScheduler.Migrations
                     b.Property<int?>("PainScale")
                         .HasColumnType("int");
 
-                    b.Property<string>("ProviderUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int?>("PulseRate")
                         .HasColumnType("int");
 
@@ -348,10 +344,6 @@ namespace ClinicalScheduler.Migrations
 
                     b.Property<float?>("Temperature")
                         .HasColumnType("real");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<float?>("Weight")
                         .HasColumnType("real");
@@ -363,8 +355,6 @@ namespace ClinicalScheduler.Migrations
                     b.HasIndex("DocTypeId");
 
                     b.HasIndex("EncounterId");
-
-                    b.HasIndex("ProviderUserId");
 
                     b.ToTable("Documents");
                 });
@@ -841,17 +831,11 @@ namespace ClinicalScheduler.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Scheduler.Models.ApplicationUser", "ProviderUser")
-                        .WithMany()
-                        .HasForeignKey("ProviderUserId");
-
                     b.Navigation("DocStatus");
 
                     b.Navigation("DocType");
 
                     b.Navigation("Encounter");
-
-                    b.Navigation("ProviderUser");
                 });
 
             modelBuilder.Entity("Scheduler.Models.Encounter", b =>

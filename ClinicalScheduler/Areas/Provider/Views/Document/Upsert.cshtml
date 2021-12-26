@@ -1,0 +1,125 @@
+﻿@model Scheduler.Models.ViewModels.DocumentVM
+
+<div>
+   <partial name="_EncounterDetails" model="Model.EncounterVM"/>
+</div>
+
+<form method="post" asp-action="Upsert">
+    <input asp-for="Document.Id" hidden />
+    <input asp-for="Document.EncounterId" hidden />
+
+    <div class="border p-3 mt-4 row">
+        <div class="row pb-2">
+            <h4 class="text-primary">@(Model.Document.Id!=0?"Update":"Create") Document</h4>
+            <hr/>
+        </div>
+        <div class="mb-12">
+            <label asp-for="Document.Title">Title</label>
+            <input asp-for="Document.Title" class="form-control"/>
+            <span asp-validation-for="Document.Title" class="text-danger"></span>
+        </div>
+         <div class="mb-3 col-6">
+            <label asp-for="Document.DocTypeId">Document Type</label>
+            <select asp-for="Document.DocTypeId" asp-items="@Model.DocTypeList" class="form-select">
+                <option disabled selected>- Select Document Type -</option>
+            </select>
+            <span asp-validation-for ="Document.DocTypeId" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-6">
+            <label asp-for="Document.DocStatusId">Document Status</label>
+            <select asp-for="Document.DocStatusId" asp-items="@Model.DocStatusList" class="form-select">
+                <option disabled selected>- Select Document Status -</option>
+            </select>
+            <span asp-validation-for ="Document.DocStatusId" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-1">
+            <label asp-for="Document.Age">Age (yrs.)</label>
+            <input asp-for="Document.Age" id="age" class="form-control" readonly/>
+            <span asp-validation-for ="Document.Age" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-1">
+            <label asp-for="Document.HeightFt">Height Ft.(')</label>
+            <input asp-for="Document.HeightFt" id="heightFt" class="form-control"/>
+            <span asp-validation-for ="Document.HeightFt" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-1">
+            <label asp-for="Document.HeightIn">In.(")</label>
+            <input asp-for="Document.HeightIn" id="heightIn" class="form-control"/>
+            <span asp-validation-for ="Document.HeightIn" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-1">
+            <label asp-for="Document.Weight">Weight(lbs.)</label>
+            <input asp-for="Document.Weight" id="weight" class="form-control"/>
+            <span asp-validation-for ="Document.Weight" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-1">
+            <label asp-for="Document.BMI">BMI Score</label>
+            <input asp-for="Document.BMI" id="bmi" class="form-control" readonly/>
+            <span asp-validation-for ="Document.BMI" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-1">
+            <label>BMI Result</label>
+            <label id="bmiresult"></label>
+        </div>
+        <div class="mb-3 col-1">
+            <label asp-for="Document.Systolic">Systolic</label>
+            <input asp-for="Document.Systolic" id="systolic" class="form-control"/>
+            <span asp-validation-for ="Document.Systolic" class="text-danger"></span>
+        </div>/
+        <div class="mb-3 col-1">
+            <label asp-for="Document.Diastolic">Diastolic</label>
+            <input asp-for="Document.Diastolic" id="diastolic" class="form-control"/>
+            <span asp-validation-for ="Document.Diastolic" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-1">
+            <label asp-for="Document.PulseRate">Pulse Rate</label>
+            <input asp-for="Document.PulseRate" id="pulse" class="form-control"/>
+            <span asp-validation-for ="Document.PulseRate" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-1">
+            <label asp-for="Document.OxygenSaturation">O2 Sat.%</label>
+            <input asp-for="Document.OxygenSaturation" id="O2" class="form-control"/>
+            <span asp-validation-for ="Document.OxygenSaturation" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-1">
+            <label asp-for="Document.Temperature">Temp. (F)</label>
+            <input asp-for="Document.Temperature" id="temp" class="form-control"/>
+            <span asp-validation-for ="Document.Temperature" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-2">
+            <label asp-for="Document.PainScale">Pain Scale</label>
+            <input asp-for="Document.PainScale" class="form-control"/>
+            <span asp-validation-for ="Document.PainScale" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-10">
+            <label asp-for="Document.PainLocation">Pain Location</label>
+            <input asp-for="Document.PainLocation" class="form-control"/>
+            <span asp-validation-for ="Document.PainLocation" class="text-danger"></span>
+        </div>
+         <div class="mb-3">
+            <label asp-for="Document.Narrative">Narrative</label>
+            <textarea asp-for="Document.Narrative" rows="10" class="form-control"></textarea>
+            <span asp-validation-for ="Document.Narrative" class="text-danger"></span>
+        </div>
+        <div class="col-12">
+			<button type="submit" class="btn btn-primary" style="width:150px">@(Model.Document.Id!=0?"Update":"Create")</button>
+            <a asp-controller="Insurance" asp-action="Index" class="btn btn-secondary" style="width:150px">
+                Back to list
+            </a>
+        </div>
+    </div>
+</form>
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial"/>
+    }
+    <script>
+    tinymce.init({
+      selector: 'textarea',
+      plugins: 'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+      toolbar_mode: 'floating',
+    });
+  </script>
+      <script src="~/js/ClinicalParam.js"></script>
+
+}

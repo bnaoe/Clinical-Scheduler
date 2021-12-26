@@ -201,7 +201,7 @@ function GetEncounters(id) {
                         <td><div class="w-100 btn-group" role="group">
                         <a href="/Scheduler/ScheduleAppointment/Upsert?schApptId=${data.result.schApptId}&enctrId=${data.result.id}&patientId=${data.result.patientId}&providerScheduleProfileId=${data.result.providerScheduleProfileId}" class="btn btn-primary small mx-2">
                         <i class="bi bi-pencil-square"></i> Edit</a>
-                        <a href="" class="btn btn-info small mx-2">
+                        <a href="/Provider/Chart/EncounterSchAppt?enctrId=${data.result.id}" class="btn btn-info small mx-2">
                         <i class="bi bi-file-earmark-text"></i> chart</a>
                 </div></td>
                     `

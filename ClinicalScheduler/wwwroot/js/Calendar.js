@@ -15,6 +15,7 @@ $(document).ready(function () {
 })
 
 function loadCalendar() {
+       
         var format = scheduler.date.date_to_str("%H:%i");
 
         // default background image is 44px height, set hour size in order to align the timescale with the background
@@ -28,16 +29,26 @@ function loadCalendar() {
             }
             return html;
         }
-
+        
         scheduler.config.readonly = true;
         scheduler.config.limit_time_select = true;
         scheduler.config.first_hour = start;
         scheduler.config.last_hour = end;
         scheduler.config.max_month_events = 3;
+
+
         scheduler.config.xml_date = "%Y-%m-%d %H:%i";
         scheduler.init('scheduler_here', new Date(), "week");
         scheduler.load("/Scheduler/ScheduleAppointment/GetProviderAppointments?providerId=" + providerId, "json");
-
+    //marks and blocks dates
+    // Setting up holidays
+    //scheduler.addMarkedTimespan({
+    //    days: [0, 2, 6],    
+    //    zones: "fullday",       // marks the entire day
+    //    type: "dhx_time_block",
+    //    css: "blue_section" // the name of applied CSS class
+    //});
+    //scheduler.updateView();
 };
 
 

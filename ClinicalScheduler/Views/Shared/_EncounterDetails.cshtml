@@ -1,0 +1,47 @@
+﻿@model Scheduler.Models.ViewModels.EncounterVM
+
+<input asp-for="Encounter.PatientId" id="patientId" name="patientId" hidden/>   
+<input asp-for="Encounter.Id" id="encntrId" name="encntrId" hidden/>   
+<input asp-for="Encounter.Patient.BirthDate" id="dob" name="dob" hidden/>   
+<input asp-for="Encounter.AdmitDateTime" id="admitdttm" name="admitdttm" hidden/>   
+
+    <div class="border p-3 mt-4 row">
+        <h4 class="text-primary">Encounter Details</h4>
+        <hr/>
+         <div class="mb-1 col-4" >
+            <label class="row-md-2 control-label" style="font-size:20px;font-weight: bold">Patient: @(Model.Encounter.Patient.LastName), @(Model. Encounter.Patient.FirstName) @(Model.Encounter.Patient.MiddleName) </label> 
+        </div>
+         <div class="mb-1 col-2">
+            <label class="row-md-2 control-label"  style="font-weight: bold">FIN: </label> @(Model.Encounter.FinancialNumAlias.Fin)
+        </div>
+        <div class="mb-1 col-2">
+            <label class="row-md-2 control-label" style="font-weight: bold">MRN: </label> @(Model.Encounter.Patient.Id) 
+        </div>
+        <div class="mb-1 col-2">
+            <label class="row-md-2 control-label" style="font-weight: bold">DOB: </label> @(Model.Encounter.Patient.BirthDate.ToString("dd/MM/yyyy"))
+        </div>
+
+
+
+        <div class="mb-1 col-3">
+            <label class="row-md-2 control-label" style="font-weight: bold">Admit Dt/Tm: </label> @(Model.Encounter.AdmitDateTime)
+        </div>
+        <div class="mb-1 col-3">
+            <label class="row-md-2 control-label" style="font-weight: bold">Dsch Dt/Tm: </label> @(Model.Encounter.DschDateTime) 
+        </div>
+        <div class="mb-1 col-3">
+            <label class="row-md-2 control-label" style="font-weight: bold">Apptointment Type: </label> @(Model.Encounter.SchAppt.ApptType.Name)
+        </div>
+        <div class="mb-1 col-3">
+            <label class="row-md-2 control-label" style="font-weight: bold">Status: </label> @(Model.Encounter.SchAppt.ApptStatus.Name) 
+        </div>
+
+        <div class="mb-1 col-4">
+            <label class="row-md-2 control-label" style="font-weight: bold">Provider: </label> @(Model.Encounter.Location.Name) 
+        </div>
+
+         <div class="mb-1 col-4">
+            <label class="row-md-2 control-label" style="font-weight: bold">Provider: </label> 
+             @(Model.Encounter.ProviderUser.LastName), @(Model.Encounter.ProviderUser.FirstName) @(Model.Encounter.ProviderUser.MiddleName) @(Model.Encounter.ProviderUser.Suffix)
+        </div>
+    </div>
