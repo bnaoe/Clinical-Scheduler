@@ -32,8 +32,7 @@ namespace ClinicalScheduler.Controllers
             var DocTypeCSId = await _unitOfWork.CodeSet.GetFirstOrDefaultAsync(c => c.Name == SD.DocType);
             var DocTypeCVs = await _unitOfWork.CodeValue.GetAllAsync(c => c.CodeSetId == DocTypeCSId.Id && c.IsDeleted == false);
 
-            var DocStatusCSId = await _unitOfWork.CodeSet.GetFirstOrDefaultAsync(c => c.Name == SD.DocStatus);
-            var DocStatusCVs = await _unitOfWork.CodeValue.GetAllAsync(c => c.CodeSetId == DocStatusCSId.Id && c.IsDeleted == false);
+            var DocStatusCV = await _unitOfWork.CodeValue.GetFirstOrDefaultAsync(c => c.Name == SD.InProgressDocStatus && c.IsDeleted == false);
 
             DocumentVM documentVM = new()
             {
@@ -46,11 +45,7 @@ namespace ClinicalScheduler.Controllers
                     Text = d.Name,
                     Value = d.Id.ToString()
                 }),
-                DocStatusList = DocStatusCVs.Select(d => new SelectListItem
-                {
-                    Text = d.Name,
-                    Value = d.Id.ToString()
-                }),
+                DocStatus = DocStatusCV,
                 EncounterVM = new()
                 {
                     Encounter = await _unitOfWork.Encounter.GetFirstOrDefaultAsync(e=>e.Id == encntrId, includeProperties: "Patient,SchAppt.ApptType,SchAppt.ApptStatus,FinancialNumAlias,Insurance,ProviderUser,Location")
@@ -64,7 +59,7 @@ namespace ClinicalScheduler.Controllers
             } else
             {
                 //Update 
-                documentVM.Document = await _unitOfWork.Document.GetFirstOrDefaultAsync(d => d.Id == docId);
+                documentVM.Document = await _unitOfWork.Document.GetFirstOrDefaultAsync(d => d.Id == docId,includeProperties: "DocStatus");
                 documentVM.Document.ProviderUserId = _userManager.GetUserId(User);
                 return View(documentVM);
             }
@@ -73,7 +68,7 @@ namespace ClinicalScheduler.Controllers
         //post
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Upsert(DocumentVM obj)
+        public async Task<IActionResult> Upsert(DocumentVM obj,string? save, string? final)
         {
             if (ModelState.IsValid)
             {
@@ -87,14 +82,13 @@ namespace ClinicalScheduler.Controllers
                 }
 
                 _unitOfWork.Save();
-                return RedirectToAction("EncounterSchAppt", "Chart", new { id = obj.Document.EncounterId, Area = "Provider" });
+                return RedirectToAction("EncounterSchAppt", "Chart", new { enctrId = obj.Document.EncounterId, Area = "Provider" });
 
             }
             return View(obj);
         }
 
         #region API CALLS
-        [HttpGet]
         [HttpGet]
         public async Task<IActionResult> GetAllDocuments(int encntrId)
         {

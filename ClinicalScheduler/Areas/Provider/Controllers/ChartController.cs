@@ -20,10 +20,16 @@ namespace ClinicalScheduler.Areas.Provider.Controllers
         //get
         public async Task<IActionResult> EncounterSchAppt(int enctrId)
         {
+            IEnumerable<Document> docList;
+
+            docList = await _unitOfWork.Document.GetAllAsync(d => d.EncounterId == enctrId, orderBy: d => d.OrderByDescending(x => x.CreateDateTime)
+            , includeProperties: "ProviderUser,DocType,DocStatus");
 
             EncounterVM encounterVM = new()
             {
-                Encounter = await _unitOfWork.Encounter.GetFirstOrDefaultAsync(e => e.Id == enctrId, includeProperties: "Patient,SchAppt.ApptType,SchAppt.ApptStatus,FinancialNumAlias,Insurance,ProviderUser,Location")
+                Encounter = await _unitOfWork.Encounter.GetFirstOrDefaultAsync(e => e.Id == enctrId, includeProperties: "Patient,SchAppt.ApptType,SchAppt.ApptStatus,FinancialNumAlias,Insurance,ProviderUser,Location"),
+                LastDocument = docList.FirstOrDefault(),
+
             };
 
             return View(encounterVM);

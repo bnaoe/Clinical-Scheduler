@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Scheduler.Models
 {
-    public class CollectionClassScheduleProfile
+    public class CcScheduleProfile
     {
         public ApplicationUser providerUser { get; set; }
         public ProviderScheduleProfileVM providerScheduleProfileVM { get; set; } 

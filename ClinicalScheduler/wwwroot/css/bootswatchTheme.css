@@ -12649,3 +12649,9 @@ fieldset:disabled .btn {
 .swal-wide {
     width: 1500px !important;
 }
+
+#hidden_lastdoc {
+    height: 0;
+    overflow: hidden;
+    transition: height 0.8s ease;
+}

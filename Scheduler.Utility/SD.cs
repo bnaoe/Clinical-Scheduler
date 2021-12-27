@@ -13,6 +13,8 @@ namespace Scheduler.Utility
         public const string ApptStatus = "Appointment Status";
         public const string DocType = "Document Type";
         public const string DocStatus = "Document Status";
+        public const string FinalDocStatus = "Final (Authorized)";
+        public const string InProgressDocStatus = "In-Progress";
 
         public const string Role_Admin = "Admin";
         public const string Role_Scheduler = "Resgistration";

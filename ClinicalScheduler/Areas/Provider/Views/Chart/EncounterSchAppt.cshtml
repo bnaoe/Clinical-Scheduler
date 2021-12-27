@@ -4,7 +4,85 @@
 <div>
    <partial name="_EncounterDetails" model="Model"/>
 </div>
+<div class="mt-3">
+    <button id="last_doc" class="btn btn-warning">Show last documentation</button>
+    <button id="medications" class="btn btn-success">Show Medications</button>
+</div>
 
+<div class="border mt-4 row" id="hidden_lastdoc">
+        <div class="row pb-2">
+            <h4 class="text-primary">Your Last Documentation</h4>
+            <hr/>
+        </div>
+        <div class="mb-12">
+            <label asp-for="LastDocument.Title">Title</label>
+            <input asp-for="LastDocument.Title" class="form-control"/>
+        </div>
+         <div class="mb-3 col-6">
+            <label asp-for="LastDocument.DocType.Name">Document Type</label>
+            <input asp-for="LastDocument.DocType.Name" class="form-control"/>
+        </div>
+         <div class="mb-3 col-6">
+            <label asp-for="LastDocument.DocStatus.Name">Document Status</label>
+            <input asp-for="LastDocument.DocStatus.Name" class="form-control"/>
+        </div>
+        <div class="mb-3 col-1">
+            <label asp-for="LastDocument.Age">Age (yrs.)</label>
+            <input asp-for="LastDocument.Age" id="age" class="form-control" readonly/>
+        </div>
+        <div class="mb-3 col-1">
+            <label asp-for="LastDocument.HeightFt">Height Ft.(')</label>
+            <input asp-for="LastDocument.HeightFt" id="heightFt" class="form-control"/>
+        </div>
+        <div class="mb-3 col-1">
+            <label asp-for="LastDocument.HeightIn">In.(")</label>
+            <input asp-for="LastDocument.HeightIn" id="heightIn" class="form-control"/>
+        </div>
+        <div class="mb-3 col-1">
+            <label asp-for="LastDocument.Weight">Weight(lbs.)</label>
+            <input asp-for="LastDocument.Weight" id="weight" class="form-control"/>
+        </div>
+        <div class="mb-3 col-1">
+            <label asp-for="LastDocument.BMI">BMI Score</label>
+            <input asp-for="LastDocument.BMI" id="bmi" class="form-control" readonly/>
+        </div>
+        <div class="mb-3 col-1">
+            <label>BMI Result</label>
+            <label id="bmiresult"></label>
+        </div>
+        <div class="mb-3 col-1">
+            <label asp-for="LastDocument.Systolic">Systolic</label>
+            <input asp-for="LastDocument.Systolic" id="systolic" class="form-control"/>
+        </div>
+        <div class="mb-3 col-1">
+            <label asp-for="LastDocument.Diastolic">Diastolic</label>
+            <input asp-for="LastDocument.Diastolic" id="diastolic" class="form-control"/>
+        </div>
+        <div class="mb-3 col-1">
+            <label asp-for="LastDocument.PulseRate">Pulse Rate</label>
+            <input asp-for="LastDocument.PulseRate" id="pulse" class="form-control"/>
+        </div>
+        <div class="mb-3 col-1">
+            <label asp-for="LastDocument.OxygenSaturation">O2 Sat.%</label>
+            <input asp-for="LastDocument.OxygenSaturation" id="O2" class="form-control"/>
+        </div>
+        <div class="mb-3 col-1">
+            <label asp-for="LastDocument.Temperature">Temp. (F)</label>
+            <input asp-for="LastDocument.Temperature" id="temp" class="form-control"/>
+        </div>
+        <div class="mb-3 col-2">
+            <label asp-for="LastDocument.PainScale">Pain Scale</label>
+            <input asp-for="LastDocument.PainScale" class="form-control"/>
+        </div>
+        <div class="mb-3 col-10">
+            <label asp-for="LastDocument.PainLocation">Pain Location</label>
+            <input asp-for="LastDocument.PainLocation" class="form-control"/>
+        </div>
+         <div class="mb-3">
+            <label asp-for="LastDocument.Narrative">Narrative</label>
+            <textarea asp-for="LastDocument.Narrative" rows="10" class="form-control"></textarea>
+        </div>
+    </div>
 
 <div class="container p-3">
     <div class="row pt-4">
@@ -68,4 +146,5 @@
 </div>
 @section Scripts{
     <script src="~/js/EncounterDetails.js"></script>
+    <script src="~/js/ClinicalParam.js"></script>
 }

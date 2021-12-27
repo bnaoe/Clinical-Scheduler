@@ -131,6 +131,12 @@ namespace ClinicalScheduler.Controllers
             
             ModelState["schApptVM.SchAppt.text"].ValidationState = ModelValidationState.Valid;
 
+            if (encntrObj.Encounter.InsuranceId==0)
+            {
+                ModelState["encounterVM.Encounter.Insurance.Name"].ValidationState = ModelValidationState.Invalid;
+                ModelState.AddModelError(string.Empty, "Fill in");
+            }
+
             if (ModelState.IsValid)
             {
                 if (schApptObj.SchAppt.Id == 0) {

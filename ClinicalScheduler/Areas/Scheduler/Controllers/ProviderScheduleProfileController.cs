@@ -43,7 +43,7 @@ namespace ClinicalScheduler.Controllers
 
             ApplicationUser providerUser = await _unitOfWork.ApplicationUser.GetFirstOrDefaultAsync(a => a.Id == userId);
             providerUser.Role = _userManager.GetRolesAsync(providerUser).Result.FirstOrDefault();
-            CollectionClassScheduleProfile collectionModel = new CollectionClassScheduleProfile();
+            CcScheduleProfile collectionModel = new CcScheduleProfile();
             collectionModel.providerUser = providerUser;
 
             if (id==null || id ==0)
@@ -66,7 +66,7 @@ namespace ClinicalScheduler.Controllers
         //post
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Upsert(CollectionClassScheduleProfile obj)
+        public async Task<IActionResult> Upsert(CcScheduleProfile obj)
         {
             if (ModelState.IsValid)
             {

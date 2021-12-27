@@ -78,3 +78,16 @@ function loadDataTable() {
     });
 }
 
+document.getElementById('last_doc').onclick = function () {
+    this.__toggle = !this.__toggle;
+    var target = document.getElementById('hidden_lastdoc');
+    if (this.__toggle) {
+        target.style.height = target.scrollHeight + "px";
+        this.firstChild.nodeValue = "Hide last document";
+    }
+    else {
+        target.style.height = 0;
+        this.firstChild.nodeValue = "Show last document";
+    }
+}
+

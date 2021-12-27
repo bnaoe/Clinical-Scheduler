@@ -7,6 +7,7 @@
 <form method="post" asp-action="Upsert">
     <input asp-for="Document.Id" hidden />
     <input asp-for="Document.EncounterId" hidden />
+    <input asp-for="Document.DocStatusId" hidden/>
 
     <div class="border p-3 mt-4 row">
         <div class="row pb-2">
@@ -26,11 +27,8 @@
             <span asp-validation-for ="Document.DocTypeId" class="text-danger"></span>
         </div>
         <div class="mb-3 col-6">
-            <label asp-for="Document.DocStatusId">Document Status</label>
-            <select asp-for="Document.DocStatusId" asp-items="@Model.DocStatusList" class="form-select">
-                <option disabled selected>- Select Document Status -</option>
-            </select>
-            <span asp-validation-for ="Document.DocStatusId" class="text-danger"></span>
+            <label asp-for="Document.DocStatus.Name">Document Status</label>
+            <input asp-for="Document.DocStatus.Name" class="form-control"/>
         </div>
         <div class="mb-3 col-1">
             <label asp-for="Document.Age">Age (yrs.)</label>
@@ -102,7 +100,8 @@
             <span asp-validation-for ="Document.Narrative" class="text-danger"></span>
         </div>
         <div class="col-12">
-			<button type="submit" class="btn btn-primary" style="width:150px">@(Model.Document.Id!=0?"Update":"Create")</button>
+			<button type="submit" class="btn btn-primary" style="width:150px" name="save" value="Save">@(Model.Document.Id!=0?"Update":"Create")</button>
+            <button type="submit" class="btn btn-success" style="width:150px" name="final" value="Final">Final</button>
             <a asp-controller="Insurance" asp-action="Index" class="btn btn-secondary" style="width:150px">
                 Back to list
             </a>

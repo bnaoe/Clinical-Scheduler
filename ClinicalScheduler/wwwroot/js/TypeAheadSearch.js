@@ -10,6 +10,10 @@ $("#select").typeahead({
             type: "GET",
             contentType: "json",
             success: function (data) {
+                if (data.insuranceList.length == 0) {
+                    $('#select').val('');
+                    $('#ins').text('Not Found');
+                }
                 items = [];
                 map = {};
                 $.each(data.insuranceList, function (i, item) {
@@ -17,6 +21,7 @@ $("#select").typeahead({
                     var name = data.insuranceList[i].name;
                     map[name] = { id: id, name: name };
                     items.push(name);
+
                 });
                 response(items);
             },

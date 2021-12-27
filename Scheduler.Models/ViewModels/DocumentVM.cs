@@ -16,7 +16,7 @@ namespace Scheduler.Models.ViewModels
         public IEnumerable<SelectListItem> DocTypeList { get; set; }
 
         [ValidateNever]
-        public IEnumerable<SelectListItem> DocStatusList { get; set; }
+        public CodeValue DocStatus { get; set; }
 
         [ValidateNever]
         public EncounterVM EncounterVM { get; set; }

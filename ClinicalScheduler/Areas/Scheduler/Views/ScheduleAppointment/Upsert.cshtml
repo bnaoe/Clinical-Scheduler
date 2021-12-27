@@ -53,7 +53,8 @@
     <input asp-for="patientVM.Patient.BirthDate" hidden/>
     <input asp-for="schApptVM.SchAppt.start_valid" id="startValid" hidden/>
     <input asp-for="schApptVM.SchAppt.end_valid" id="endValid" hidden/>
-
+     <input asp-for="encounterVM.Encounter.InsuranceId" id="update" class="form-control"/>
+            <span asp-validation-for ="encounterVM.Encounter.Insurance.Id" class="text-danger"></span>
 
     <div class="border p-3 mt-4 row">
             <h4 class="text-primary">@(Model.schApptVM.SchAppt.Id!=0?"Update":"Create") Appointment</h4>
@@ -92,15 +93,10 @@
             <input asp-for="encounterVM.Encounter.ReasonForVisit" class="form-control"/>
             <span asp-validation-for ="encounterVM.Encounter.ReasonForVisit" class="text-danger"></span>
         </div>
-        <div class="mb-3 col-4">
+        <div class="mb-3 col-6">
             <label asp-for="encounterVM.Encounter.Insurance.Name">Insurance Name</label>
             <input asp-for="encounterVM.Encounter.Insurance.Name" type="text" id="select" class="form-control"  placeholder="Type Insruance Name to search" autocomplete="off"/>
-            <span asp-validation-for ="encounterVM.Encounter.Insurance.Name" class="text-danger"></span>
-        </div>
-        <div class="mb-3 col-2">
-            <input asp-for="encounterVM.Encounter.InsuranceId" id="update" class="form-control"/>
-            <span asp-validation-for ="encounterVM.Encounter.Insurance.Id" class="text-danger"></span>
-
+            <span asp-validation-for ="encounterVM.Encounter.Insurance.Name" id="ins" class="text-danger"></span>
         </div>
          <div class="mb-3 col-3">
             <label asp-for="encounterVM.Encounter.HealthPlanName">Health Plan Name</label>

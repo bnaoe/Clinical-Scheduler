@@ -25,5 +25,7 @@ namespace Scheduler.Models.ViewModels
         [ValidateNever]
         public Location Location { get; set; }
 
+        [ValidateNever]
+        public Document LastDocument { get; set; }
     }
 }
