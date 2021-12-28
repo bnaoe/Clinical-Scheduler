@@ -134,7 +134,7 @@ namespace ClinicalScheduler.Controllers
             if (encntrObj.Encounter.InsuranceId==0)
             {
                 ModelState["encounterVM.Encounter.Insurance.Name"].ValidationState = ModelValidationState.Invalid;
-                ModelState.AddModelError(string.Empty, "Fill in");
+                ModelState.AddModelError("encounterVM.Encounter.Insurance.Name", "Insurance Not Found");
             }
 
             if (ModelState.IsValid)

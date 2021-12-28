@@ -45,7 +45,6 @@ namespace ClinicalScheduler.Controllers
                     Text = d.Name,
                     Value = d.Id.ToString()
                 }),
-                DocStatus = DocStatusCV,
                 EncounterVM = new()
                 {
                     Encounter = await _unitOfWork.Encounter.GetFirstOrDefaultAsync(e=>e.Id == encntrId, includeProperties: "Patient,SchAppt.ApptType,SchAppt.ApptStatus,FinancialNumAlias,Insurance,ProviderUser,Location")
@@ -55,12 +54,15 @@ namespace ClinicalScheduler.Controllers
             {
                 //Create
                 documentVM.Document.ProviderUserId = _userManager.GetUserId(User);
+                documentVM.Document.DocStatusId = DocStatusCV.Id;
+                documentVM.Document.DocStatus = DocStatusCV;
                 return View(documentVM);
             } else
             {
                 //Update 
                 documentVM.Document = await _unitOfWork.Document.GetFirstOrDefaultAsync(d => d.Id == docId,includeProperties: "DocStatus");
                 documentVM.Document.ProviderUserId = _userManager.GetUserId(User);
+                documentVM.Document.ModifiedDateTime = DateTime.Now;
                 return View(documentVM);
             }
         }
@@ -72,6 +74,13 @@ namespace ClinicalScheduler.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (!string.IsNullOrEmpty(final))
+                {
+                    var DocStatusCV = await _unitOfWork.CodeValue.GetFirstOrDefaultAsync(c => c.Name == SD.FinalDocStatus && c.IsDeleted == false);
+                    obj.Document.DocStatusId = DocStatusCV.Id;
+                    obj.Document.DocStatus = DocStatusCV;
+                }
+
                 if (obj.Document.Id==0) {
                     await _unitOfWork.Document.AddAsync(obj.Document);
                     TempData["Success"] = "Added successfully";

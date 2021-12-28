@@ -28,7 +28,7 @@
         </div>
         <div class="mb-3 col-6">
             <label asp-for="Document.DocStatus.Name">Document Status</label>
-            <input asp-for="Document.DocStatus.Name" class="form-control"/>
+            <input asp-for="Document.DocStatus.Name" class="form-control" readonly/>
         </div>
         <div class="mb-3 col-1">
             <label asp-for="Document.Age">Age (yrs.)</label>
@@ -101,7 +101,7 @@
         </div>
         <div class="col-12">
 			<button type="submit" class="btn btn-primary" style="width:150px" name="save" value="Save">@(Model.Document.Id!=0?"Update":"Create")</button>
-            <button type="submit" class="btn btn-success" style="width:150px" name="final" value="Final">Final</button>
+            <button type="submit" class="btn btn-success" style="width:150px" name="final" value="Final">Final & Save</button>
             <a asp-controller="Insurance" asp-action="Index" class="btn btn-secondary" style="width:150px">
                 Back to list
             </a>

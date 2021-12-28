@@ -118,7 +118,7 @@ function loadDataTable() {
 
 
 function encounterTbl_Header() {
-    return '<table id="encounterTbl" class="table table-bordered table-striped" style="width:100%">' +
+    return '<table id="encounterTbl" class="display compact nowrap" style="width:100%">' +
            ' <thead>' +
            '     <tr>' +
            '         <th>schApptId</th>' +

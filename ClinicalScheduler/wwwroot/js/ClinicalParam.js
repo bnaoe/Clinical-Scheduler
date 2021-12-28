@@ -1,7 +1,7 @@
 ﻿var dob = $('#dob').val();
 var admitDate = $('#admitdttm').val();
 $(document).ready(function () {
-    if ($('#age').val() == 0) {
+    if ($('#age').val() == '0') {
         getAge(dob);
     }
     showbmi();
@@ -70,8 +70,13 @@ $(function () {
     }).triggerHandler('change');
 });
 function getAge(d) {
+    var admitdttm;
     d = new Date(d);
-    var admitdttm = new Date(admitDate);
+    if (admitdttm != '') {
+        admitdttm = new Date(admitDate);
+    } else {
+        admitdttm = new Date();
+    }
     $('#age').val(Math.floor((admitdttm - d) / (365.25 * 24 * 60 * 60 * 1000)));
 }
 

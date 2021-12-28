@@ -23,6 +23,7 @@ namespace Scheduler.DataAccess
         public DbSet<SchAppt> SchAppts { get; set; }
         public DbSet<FinancialNumAlias> FinancialNumAliases { get; set; }
         public DbSet<Document> Documents { get; set; }
+        public DbSet<Order> Orders { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
