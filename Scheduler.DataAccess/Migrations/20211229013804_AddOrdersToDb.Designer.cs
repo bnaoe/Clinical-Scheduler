@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Scheduler.DataAccess;
 
@@ -11,9 +12,10 @@ using Scheduler.DataAccess;
 namespace ClinicalScheduler.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211229013804_AddOrdersToDb")]
+    partial class AddOrdersToDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -582,9 +584,6 @@ namespace ClinicalScheduler.Migrations
                     b.Property<string>("OrderingUserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("PatientId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AdminFreqId");
@@ -602,8 +601,6 @@ namespace ClinicalScheduler.Migrations
                     b.HasIndex("OrderTypeId");
 
                     b.HasIndex("OrderingUserId");
-
-                    b.HasIndex("PatientId");
 
                     b.ToTable("Orders");
                 });
@@ -1022,12 +1019,6 @@ namespace ClinicalScheduler.Migrations
                         .WithMany()
                         .HasForeignKey("OrderingUserId");
 
-                    b.HasOne("Scheduler.Models.Patient", "Patient")
-                        .WithMany()
-                        .HasForeignKey("PatientId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.Navigation("AdminFreq");
 
                     b.Navigation("AdminRoute");
@@ -1043,8 +1034,6 @@ namespace ClinicalScheduler.Migrations
                     b.Navigation("OrderType");
 
                     b.Navigation("OrderingUser");
-
-                    b.Navigation("Patient");
                 });
 
             modelBuilder.Entity("Scheduler.Models.OrderCatalog", b =>

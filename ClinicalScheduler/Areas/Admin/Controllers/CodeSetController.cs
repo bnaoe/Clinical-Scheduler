@@ -150,7 +150,7 @@ namespace ClinicalScheduler.Controllers
         }
 
         //post
-        [HttpDelete]
+        [HttpPost]
         public async Task<IActionResult> Delete(int? id)
         {
 

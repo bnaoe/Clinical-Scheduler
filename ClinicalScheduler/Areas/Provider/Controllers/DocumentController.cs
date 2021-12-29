@@ -125,7 +125,7 @@ namespace ClinicalScheduler.Controllers
         }
 
         //post
-        [HttpDelete]
+        [HttpPost]
         public async Task<IActionResult> InError(int? id)
         {
 

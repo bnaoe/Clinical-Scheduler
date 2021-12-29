@@ -71,6 +71,48 @@ namespace Scheduler.DataAccess
                .HasForeignKey(m => m.DocTypeId)
                .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder
+               .Entity<Order>()
+               .HasOne(m => m.AdminRoute)
+               .WithMany()
+               .HasForeignKey(m => m.AdminRouteId)
+               .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder
+               .Entity<Order>()
+               .HasOne(m => m.AdminTime)
+               .WithMany()
+               .HasForeignKey(m => m.AdminTimeId)
+               .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder
+               .Entity<Order>()
+               .HasOne(m => m.OrderStatus)
+               .WithMany()
+               .HasForeignKey(m => m.OrderStatusId)
+               .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder
+               .Entity<Order>()
+               .HasOne(m => m.OrderType)
+               .WithMany()
+               .HasForeignKey(m => m.OrderTypeId)
+               .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder
+               .Entity<Order>()
+               .HasOne(m => m.OrderCatalog)
+               .WithMany()
+               .HasForeignKey(m => m.OrderCatalogId)
+               .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder
+               .Entity<Order>()
+               .HasOne(m => m.Patient)
+               .WithMany()
+               .HasForeignKey(m => m.PatientId)
+               .OnDelete(DeleteBehavior.Restrict);
+
         }
     }
 }

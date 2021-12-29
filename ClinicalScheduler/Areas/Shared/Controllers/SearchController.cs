@@ -64,6 +64,33 @@ namespace ClinicalScheduler.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> GetAllOrders(int encntrId)
+        {
+            IEnumerable<Order> orderList;
+
+            orderList = await _unitOfWork.Order.GetAllAsync(o => o.EncounterId == encntrId, orderBy: o => o.OrderByDescending(x => x.OrderingDtTm)
+            , includeProperties: "OrderingUser,OrderType,OrderStatus,OrderCatalog");
+
+            var encounterOrderList = orderList.Select(async i => new
+            {
+                i.Id,
+                i.OrderingDtTm,
+                OrderTypeName = i.OrderType.Name,
+                i.OrderCatalog.Name,
+                i.OrderDetails,
+                i.OrderingUser.LastName,
+                i.OrderingUser.FirstName,
+                i.OrderingUser.MiddleName,
+                i.OrderingUser.Suffix,
+                OrderStatusName = i.OrderStatus.Name,
+                i.IsActive
+            });
+
+            return Json(new { encounterOrderList });
+        }
+
+
+        [HttpGet]
         public async Task<IActionResult> GetAllDocuments(int encntrId)
         {
             IEnumerable<Document> docList;

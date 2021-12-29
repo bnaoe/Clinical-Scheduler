@@ -15,6 +15,10 @@ namespace Scheduler.Utility
         public const string DocStatus = "Document Status";
         public const string FinalDocStatus = "Final (Authorized)";
         public const string InProgressDocStatus = "In-Progress";
+        public const string AdminRoute = "Administration Route";
+        public const string AdminFreq = "Administration Frequency";
+        public const string AdminTime = "Administration Time";
+        public const string OrdetStatus = "Order Status";
 
         public const string Role_Admin = "Admin";
         public const string Role_Scheduler = "Resgistration";

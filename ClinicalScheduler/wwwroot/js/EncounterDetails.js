@@ -6,9 +6,8 @@ $(document).ready(function () {
 });
 
 
-
 function loadDataTable() {
-    dataTable = $('#tblData').DataTable({
+    dataTable = $('#tblDocumentData').DataTable({
         "responsive": true,
         "ajax": {
             "url": "/Shared/Search/GetAllDocuments?encntrId=" + encntrId,
@@ -76,6 +75,52 @@ function loadDataTable() {
             }
         ]
     });
+    dataTable = $('#tblOrderData').DataTable({
+        "responsive": true,
+        "ajax": {
+            "url": "/Shared/Search/GetAllOrders?encntrId=" + encntrId,
+            "dataSrc": "encounterOrderList"
+        },
+        "columns": [
+            { "data": "result.id", "visible": false },
+            { "data": "result.orderTypeName", "width": "10%" },
+            {
+                "data": "result.orderingDtTm",
+                "render": function (data) {
+                    newData = moment(data).format('MM/DD/YYYY h:mm a')
+                    return newData;
+                },
+                "width": "15%"
+            },
+            { "data": "result.name", "width": "20%" },
+            { "data": "result.orderDetails", "width": "20%" },
+            {
+                "data": {
+                    lastName: "result.lastName", firstName: "result.firstName", middleName: "result.middleName",
+                    suffix: "result.suffix"
+                },
+                "render": function (data) {
+                    return data.result.lastName + ', ' + data.result.firstName + ' ' + data.result.middleName + ' ' + data.result.suffix
+                },
+                "width": "20%"
+            },
+            { "data": "result.orderStatusName", "width": "10%" },
+            {
+                "data": "result.inActive",
+                "render": function (data) {
+                    if (data) {
+                        return `<input type="checkbox" disabled checked/>`
+                    }
+                    else {
+                        return `<input type="checkbox" disabled/>`
+                    }
+                },
+                "width": "5%",
+                "className": "text-center"
+            }
+        ]
+    });
+
 }
 
 document.getElementById('last_doc').onclick = function () {

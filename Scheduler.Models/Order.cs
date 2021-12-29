@@ -20,7 +20,12 @@ namespace Scheduler.Models
 
         public string Narrative { get; set; }
 
-        public bool IsActive { get; set; } = true;
+        [Required]
+        [ForeignKey("PatientId")]
+        public int PatientId { get; set; }
+
+        [ValidateNever]
+        public Patient Patient { get; set; }
 
         [Required]
         [ForeignKey("EncounterId")]
@@ -30,10 +35,18 @@ namespace Scheduler.Models
         public Encounter Encounter { get; set; }
 
         public string? OrderingUserId { get; set; }
-        [ForeignKey("ProviderUserId")]
+        [ForeignKey("OrderingUserId")]
 
         [ValidateNever]
         public ApplicationUser? OrderingUser { get; set; }
+
+        [Required]
+        [ForeignKey("OrderTypeId")]
+        [InverseProperty("OrderTypeCodeValues")]
+        public int OrderTypeId { get; set; }
+
+        [ValidateNever]
+        public CodeValue OrderType { get; set; }
 
         [Required]
         [ForeignKey("OrderCatalogId")]
@@ -60,7 +73,7 @@ namespace Scheduler.Models
 
         [Required]
         [ForeignKey("AdminTimeId")]
-        [InverseProperty("AdminFreqCodeValues")]
+        [InverseProperty("AdminTimeCodeValues")]
         public int AdminTimeId { get; set; }
 
         [ValidateNever]
@@ -74,6 +87,7 @@ namespace Scheduler.Models
         [ValidateNever]
         public CodeValue OrderStatus { get; set; }
 
+        public bool IsActive { get; set; } = true;
 
     }
 }
