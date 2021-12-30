@@ -35,7 +35,6 @@ namespace Scheduler.DataAccess.Repository
                 orderInDb.OrderingDtTm = obj.OrderingDtTm;
                 orderInDb.OrderingUserId = obj.OrderingUserId;
                 orderInDb.OrderStatusId = obj.OrderStatusId;
-                orderInDb.OrderTypeId = obj.OrderTypeId;
                 orderInDb.AdminRouteId = obj.AdminRouteId;
                 orderInDb.AdminFreqId = obj.AdminFreqId;
                 orderInDb.AdminTimeId = obj.AdminTimeId;

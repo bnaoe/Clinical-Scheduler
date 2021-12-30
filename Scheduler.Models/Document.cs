@@ -73,13 +73,12 @@ namespace Scheduler.Models
 
         public string? PainLocation { get; set; }
 
-        [Required]
-        public string Narrative { get; set; }
+        public string? Narrative { get; set; }
 
         public DateTime CreateDateTime { get; set; } = DateTime.Now;
 
         public DateTime? ModifiedDateTime { get; set; } = null;
 
-        public bool? InError { get; set; }
+        public bool InError { get; set; }
     }
 }

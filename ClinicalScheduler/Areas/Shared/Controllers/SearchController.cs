@@ -69,13 +69,14 @@ namespace ClinicalScheduler.Controllers
             IEnumerable<Order> orderList;
 
             orderList = await _unitOfWork.Order.GetAllAsync(o => o.EncounterId == encntrId, orderBy: o => o.OrderByDescending(x => x.OrderingDtTm)
-            , includeProperties: "OrderingUser,OrderType,OrderStatus,OrderCatalog");
+            , includeProperties: "OrderingUser,OrderStatus,OrderCatalog,OrderCatalog.CodeValue,Encounter");
 
             var encounterOrderList = orderList.Select(async i => new
             {
                 i.Id,
                 i.OrderingDtTm,
-                OrderTypeName = i.OrderType.Name,
+                i.EncounterId,
+                OrderTypeName = i.OrderCatalog.CodeValue.Name,
                 i.OrderCatalog.Name,
                 i.OrderDetails,
                 i.OrderingUser.LastName,

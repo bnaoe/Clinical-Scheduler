@@ -13,9 +13,6 @@ namespace Scheduler.Models.ViewModels
         public Order Order { get; set; }
 
         [ValidateNever]
-        public IEnumerable<SelectListItem> OrderTypeList { get; set; }
-
-        [ValidateNever]
         public IEnumerable<SelectListItem> AdminRouteList { get; set; }
 
         [ValidateNever]

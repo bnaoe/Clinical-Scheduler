@@ -1,0 +1,85 @@
+﻿@model Scheduler.Models.ViewModels.OrderVM
+
+<div>
+   <partial name="_EncounterDetails" model="Model.EncounterVM"/>
+</div>
+
+<form method="post" asp-action="Upsert">
+    <input asp-for="Order.Id" hidden />
+    <input asp-for="Order.EncounterId" hidden />
+    <input asp-for="Order.OrderCatalogId" id="updateOrdId" class="form-control"/>
+    <input asp-for="Order.PatientId" />
+
+    <div class="border p-3 mt-4 row">
+        <div class="row pb-2">
+            <h4 class="text-primary">@(Model.Order.Id!=0?"Update":"Create") Order</h4>
+            <hr/>
+        </div>
+       <div class="mb-3 col-6">
+            <label asp-for="Order.OrderCatalog.Name">Search Order</label>
+            <input asp-for="Order.OrderCatalog.Name" type="text" id="selectOrd" class="form-control"  placeholder="Type Order Name to search" autocomplete="off"/>
+            <span asp-validation-for ="Order.OrderCatalog.Name" id="ord" class="text-danger"></span>
+        </div>
+         <div class="mb-3 col-6">
+            <label asp-for="Order.OrderStatusId">Order Status</label>
+            <select asp-for="Order.OrderStatusId" asp-items="@Model.OrderStatusList" class="form-select">
+                <option disabled selected>- Select Order Status -</option>
+            </select>
+            <span asp-validation-for ="Order.OrderStatusId" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-4">
+            <label asp-for="Order.AdminRouteId">Admin Route</label>
+            <select asp-for="Order.AdminRouteId" asp-items="@Model.AdminRouteList" class="form-select">
+                <option disabled selected>- Select Admin Route -</option>
+            </select>
+            <span asp-validation-for ="Order.AdminRouteId" class="text-danger"></span>
+        </div>
+       <div class="mb-3 col-4">
+            <label asp-for="Order.AdminFreqId">Admin Freq.</label>
+            <select asp-for="Order.AdminFreqId" asp-items="@Model.AdminFreqList" class="form-select">
+                <option disabled selected>- Select Admin Freq. -</option>
+            </select>
+            <span asp-validation-for ="Order.AdminFreqId" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-4">
+            <label asp-for="Order.AdminTimeId">Admin Freq.</label>
+            <select asp-for="Order.AdminTimeId" asp-items="@Model.AdminTimeList" class="form-select">
+                <option disabled selected>- Select Admin Time -</option>
+            </select>
+            <span asp-validation-for ="Order.AdminFreqId" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Order.Narrative">Narrative</label>
+            <textarea asp-for="Order.Narrative" rows="6" class="form-control"></textarea>
+            <span asp-validation-for ="Order.Narrative" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3 col-2">
+            <label asp-for="Order.IsActive">Active Order</label>
+            <input asp-for="Order.IsActive" type="checkbox" data-val="true" data-val-required="Order.IsActive" id="Order.IsActive" name="Order.IsActive" value="true" />
+        </div>
+
+        <div class="col-12">
+			<button type="submit" class="btn btn-primary" style="width:150px" name="save" value="Save">@(Model.Order.Id!=0?"Update":"Create")</button>
+            <a asp-controller="" asp-action="" class="btn btn-secondary" style="width:150px">
+                Back to list
+            </a>
+        </div>
+    </div>
+</form>
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial"/>
+    }
+    <script>
+    tinymce.init({
+      selector: 'textarea',
+      plugins: 'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+      toolbar_mode: 'floating',
+    });
+  </script>
+      <script src="~/js/ClinicalParam.js"></script>
+      <script src="~/js/TypeAheadSearch.js"></script>
+
+
+}

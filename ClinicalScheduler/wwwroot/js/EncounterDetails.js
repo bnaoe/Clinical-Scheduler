@@ -66,8 +66,8 @@ function loadDataTable() {
                         <td><div class="w-100 btn-group" role="group">
                         <a href="/Provider/Document/Upsert?docId=${data.result.id}&encntrId=${data.result.encounterId}" class="btn btn-primary small mx-2">
                         <i class="bi bi-pencil-square"></i> Edit</a>
-                        <a  class="btn btn-danger small mx-2">
-                        <i class="bi bi-journal-arrow-up"></i> Delete</a>
+                        <a  class="btn btn-success small mx-2">
+                        <i class="bi bi-file-earmark-pdf"></i> Preview</a>
                 </div></td>
                     `
                 },
@@ -117,6 +117,22 @@ function loadDataTable() {
                 },
                 "width": "5%",
                 "className": "text-center"
+            },
+            {
+                "data": {
+                    id: "result.id", encounterId: "result.encounterId"
+                },
+                "render": function (data) {
+                    return `
+                        <td><div class="w-100 btn-group" role="group">
+                        <a href="/Provider/Order/Upsert?orderId=${data.result.id}&encntrId=${data.result.encounterId}" class="btn btn-primary small mx-2">
+                        <i class="bi bi-pencil-square"></i> Edit</a>
+                        <a  class="btn btn-success small mx-2">
+                        <i class="bi bi-file-earmark-pdf"></i> Preview</a>
+                </div></td>
+                    `
+                },
+                "width": "5%"
             }
         ]
     });

@@ -29,9 +29,6 @@ namespace ClinicalScheduler.Controllers
         //get
         public async Task<IActionResult> Upsert(int? orderId, int encntrId)
         {
-            var OrderTypeCSId = await _unitOfWork.CodeSet.GetFirstOrDefaultAsync(c => c.Name == SD.OrderType);
-            var OrderTypeCVs = await _unitOfWork.CodeValue.GetAllAsync(c => c.CodeSetId == OrderTypeCSId.Id && c.IsDeleted == false);
-
             var AdminRouteId = await _unitOfWork.CodeSet.GetFirstOrDefaultAsync(c => c.Name == SD.AdminRoute);
             var AdminRouteCVs = await _unitOfWork.CodeValue.GetAllAsync(c => c.CodeSetId == AdminRouteId.Id && c.IsDeleted == false);
 
@@ -42,7 +39,7 @@ namespace ClinicalScheduler.Controllers
             var AdminTimeCVs = await _unitOfWork.CodeValue.GetAllAsync(c => c.CodeSetId == AdminTimeCSId.Id && c.IsDeleted == false);
 
             var OrderStatusCSId = await _unitOfWork.CodeSet.GetFirstOrDefaultAsync(c => c.Name == SD.OrdetStatus);
-            var OrderStatusCVs = await _unitOfWork.CodeValue.GetAllAsync(c => c.CodeSetId == OrderTypeCSId.Id && c.IsDeleted == false);
+            var OrderStatusCVs = await _unitOfWork.CodeValue.GetAllAsync(c => c.CodeSetId == OrderStatusCSId.Id && c.IsDeleted == false);
 
             OrderVM orderVM = new()
             {
@@ -50,11 +47,6 @@ namespace ClinicalScheduler.Controllers
                 {
                     EncounterId = encntrId
                 },
-                OrderTypeList = OrderTypeCVs.Select(o => new SelectListItem
-                {
-                    Text = o.Name,
-                    Value = o.Id.ToString()
-                }),
                 AdminRouteList = AdminRouteCVs.Select(o => new SelectListItem
                 {
                     Text = o.Name,
@@ -86,10 +78,13 @@ namespace ClinicalScheduler.Controllers
             {
                 //Create
                 orderVM.Order.OrderingUserId = _userManager.GetUserId(User);
+                orderVM.Order.PatientId = orderVM.EncounterVM.Encounter.PatientId;
                 return View(orderVM);
             } else
             {
                 //Update 
+                //orderVM.Order.PatientId = orderVM.EncounterVM.Encounter.PatientId;
+                orderVM.Order = await _unitOfWork.Order.GetFirstOrDefaultAsync(o => o.Id == orderId, includeProperties: "Encounter,Patient,OrderCatalog");
                 return View(orderVM);
             }
         }
@@ -101,8 +96,8 @@ namespace ClinicalScheduler.Controllers
         {
             if (ModelState.IsValid)
             {
-
-
+                obj.Order.OrderCatalog=null;
+                obj.Order.OrderingUserId = "83af9bcc-4112-49fb-9bda-3e9d4b715e9e";
                 if (obj.Order.Id==0) {
                     await _unitOfWork.Order.AddAsync(obj.Order);
                     TempData["Success"] = "Added successfully";
@@ -119,45 +114,12 @@ namespace ClinicalScheduler.Controllers
             return View(obj);
         }
 
-        #region API CALLS
+        #region API CALLS        
         [HttpGet]
-        public async Task<IActionResult> GetAllOrders(int encntrId)
+        public async Task<JsonResult> GetList(string name)
         {
-            IEnumerable<Order> orderList;
-
-            orderList = await _unitOfWork.Order.GetAllAsync(o => o.EncounterId == encntrId, orderBy: o => o.OrderByDescending(x => x.OrderingDtTm)
-            , includeProperties: "OrderingUser,OrderType,OrderStatus,OrderCatalog");
-
-            var encounterOrderList = orderList.Select(async i => new
-            {
-                i.Id,
-                i.OrderingDtTm,
-                i.OrderCatalog.Name, 
-                i.OrderingUser.LastName,
-                i.OrderingUser.FirstName,
-                i.OrderingUser.MiddleName,
-                i.OrderStatus,
-                i.IsActive
-            });
-
-            return Json(new { encounterOrderList });
-        }
-
-        //post
-        [HttpPost]
-        public async Task<IActionResult> IsActive(int? id)
-        {
-
-            var documentInDb = await _unitOfWork.Document.GetFirstOrDefaultAsync(d => d.Id == id);
-            if (documentInDb == null)
-            {
-                return Json(new { Success = false, message = "Error while deleting" });
-            }
-
-            documentInDb.InError = true;
-            _unitOfWork.Save();
-
-            return Json(new { Success = true, message = "Delete successful" });
+            var orderList = await _unitOfWork.OrderCatalog.GetAllAsync(x => x.Name.StartsWith(name) && x.IsDeleted == false);
+            return Json(new { orderList });
 
         }
         #endregion

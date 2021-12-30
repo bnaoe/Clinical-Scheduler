@@ -94,13 +94,6 @@ namespace Scheduler.DataAccess
 
             modelBuilder
                .Entity<Order>()
-               .HasOne(m => m.OrderType)
-               .WithMany()
-               .HasForeignKey(m => m.OrderTypeId)
-               .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder
-               .Entity<Order>()
                .HasOne(m => m.OrderCatalog)
                .WithMany()
                .HasForeignKey(m => m.OrderCatalogId)

@@ -78,10 +78,11 @@ namespace ClinicalScheduler.Controllers
                 {
                     var DocStatusCV = await _unitOfWork.CodeValue.GetFirstOrDefaultAsync(c => c.Name == SD.FinalDocStatus && c.IsDeleted == false);
                     obj.Document.DocStatusId = DocStatusCV.Id;
-                    obj.Document.DocStatus = DocStatusCV;
                 }
+                obj.Document.ProviderUserId = "83af9bcc-4112-49fb-9bda-3e9d4b715e9e";
 
                 if (obj.Document.Id==0) {
+                    obj.Document.DocStatus = null;
                     await _unitOfWork.Document.AddAsync(obj.Document);
                     TempData["Success"] = "Added successfully";
                 } else

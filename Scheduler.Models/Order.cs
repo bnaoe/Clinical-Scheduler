@@ -18,7 +18,7 @@ namespace Scheduler.Models
 
         public string? OrderDetails { get; set; }
 
-        public string Narrative { get; set; }
+        public string? Narrative { get; set; }
 
         [Required]
         [ForeignKey("PatientId")]
@@ -39,14 +39,6 @@ namespace Scheduler.Models
 
         [ValidateNever]
         public ApplicationUser? OrderingUser { get; set; }
-
-        [Required]
-        [ForeignKey("OrderTypeId")]
-        [InverseProperty("OrderTypeCodeValues")]
-        public int OrderTypeId { get; set; }
-
-        [ValidateNever]
-        public CodeValue OrderType { get; set; }
 
         [Required]
         [ForeignKey("OrderCatalogId")]

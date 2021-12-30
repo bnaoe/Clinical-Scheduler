@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Scheduler.DataAccess;
 
@@ -11,9 +12,10 @@ using Scheduler.DataAccess;
 namespace ClinicalScheduler.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211229222218_ChangeInErrorDocumentInDb")]
+    partial class ChangeInErrorDocumentInDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -325,6 +327,7 @@ namespace ClinicalScheduler.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Narrative")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("OxygenSaturation")
@@ -560,6 +563,7 @@ namespace ClinicalScheduler.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Narrative")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("OrderCatalogId")
@@ -569,6 +573,9 @@ namespace ClinicalScheduler.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("OrderStatusId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrderTypeId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("OrderingDtTm")
@@ -593,6 +600,8 @@ namespace ClinicalScheduler.Migrations
                     b.HasIndex("OrderCatalogId");
 
                     b.HasIndex("OrderStatusId");
+
+                    b.HasIndex("OrderTypeId");
 
                     b.HasIndex("OrderingUserId");
 
@@ -1005,6 +1014,12 @@ namespace ClinicalScheduler.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("Scheduler.Models.CodeValue", "OrderType")
+                        .WithMany()
+                        .HasForeignKey("OrderTypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("Scheduler.Models.ApplicationUser", "OrderingUser")
                         .WithMany()
                         .HasForeignKey("OrderingUserId");
@@ -1026,6 +1041,8 @@ namespace ClinicalScheduler.Migrations
                     b.Navigation("OrderCatalog");
 
                     b.Navigation("OrderStatus");
+
+                    b.Navigation("OrderType");
 
                     b.Navigation("OrderingUser");
 
