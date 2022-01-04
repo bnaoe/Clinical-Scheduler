@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -12,6 +13,7 @@ using System.Globalization;
 namespace ClinicalScheduler.Controllers
 {
     [Area("Scheduler")]
+    [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Scheduler)]
     public class ScheduleAppointmentController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

@@ -9,7 +9,6 @@ namespace ClinicalScheduler.Controllers
 {
     [Area("Admin")]
     [Authorize(Roles = SD.Role_Admin)]
-
     public class CodeSetController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

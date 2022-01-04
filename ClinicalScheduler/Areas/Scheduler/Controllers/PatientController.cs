@@ -1,13 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Scheduler.DataAccess;
 using Scheduler.DataAccess.Repository.IRepository;
 using Scheduler.Models;
 using Scheduler.Models.ViewModels;
+using Scheduler.Utility;
 
 namespace ClinicalScheduler.Controllers
 {
     [Area("Scheduler")]
+    [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Scheduler)]
     public class PatientController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

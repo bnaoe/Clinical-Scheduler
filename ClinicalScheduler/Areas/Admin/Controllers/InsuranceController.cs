@@ -66,14 +66,6 @@ namespace ClinicalScheduler.Controllers
             return View(obj);
         }
 
-        [HttpGet]
-        public async Task<JsonResult> GetList(string name)
-        {
-            var insuranceList = await _unitOfWork.Insurance.GetAllAsync(x => x.Name.StartsWith(name) && x.IsDeleted==false);
-            return Json(new { insuranceList });
-
-        }
-
         #region API CALLS
         [HttpGet]
         public async Task<IActionResult> GetAll()

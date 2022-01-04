@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Scheduler.DataAccess;
@@ -10,6 +11,7 @@ using Scheduler.Utility;
 namespace ClinicalScheduler.Controllers
 {
     [Area("Provider")]
+    [Authorize(Roles = SD.Role_Admin + "," + "," + SD.Role_NP + "," + SD.Role_PA + "," + SD.Role_Physician)]
     public class DocumentController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
