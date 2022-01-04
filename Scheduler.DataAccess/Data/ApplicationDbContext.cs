@@ -24,6 +24,9 @@ namespace Scheduler.DataAccess
         public DbSet<FinancialNumAlias> FinancialNumAliases { get; set; }
         public DbSet<Document> Documents { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<DxCode> DxCodes { get; set; }
+        public DbSet<Diagnosis> Diagnoses { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -73,20 +76,6 @@ namespace Scheduler.DataAccess
 
             modelBuilder
                .Entity<Order>()
-               .HasOne(m => m.AdminRoute)
-               .WithMany()
-               .HasForeignKey(m => m.AdminRouteId)
-               .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder
-               .Entity<Order>()
-               .HasOne(m => m.AdminTime)
-               .WithMany()
-               .HasForeignKey(m => m.AdminTimeId)
-               .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder
-               .Entity<Order>()
                .HasOne(m => m.OrderStatus)
                .WithMany()
                .HasForeignKey(m => m.OrderStatusId)
@@ -106,6 +95,12 @@ namespace Scheduler.DataAccess
                .HasForeignKey(m => m.PatientId)
                .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder
+               .Entity<Diagnosis>()
+               .HasOne(m => m.Patient)
+               .WithMany()
+               .HasForeignKey(m => m.PatientId)
+               .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

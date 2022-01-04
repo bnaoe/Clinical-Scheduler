@@ -23,11 +23,11 @@ function loadDataTable() {
                 "dataSrc": "patientList"
             },
             "columns": [
-                { "data": "id", "visible": false },
-                { "data": "firstName", "width": "20%" },
-                { "data": "lastName", "width": "20%" },
+                { "data": "result.id", "visible": false },
+                { "data": "result.firstName", "width": "20%" },
+                { "data": "result.lastName", "width": "20%" },
                 {
-                    "data": "birthDate",
+                    "data": "result.birthDate",
                     "render": function (data) {
                         var newDate = new Date(data);
                         return moment(newDate).format("YYYY-MM-DD");
@@ -35,7 +35,7 @@ function loadDataTable() {
                     "width": "15%"
                 },
                 {
-                    "data": "isDeleted",
+                    "data": "result.isDeleted",
                     "render": function (data) {
                         if (data) {
                             return `<input type="checkbox" disabled checked/>`
@@ -48,15 +48,15 @@ function loadDataTable() {
                     "className": "text-center"
                 },
                 {
-                    "data": "id",
+                    "data": { id: "result.id" },
                     "render": function (data) {
                         return `
                         <td><div class="w-100 btn-group" role="group">
-                        <a href="/Scheduler/Patient/Upsert?id=${data}" class="btn btn-primary small mx-2">
+                        <a href="/Scheduler/Patient/Upsert?id=${data.result.id}" class="btn btn-primary small mx-2">
                         <i class="bi bi-pencil-square"></i> Edit</a>
-                        <a href="/Scheduler/ScheduleSearch/GetPatientDetails?id=${data}" class="btn btn-success small mx-2">
+                        <a href="/Scheduler/ScheduleSearch/GetPatientDetails?id=${data.result.id}" class="btn btn-success small mx-2">
                         <i class="bi bi-calendar-plus"></i> Schedule</a>
-                        <a onClick=GetEncounters(${data}) class="btn btn-info small mx-2">
+                        <a onClick=GetEncounters(${data.result.id}) class="btn btn-info small mx-2">
                         <i class="bi bi-file-earmark-text"></i> Encounter</a>
                 </div></td>
                     `
@@ -64,55 +64,6 @@ function loadDataTable() {
                     "width": "35%"
                 },
             ]
-    });
-    dataTable = $('#tblData2').DataTable({
-        "destroy": true,
-        "ajax": {
-            "url": "/Shared/Search/GetAllPatients?firstName=" + firstName + "&lastName=" + lastName + "&birthDate=" + birthDate,
-            "dataSrc": "patientList"
-        },
-        "columns": [
-            { "data": "id", "visible": false },
-            { "data": "firstName", "width": "20%" },
-            { "data": "lastName", "width": "20%" },
-            {
-                "data": "birthDate",
-                "render": function (data) {
-                    var newDate = new Date(data);
-                    return moment(newDate).format("YYYY-MM-DD");
-                },
-                "width": "15%"
-            },
-            {
-                "data": "isDeleted",
-                "render": function (data) {
-                    if (data) {
-                        return `<input type="checkbox" disabled checked/>`
-                    }
-                    else {
-                        return `<input type="checkbox" disabled/>`
-                    }
-                },
-                "width": "10%",
-                "className": "text-center"
-            },
-            {
-                "data": "id",
-                "render": function (data) {
-                    return `
-                        <td><div class="w-100 btn-group" role="group">
-                        <a href="/Scheduler/Patient/Upsert?id=${data}" class="btn btn-primary small mx-2">
-                        <i class="bi bi-pencil-square"></i> Edit</a>
-                        <a href="/Scheduler/ScheduleSearch/GetPatientDetails?id=${data}" class="btn btn-success small mx-2">
-                        <i class="bi bi-calendar-plus"></i> Schedule</a>
-                        <a onClick=GetEncounters(${data}) class="btn btn-info small mx-2">
-                        <i class="bi bi-file-earmark-text"></i> Encounter</a>
-                </div></td>
-                    `
-                },
-                "width": "35%"
-            },
-        ]
     });
 }
 

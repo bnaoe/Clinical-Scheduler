@@ -1,13 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Scheduler.DataAccess;
 using Scheduler.DataAccess.Repository.IRepository;
 using Scheduler.Models;
 using Scheduler.Models.ViewModels;
+using Scheduler.Utility;
 
 namespace ClinicalScheduler.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.Role_Admin)]
+
     public class InsuranceController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -34,7 +38,7 @@ namespace ClinicalScheduler.Controllers
                 return View(insuranceVM);
             } else
             {
-                //Update Location
+                //Update Insurance
                 insuranceVM.Insurance = await _unitOfWork.Insurance.GetFirstOrDefaultAsync(i => i.Id == id);
                 return View(insuranceVM);
             }   
@@ -89,7 +93,6 @@ namespace ClinicalScheduler.Controllers
                 return Json(new { Success = false, message = "Error while deleting" });
             }
 
-            //_unitOfWork.Location.Remove(locationInDb);
             insuranceInDb.IsDeleted = true;
             _unitOfWork.Save();
 

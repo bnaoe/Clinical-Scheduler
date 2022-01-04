@@ -24,64 +24,32 @@
                 <i class="bi bi-binoculars"></i> &nbsp; Find
             </button> 
         </div>
-    </div>
+</div>
+
 <div class="container p-3">
     <div class="row pt-4">
         <div class="col-6">
             <h4 class="primary">Patient List</h4>
         </div>
-        <div class="col-6 text-end">
+        <div class="col-6 pb-3 text-end">
             <a asp-area="Scheduler" asp-controller ="Patient" asp-action="Upsert" class="btn btn-primary">
                 <i class="bi bi-plus-circle"></i> &nbsp; Resgiter
             </a> 
         </div>
     </div>
 
-    <ul class="nav nav-tabs">
-      <li class="nav-item">
-        <a class="nav-link active" data-bs-toggle="tab" href="#patient">Patients</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" data-bs-toggle="tab" href="#encounter">Encounters</a>
-      </li>
-    </ul>
-
-    <div id="myTabContent" class="tab-content">
-      <div class="tab-pane fade active show" id="patient">
-        <div class="container bg-white border">
-            <table id ="tblData" class="display compact nowrap" style="width:100%">
-                <thead>
-                    <tr>
-                        <th>Patient ID</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Date of Birth</th>
-                        <th>Deleted</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-            </table>      
-        </div> 
-    </div>      
-     <div class="tab-pane fade active" id="encounter" >
-         <div class="container bg-white border">
-           <table id ="tblData2" class="table table-bordered table-striped" style="width:100%">
-            <thead>
-                <tr>
-                    <th>FIN</th>
-                    <th>Admit</th>
-                    <th>Last Name</th>
-                    <th>Date of Birth</th>
-                    <th>Deleted</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-        </table>
-        </div>
-     </div>
-
-
-   </div>   
+<table id ="tblData" class="display compact nowrap" style="width:100%">
+    <thead>
+        <tr>
+            <th>Patient ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Date of Birth</th>
+            <th>Deleted</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+</table>      
 </div>
 
 

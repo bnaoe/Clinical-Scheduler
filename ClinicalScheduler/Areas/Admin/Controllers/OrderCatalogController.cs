@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Scheduler.DataAccess;
 using Scheduler.DataAccess.Repository.IRepository;
@@ -9,6 +10,7 @@ using Scheduler.Utility;
 namespace ClinicalScheduler.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.Role_Admin)]
     public class OrderCatalogController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -43,7 +45,6 @@ namespace ClinicalScheduler.Controllers
             if (id==null || id ==0)
             {
                 //Create OrderCatalog
-                //ViewBag.CodeSetList = CodeSetList; //This is used to pass temp data if data is not available form the model 
                 return View(orderCatalogVM);
             } else
             {

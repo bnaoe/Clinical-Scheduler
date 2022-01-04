@@ -4,7 +4,7 @@ $("#selectIns").typeahead({
     highlight: true,
     source: function (request, response) {
         $.ajax({
-            url: "/Admin/Insurance/GetList/",
+            url: "/Shared/Search/GetInsuranceList/",
             dataSrc: "insuranceList",
             data: { "name": request },
             type: "GET",
@@ -46,7 +46,7 @@ $("#selectOrd").typeahead({
     highlight: true,
     source: function (request, response) {
         $.ajax({
-            url: "/Provider/Order/GetList/",
+            url: "/Shared/Search/GetOrderList/",
             dataSrc: "orderList",
             data: { "name": request },
             type: "GET",
@@ -78,6 +78,48 @@ $("#selectOrd").typeahead({
         //If simultaneously want to update value somewhere else
 
         $("#updateOrdId").val(map[item].id);
+        return item;
+    }
+});
+
+$("#selectDx").typeahead({
+    minLength: 1,
+    highlight: true,
+    limit: 10,
+    source: function (request, response) {
+        $.ajax({
+            url: "/Shared/Search/GetDxList/",
+            dataSrc: "diagnosisList",
+            data: { "description": request },
+            type: "GET",
+            contentType: "json",
+            success: function (data) {
+                items = [];
+                map = {};
+                $.each(data.diagnosisList, function (i, item) {
+                    var id = data.diagnosisList[i].id;
+                    var description = data.diagnosisList[i].description;
+                    map[description] = { id: id, description: description };
+                    items.push(description);
+
+                });
+                response(items);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            }
+        });
+        if ($('#selectDx').val() == '') {
+            $("#updateDxId").val('0');
+        }
+    },
+    updater: function (item) {
+        //If simultaneously want to update value somewhere else
+
+        $("#updateDxId").val(map[item].id);
         return item;
     }
 });

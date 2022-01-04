@@ -4,11 +4,11 @@
    <partial name="_EncounterDetails" model="Model.EncounterVM"/>
 </div>
 
-<form method="post" asp-action="Upsert">
+<form method="post" asp-action="Upsert" id="orderSubmit">
     <input asp-for="Order.Id" hidden />
-    <input asp-for="Order.EncounterId" hidden />
-    <input asp-for="Order.OrderCatalogId" id="updateOrdId" class="form-control"/>
-    <input asp-for="Order.PatientId" />
+    <input asp-for="Order.EncounterId" id="encntrId" hidden />
+    <input asp-for="Order.OrderCatalogId" id="updateOrdId" class="form-control" hidden/>
+    <input asp-for="Order.PatientId" hidden/>
 
     <div class="border p-3 mt-4 row">
         <div class="row pb-2">
@@ -60,9 +60,9 @@
         </div>
 
         <div class="col-12">
-			<button type="submit" class="btn btn-primary" style="width:150px" name="save" value="Save">@(Model.Order.Id!=0?"Update":"Create")</button>
-            <a asp-controller="" asp-action="" class="btn btn-secondary" style="width:150px">
-                Back to list
+			<button type="submit" class="btn btn-primary" style="width:150px" name="save" value="save" id="save">@(Model.Order.Id!=0?"Update":"Create")</button>
+            <a asp-controller="Chart" asp-action="EncounterSchAppt" asp-route-enctrId="@Model.Order.EncounterId" class="btn btn-secondary" style="width:150px">
+                Back to chart
             </a>
         </div>
     </div>
@@ -78,8 +78,6 @@
       toolbar_mode: 'floating',
     });
   </script>
-      <script src="~/js/ClinicalParam.js"></script>
       <script src="~/js/TypeAheadSearch.js"></script>
-
-
+      <script src="~/js/Order.js"></script>
 }

@@ -1,13 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Scheduler.DataAccess;
 using Scheduler.DataAccess.Repository.IRepository;
 using Scheduler.Models;
 using Scheduler.Models.ViewModels;
+using Scheduler.Utility;
 
 namespace ClinicalScheduler.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.Role_Admin)]
     public class CodeValueController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -19,8 +22,6 @@ namespace ClinicalScheduler.Controllers
 
         public IActionResult Index()
         {
-            //IEnumerable<CodeSet> codeSetList = _unitOfWork.CodeSet.GetAll();
-            //return View(codeSetList);
             return View();
         }
 
@@ -48,8 +49,6 @@ namespace ClinicalScheduler.Controllers
                 codeValueVM.CodeValue = await _unitOfWork.CodeValue.GetFirstOrDefaultAsync(c => c.Id == id);
                 return View(codeValueVM);
             }
-
-            
         }
 
         //post

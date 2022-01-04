@@ -31,36 +31,162 @@ namespace ClinicalScheduler.Controllers
             return View();
         }
 
-       #region API CALLS
+        #region API CALLS
+        [HttpGet]
+        public async Task<JsonResult> GetDxList(string description)
+        {
+            var dxList = await _unitOfWork.DxCode.GetAllAsync(d => d.Description.Contains(description) && d.IsActive == true);
+            var diagnosisList = dxList.Take(10);
+            return Json(new { diagnosisList });
+
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> GetInsuranceList(string name)
+        {
+            var insuranceList = await _unitOfWork.Insurance.GetAllAsync(x => x.Name.StartsWith(name) && x.IsDeleted == false);
+            return Json(new { insuranceList });
+
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> GetOrderList(string name)
+        {
+            var orderList = await _unitOfWork.OrderCatalog.GetAllAsync(o => o.Name.StartsWith(name) && o.IsDeleted == false);
+            return Json(new { orderList });
+
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetAllPatients(String firstName, String lastName, DateTime birthDate)
         {
 
-            IEnumerable<Patient> patientList;
+            IEnumerable<Patient> patients;
 
             if (firstName != null && lastName != null && birthDate!= DateTime.MinValue)
             {
-                patientList = await _unitOfWork.Patient.GetAllAsync(p => p.LastName.Contains(lastName)
+                patients = await _unitOfWork.Patient.GetAllAsync(p => p.LastName.Contains(lastName)
                && p.FirstName.Contains(firstName) && p.BirthDate == birthDate);
             }
             else if (firstName != null && lastName != null)
             {
-                patientList = await _unitOfWork.Patient.GetAllAsync(p => p.LastName.Contains(lastName)
+                patients = await _unitOfWork.Patient.GetAllAsync(p => p.LastName.Contains(lastName)
                 && p.FirstName.Contains(firstName));
             }
             else if (lastName != null && birthDate!= DateTime.MinValue) {
-                patientList = await _unitOfWork.Patient.GetAllAsync(p => p.LastName.Contains(lastName)
+                patients = await _unitOfWork.Patient.GetAllAsync(p => p.LastName.Contains(lastName)
                && p.BirthDate == birthDate);
             }
             else
             {
-                patientList = await _unitOfWork.Patient.GetAllAsync(p => p.LastName.Contains(lastName)
+                patients = await _unitOfWork.Patient.GetAllAsync(p => p.LastName.Contains(lastName)
                 || p.FirstName.Contains(firstName) || p.BirthDate == birthDate);
 
             }
-            patientList = patientList.Where(p => p.IsDeleted == false);
+            patients = patients.Where(p => p.IsDeleted == false);
+
+            var patientList = patients.Select(async i => new
+            {
+                i.Id,
+                i.FirstName,
+                i.MiddleName,
+                i.LastName,
+                i.BirthDate,
+                i.IsDeleted
+            });
 
             return Json(new { patientList });
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllDiagnosisEncntr(int encntrId)
+        {
+            IEnumerable<Diagnosis> diagnosisList;
+
+            diagnosisList = await _unitOfWork.Diagnosis.GetAllAsync(d => d.EncounterId == encntrId, orderBy: d => d.OrderByDescending(x => x.Id)
+            , includeProperties: "Encounter,DxCode,Patient,ProviderUser,Encounter.FinancialNumAlias");
+
+            var encounterDiagnosisList = diagnosisList.Select(async i => new
+            {
+                i.Id,
+                i.DxCode.Code,
+                i.DxCode.Description,
+                i.Encounter.FinancialNumAlias.Fin,
+                i.EncounterId,
+                i.ProviderUser.FirstName,
+                i.ProviderUser.MiddleName,
+                i.ProviderUser.LastName,
+                i.ProviderUser.Suffix,
+                i.Encounter.AdmitDateTime,
+                i.IsActive,
+                i.ActiveDtTm,
+                i.EndDtTm,
+                i.PatientId,
+                i.ProviderUserId
+            });
+
+            return Json(new { encounterDiagnosisList });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllDiagnosisPatient(int patientId)
+        {
+            IEnumerable<Diagnosis> diagnosisList;
+
+            diagnosisList = await _unitOfWork.Diagnosis.GetAllAsync(d => d.PatientId == patientId, orderBy: d => d.OrderBy(x => x.IsActive)
+            , includeProperties: "Patient,Encounter,DxCode,ProviderUser,Encounter.FinancialNumAlias");
+
+            var patientDiagnosisList = diagnosisList.Select(async i => new
+            {
+                i.Id,
+                i.DxCode.Code,
+                i.DxCode.Description,
+                i.Encounter.FinancialNumAlias.Fin,
+                i.EncounterId,
+                i.ProviderUser.FirstName,
+                i.ProviderUser.MiddleName,
+                i.ProviderUser.LastName,
+                i.ProviderUser.Suffix,
+                i.Encounter.AdmitDateTime,
+                i.IsActive,
+                i.ActiveDtTm,
+                i.EndDtTm,
+                i.PatientId,
+                i.ProviderUserId
+            });
+
+            return Json(new { patientDiagnosisList });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllPrescriptions(int patientId)
+        {
+            IEnumerable<Order> orderList;
+
+            orderList = await _unitOfWork.Order.GetAllAsync(o => o.PatientId == patientId && o.OrderCatalog.CodeValue.Name==SD.Presciption
+            , includeProperties: "Patient,OrderingUser,OrderStatus,OrderCatalog,OrderCatalog.CodeValue,OrderCatalog.CodeValue.CodeSet,Encounter,AdminRoute,AdminFreq,AdminTime");
+
+            var prescriptionList =  orderList.Select(async i => new
+            {
+                i.Id,
+                i.OrderingDtTm,
+                i.EncounterId,
+                OrderTypeName = i.OrderCatalog.CodeValue.Name,
+                i.OrderCatalog.Name,
+                i.OrderDetails,
+                i.OrderingUser.LastName,
+                i.OrderingUser.FirstName,
+                i.OrderingUser.MiddleName,
+                i.OrderingUser.Suffix,
+                Route = i.AdminRoute.Name,
+                Freq = i.AdminFreq.Name,
+                Time = i.AdminTime.Name,
+                OrderStatusName = i.OrderStatus.Name,
+                i.IsActive
+            });
+
+            return Json(new { prescriptionList });
         }
 
         [HttpGet]
@@ -69,7 +195,7 @@ namespace ClinicalScheduler.Controllers
             IEnumerable<Order> orderList;
 
             orderList = await _unitOfWork.Order.GetAllAsync(o => o.EncounterId == encntrId, orderBy: o => o.OrderByDescending(x => x.OrderingDtTm)
-            , includeProperties: "OrderingUser,OrderStatus,OrderCatalog,OrderCatalog.CodeValue,Encounter");
+            , includeProperties: "AdminRoute,AdminFreq,AdminTime,OrderingUser,OrderStatus,OrderCatalog,OrderCatalog.CodeValue,Encounter");
 
             var encounterOrderList = orderList.Select(async i => new
             {
@@ -83,6 +209,9 @@ namespace ClinicalScheduler.Controllers
                 i.OrderingUser.FirstName,
                 i.OrderingUser.MiddleName,
                 i.OrderingUser.Suffix,
+                i.AdminRoute,
+                i.AdminFreq,
+                i.AdminTime,
                 OrderStatusName = i.OrderStatus.Name,
                 i.IsActive
             });
@@ -172,7 +301,19 @@ namespace ClinicalScheduler.Controllers
                 user.Role = _userManager.GetRolesAsync(user).Result.FirstOrDefault();
             }
 
-            var providerList = users.Where(u => u.Role == SD.Role_Physician||u.Role== SD.Role_NP);
+            users = users.Where(u => u.Role == SD.Role_Physician||u.Role== SD.Role_NP);
+
+            var providerList = users.Select(async i => new
+            {
+                i.Id,
+                i.FirstName,
+                i.MiddleName,
+                i.LastName,
+                i.Suffix,
+                i.Specialization,
+                locName = i.Location.Name
+            });
+            
             return Json(new { providerList });
         }
         #endregion

@@ -283,6 +283,48 @@ namespace ClinicalScheduler.Migrations
                     b.ToTable("CodeValues");
                 });
 
+            modelBuilder.Entity("Scheduler.Models.Diagnosis", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("ActiveDtTm")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DxCodeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EncounterId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("EndDtTm")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("PatientId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ProviderUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DxCodeId");
+
+                    b.HasIndex("EncounterId");
+
+                    b.HasIndex("PatientId");
+
+                    b.HasIndex("ProviderUserId");
+
+                    b.ToTable("Diagnoses");
+                });
+
             modelBuilder.Entity("Scheduler.Models.Document", b =>
                 {
                     b.Property<int>("Id")
@@ -366,6 +408,30 @@ namespace ClinicalScheduler.Migrations
                     b.HasIndex("ProviderUserId");
 
                     b.ToTable("Documents");
+                });
+
+            modelBuilder.Entity("Scheduler.Models.DxCode", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DxCodes");
                 });
 
             modelBuilder.Entity("Scheduler.Models.Encounter", b =>
@@ -544,13 +610,13 @@ namespace ClinicalScheduler.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("AdminFreqId")
+                    b.Property<int?>("AdminFreqId")
                         .HasColumnType("int");
 
-                    b.Property<int>("AdminRouteId")
+                    b.Property<int?>("AdminRouteId")
                         .HasColumnType("int");
 
-                    b.Property<int>("AdminTimeId")
+                    b.Property<int?>("AdminTimeId")
                         .HasColumnType("int");
 
                     b.Property<int>("EncounterId")
@@ -885,6 +951,39 @@ namespace ClinicalScheduler.Migrations
                     b.Navigation("CodeSet");
                 });
 
+            modelBuilder.Entity("Scheduler.Models.Diagnosis", b =>
+                {
+                    b.HasOne("Scheduler.Models.DxCode", "DxCode")
+                        .WithMany()
+                        .HasForeignKey("DxCodeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Scheduler.Models.Encounter", "Encounter")
+                        .WithMany()
+                        .HasForeignKey("EncounterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Scheduler.Models.Patient", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Scheduler.Models.ApplicationUser", "ProviderUser")
+                        .WithMany()
+                        .HasForeignKey("ProviderUserId");
+
+                    b.Navigation("DxCode");
+
+                    b.Navigation("Encounter");
+
+                    b.Navigation("Patient");
+
+                    b.Navigation("ProviderUser");
+                });
+
             modelBuilder.Entity("Scheduler.Models.Document", b =>
                 {
                     b.HasOne("Scheduler.Models.CodeValue", "DocStatus")
@@ -971,21 +1070,15 @@ namespace ClinicalScheduler.Migrations
                 {
                     b.HasOne("Scheduler.Models.CodeValue", "AdminFreq")
                         .WithMany()
-                        .HasForeignKey("AdminFreqId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AdminFreqId");
 
                     b.HasOne("Scheduler.Models.CodeValue", "AdminRoute")
                         .WithMany()
-                        .HasForeignKey("AdminRouteId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasForeignKey("AdminRouteId");
 
                     b.HasOne("Scheduler.Models.CodeValue", "AdminTime")
                         .WithMany()
-                        .HasForeignKey("AdminTimeId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasForeignKey("AdminTimeId");
 
                     b.HasOne("Scheduler.Models.Encounter", "Encounter")
                         .WithMany()

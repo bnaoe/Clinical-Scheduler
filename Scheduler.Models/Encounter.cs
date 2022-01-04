@@ -60,7 +60,7 @@ namespace Scheduler.Models
         [Required]
         [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
-        public DateTime InsDate { get; set; }
+        public DateTime InsDate { get; set; } = DateTime.Now;
 
         [Required]
         public int LocationId { get; set; }

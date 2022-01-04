@@ -1,83 +1,39 @@
-﻿
-$("#selectIns").typeahead({
-    minLength: 1,
-    highlight: true,
-    source: function (request, response) {
+﻿$("#save").click(function (e) {
+    var button_text = $('#save').text();
+    if (button_text == "Create") {
+
+        event.preventDefault();
+        var orderCatalogId = $('#updateOrdId').val();
+        var encntrId = $('#encntrId').val();
+
         $.ajax({
-            url: "/Admin/Insurance/GetList/",
-            dataSrc: "insuranceList",
-            data: { "name": request },
+            url: "/Provider/Order/OrderExists?orderCatalogId=" + orderCatalogId + "&encntrId=" + encntrId,
+            dataSrc: "orderExists",
             type: "GET",
             contentType: "json",
             success: function (data) {
-                items = [];
-                map = {};
-                $.each(data.insuranceList, function (i, item) {
-                    var id = data.insuranceList[i].id;
-                    var name = data.insuranceList[i].name;
-                    map[name] = { id: id, name: name };
-                    items.push(name);
+                if (data.orderExists != null) {
+                    swal.fire({
+                        title: 'Are you sure?',
+                        html: "<strong style='color:red;'>The item being ordered already exists for this encounter. Do you want to continue placing the order?</strong>",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, place the order'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $('#orderSubmit').submit();
+                            toastr.success(data.message);
+                        } else {
+                            Swal.fire('Trasaction cancelled.');                        }
+                    })
+                }
+                else {
+                    $('#orderSubmit').submit();
+                }
 
-                });
-                response(items);
-            },
-            error: function (response) {
-                alert(response.responseText);
-            },
-            failure: function (response) {
-                alert(response.responseText);
             }
         });
-        if ($('#selectIns').val() == '') {
-            $("#updateInsId").val('0');
-        }
-    },
-    updater: function (item) {
-        //If simultaneously want to update value somewhere else
-
-        $("#updateInsId").val(map[item].id);
-        return item;
-    }
-});
-
-
-$("#selectOrd").typeahead({
-    minLength: 1,
-    highlight: true,
-    source: function (request, response) {
-        $.ajax({
-            url: "/Provider/Order/GetList/",
-            dataSrc: "orderList",
-            data: { "name": request },
-            type: "GET",
-            contentType: "json",
-            success: function (data) {
-                items = [];
-                map = {};
-                $.each(data.orderList, function (i, item) {
-                    var id = data.orderList[i].id;
-                    var name = data.orderList[i].name;
-                    map[name] = { id: id, name: name };
-                    items.push(name);
-
-                });
-                response(items);
-            },
-            error: function (response) {
-                alert(response.responseText);
-            },
-            failure: function (response) {
-                alert(response.responseText);
-            }
-        });
-        if ($('#selectOrd').val() == '') {
-            $("#updateOrdId").val('0');
-        }
-    },
-    updater: function (item) {
-        //If simultaneously want to update value somewhere else
-
-        $("#updateOrdId").val(map[item].id);
-        return item;
     }
 });

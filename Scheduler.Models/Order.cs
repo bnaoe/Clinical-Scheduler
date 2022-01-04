@@ -47,26 +47,23 @@ namespace Scheduler.Models
         [ValidateNever]
         public OrderCatalog OrderCatalog { get; set; }
 
-        [Required]
         [ForeignKey("AdminRouteId")]
         [InverseProperty("AdminRouteCodeValues")]
-        public int AdminRouteId { get; set; }
+        public int? AdminRouteId { get; set; }
 
         [ValidateNever]
         public CodeValue AdminRoute { get; set; }
 
-        [Required]
         [ForeignKey("AdminFreqId")]
         [InverseProperty("AdminFreqCodeValues")]
-        public int AdminFreqId { get; set; }
+        public int? AdminFreqId { get; set; }
 
         [ValidateNever]
         public CodeValue AdminFreq { get; set; }
 
-        [Required]
         [ForeignKey("AdminTimeId")]
         [InverseProperty("AdminTimeCodeValues")]
-        public int AdminTimeId { get; set; }
+        public int? AdminTimeId { get; set; }
 
         [ValidateNever]
         public CodeValue AdminTime { get; set; }

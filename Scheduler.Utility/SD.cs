@@ -19,6 +19,7 @@ namespace Scheduler.Utility
         public const string AdminFreq = "Administration Frequency";
         public const string AdminTime = "Administration Time";
         public const string OrdetStatus = "Order Status";
+        public const string Presciption = "Medication";
 
         public const string Role_Admin = "Admin";
         public const string Role_Scheduler = "Resgistration";

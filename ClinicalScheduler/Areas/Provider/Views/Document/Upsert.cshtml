@@ -107,8 +107,8 @@
         <div class="col-12">
 			<button type="submit" class="btn btn-primary" style="width:150px" name="save" value="Save">@(Model.Document.Id!=0?"Update":"Create")</button>
             <button type="submit" class="btn btn-success" style="width:150px" name="final" value="Final">Final & Save</button>
-            <a asp-controller="Insurance" asp-action="Index" class="btn btn-secondary" style="width:150px">
-                Back to list
+            <a asp-controller="Chart" asp-action="EncounterSchAppt" asp-route-enctrId="@Model.EncounterVM.Encounter.Id" class="btn btn-secondary" style="width:150px">
+                Back to chart
             </a>
         </div>
     </div>

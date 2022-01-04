@@ -1,0 +1,47 @@
+﻿@model Scheduler.Models.ViewModels.DiagnosisVM
+
+<div>
+   <partial name="_EncounterDetails" model="Model.EncounterVM"/>
+</div>
+
+<form method="post" asp-action="Upsert">
+    <input asp-for="Diagnosis.Id" hidden />
+    <input asp-for="Diagnosis.EncounterId" id="encntrId" hidden />
+    <input asp-for="Diagnosis.DxCodeId" id="updateDxId" class="form-control" hidden/>
+    <input asp-for="Diagnosis.PatientId" hidden/>
+
+    <div class="border p-3 mt-4 row">
+        <div class="row pb-2">
+            <h4 class="text-primary">@(Model.Diagnosis.Id!=0?"Update":"Add") Diagnosis</h4>
+            <hr/>
+        </div>
+       <div class="mb-3 col-12">
+            <label asp-for="Diagnosis.DxCode.Description">Search Diagnosis</label>
+            <input asp-for="Diagnosis.DxCode.Description" type="text" id="selectDx" class="form-control"  placeholder="Type diagnosis code to search" autocomplete="off"/>
+            <span asp-validation-for ="Diagnosis.DxCode.Description" id="dx" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-3">
+            <label asp-for="Diagnosis.ActiveDtTm">Active Date</label>
+            <input asp-for="Diagnosis.ActiveDtTm" id="activeDate" type="date" class="form-control"/>
+            <span asp-validation-for ="Diagnosis.ActiveDtTm" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3 col-2">
+            <label asp-for="Diagnosis.IsActive">Active Order</label>
+            <input asp-for="Diagnosis.IsActive" type="checkbox" data-val="true" data-val-required="Diagnosis.IsActive" id="Diagnosis.IsActive" name="Diagnosis.IsActive" value="true" />
+        </div>
+
+        <div class="col-12">
+			<button type="submit" class="btn btn-primary" style="width:150px" name="save" value="save" id="save">@(Model.Diagnosis.Id!=0?"Update":"Create")</button>
+            <a asp-controller="Chart" asp-action="EncounterSchAppt" asp-route-enctrId="@Model.Diagnosis.EncounterId" class="btn btn-secondary" style="width:150px">
+                Back to chart
+            </a>
+        </div>
+    </div>
+</form>
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial"/>
+    }
+      <script src="~/js/TypeAheadSearch.js"></script>
+}

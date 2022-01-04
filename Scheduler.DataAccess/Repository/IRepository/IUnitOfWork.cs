@@ -21,6 +21,8 @@ namespace Scheduler.DataAccess.Repository.IRepository
         IFinancialNumAliasRepository FinancialNumAlias { get; }
         IDocumentRepository Document { get; }
         IOrderRepository Order { get; }
+        IDiagnosisRepository Diagnosis { get; }
+        IDxCodeRepository DxCode { get; }    
 
         void Save();
 

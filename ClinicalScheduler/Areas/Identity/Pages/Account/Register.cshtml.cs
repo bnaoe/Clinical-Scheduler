@@ -222,6 +222,20 @@ namespace ClinicalScheduler.Areas.Identity.Pages.Account
             }
 
             // If we got this far, something failed, redisplay form
+            var Locations = await _unitOfWork.Location.GetAllAsync();
+            Input = new InputModel()
+            {
+                RoleList = _roleManager.Roles.OrderBy(r => r.Name).Select(r => r.Name).Select(i => new SelectListItem
+                {
+                    Text = i,
+                    Value = i
+                }),
+                LocationList = Locations.OrderBy(l => l.Name).Select(i => new SelectListItem
+                {
+                    Text = i.Name,
+                    Value = i.Id.ToString()
+                })
+            };
             return Page();
         }
 

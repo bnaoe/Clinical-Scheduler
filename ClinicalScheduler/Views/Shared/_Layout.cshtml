@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using Scheduler.Utility
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -8,7 +9,7 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css"/>
-    <link rel="stylesheet" href="//cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css" />
     @*<link rel="stylesheet" type="text/css" href="./styles.css">*@
     <link rel="stylesheet" type="text/css" href="//cdn.dhtmlx.com/scheduler/site/dhtmlxscheduler.css">
     
@@ -42,22 +43,24 @@
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item text-btn-close-white" asp-area="Shared" asp-controller="Search" asp-action="ProviderSearch">Provider Scheduling Profile</a>
                   </div>
+                @if (User.IsInRole(SD.Role_Admin))
+                {
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Management Tools</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item text-btn-close-white" asp-area="Admin" asp-controller="CodeSet" asp-action="Index">Code Sets</a>
+                            <a class="dropdown-item text-btn-close-white" asp-area="Admin" asp-controller="CodeValue" asp-action="Index">Code Values</a>
+                            <a class="dropdown-item text-btn-close-white" asp-area="Admin" asp-controller="Location" asp-action="Index">Locations</a>
+                            <a class="dropdown-item text-btn-close-white" asp-area="Admin" asp-controller="Insurance" asp-action="Index">Insurance</a>
 
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Management Tools</a>
-                  <div class="dropdown-menu">
-                    <a class="dropdown-item text-btn-close-white" asp-area="Admin" asp-controller="CodeSet" asp-action="Index">Code Sets</a>
-                    <a class="dropdown-item text-btn-close-white" asp-area="Admin" asp-controller="CodeValue" asp-action="Index">Code Values</a>
-                    <a class="dropdown-item text-btn-close-white" asp-area="Admin" asp-controller="Location" asp-action="Index">Locations</a>
-                    <a class="dropdown-item text-btn-close-white" asp-area="Admin" asp-controller="Insurance" asp-action="Index">Insurance</a>
-
-                  <div class="dropdown-divider"></div>
-                    <a class="dropdown-item text-btn-close-white" asp-area="Admin" asp-controller="OrderCatalog" asp-action="Index">Order Catalog</a>
-                   <div class="dropdown-divider"></div>
-                   <a class="dropdown-item text-btn-close-white" asp-area="Admin" asp-controller="ApplicationUser" asp-action="Index">User Access</a>
-                  </div>
-                </li>
-              </ul>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item text-btn-close-white" asp-area="Admin" asp-controller="OrderCatalog" asp-action="Index">Order Catalog</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item text-btn-close-white" asp-area="Admin" asp-controller="ApplicationUser" asp-action="Index">User Access</a>
+                        </div>
+                    </li>
+                }
+                    </ul>
               <form class="d-flex">
                 <input class="form-control me-sm-2" type="text" placeholder="Search">
                 <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
@@ -82,11 +85,12 @@
         </div>
     </footer>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>    
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="//cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js"></script>

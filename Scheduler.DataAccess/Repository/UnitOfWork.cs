@@ -27,6 +27,8 @@ namespace Scheduler.DataAccess.Repository
             FinancialNumAlias = new FinancialNumAliasRepository(_db);
             Document = new DocumentRepository(_db);
             Order = new OrderRepository(_db);
+            Diagnosis = new DiagnosisRepository(_db);
+            DxCode = new DxCodeRepository(_db);
         }
 
         public ICodeSetRepository CodeSet { get; private set; }
@@ -53,6 +55,10 @@ namespace Scheduler.DataAccess.Repository
         public IDocumentRepository Document { get; private set; }
 
         public IOrderRepository Order { get; set; }
+
+        public IDiagnosisRepository Diagnosis { get; private set; }
+
+        public IDxCodeRepository DxCode { get; private set; }
 
         public void Save()
         {
