@@ -1,0 +1,71 @@
+﻿@model Scheduler.Models.ViewModels.ApptDashboardVM
+
+<div class="border p-3 mt-4 row">
+    <div class="row pb-2">
+        <h4 class="text-primary">Appointment Dashboard</h4>
+        <hr/>
+    </div>
+    <div class="mb-3 col-6">
+        <label>Location</label>
+        <select asp-items="@Model.LocationList" id="loc" class="form-select">
+            <option disabled selected>- Select Location -</option>
+        </select>
+    </div>
+    <div class="mb-3 col-6" >
+        <label>Appointment Date</label>
+        <input type="date" id="apptDT" class="form-control">
+    </div>
+    <div class="mb-3 col-4" >
+        <label>First Name</label>
+        <input id="firstName" name="firstName" class="form-control"/>
+    </div>
+    <div class="mb-3 col-4">
+            <label>Middle Name</label>
+            <input id="middleName" name="middleName" class="form-control"/>
+        </div>
+    <div class="mb-3 col-4">
+        <label>Last Name</label>
+        <input id="lastName" name="lastName" class="form-control"/>
+    </div>
+    <div class="col-12">
+        <button id="find" class="btn btn-primary">
+            <i class="bi bi-binoculars"></i> &nbsp; Find
+        </button> 
+    </div>
+</div>
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-12">
+            <h4 class="primary">Appointments</h4>
+        </div>
+        <hr/>
+    </div>
+
+<table id="appointmentTbl" class="display compact" style="width:100%">
+    <thead>
+        <tr>
+             <th>schApptId</th>
+             <th>encntrId</th>
+             <th>patientId</th>
+             <th>scheduleProfileId</th>
+             <th>FIN</th>
+             <th>Start Date</th>
+             <th>End Date</th>
+             <th>Location</th>
+             <th>First Name</th>
+             <th>Provider Name</th>
+             <th>Appt. Type</th>
+             <th>Appt. Status</th>
+             <th>Action</th>
+         </tr>
+    </thead>
+</table>
+</div>
+
+
+@section Scripts{
+    @{
+        <script src="~/js/ApptDashboard.js"></script>
+    }
+}

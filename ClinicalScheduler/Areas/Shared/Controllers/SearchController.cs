@@ -6,6 +6,7 @@ using Scheduler.DataAccess.Repository.IRepository;
 using Scheduler.Models;
 using Scheduler.Models.ViewModels;
 using Scheduler.Utility;
+using System.Security.Claims;
 
 namespace ClinicalScheduler.Controllers
 {
@@ -29,6 +30,29 @@ namespace ClinicalScheduler.Controllers
         public IActionResult ProviderSearch()
         {
             return View();
+        }
+
+        public async Task<IActionResult> ApptDashboard()
+        {
+            IEnumerable<Location> locationList = await _unitOfWork.Location.GetAllAsync(l=>l.IsDeleted== false, orderBy: l => l.OrderBy(x=>x.Name));
+
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            var currentUserDefaultLocId = await _unitOfWork.ApplicationUser.GetFirstOrDefaultAsync(a => a.Id == claim.Value);
+
+            ApptDashboardVM apptDashboardVM = new()
+            {
+                LocationList = locationList.Select(l => new SelectListItem
+                {
+                    Text = l.Name,
+                    Value = l.Id.ToString(),
+                    Selected = l.Id == currentUserDefaultLocId.LocationId? true:l.Id==locationList.FirstOrDefault().Id
+
+                })
+            };
+
+            
+            return View(apptDashboardVM);
         }
 
         #region API CALLS
@@ -247,6 +271,7 @@ namespace ClinicalScheduler.Controllers
             return Json(new { encounterDocList });
         }
 
+        [HttpGet]
         public async Task<IActionResult> GetAllEncounters(int id)
         {
             IEnumerable<Encounter> encounterSchApptList;
@@ -258,7 +283,6 @@ namespace ClinicalScheduler.Controllers
 
             encounterSchApptList = await _unitOfWork.Encounter.GetAllAsync(e=>e.PatientId== id,includeProperties: "ProviderUser,SchAppt,Location,FinancialNumAlias");
 
-            // encounterSchApptList.Select(p => { p.SchAppt.ApptType.Name = "TEST" ; return p; });
             var patientEncounterSchApptList = encounterSchApptList.Select(async i => new
             {
                 i.SchApptId,
@@ -277,6 +301,34 @@ namespace ClinicalScheduler.Controllers
             });
 
             return Json(new { patientEncounterSchApptList });
+
+        }
+
+        public async Task<IActionResult> GetAllAppointments(int locId, DateTime apptDT, string? firstName, string? lastName)
+        {
+            IEnumerable<Encounter> ApptList;
+
+            ApptList = await _unitOfWork.Encounter.GetAllAsync(e => e.LocationId == locId && e.AdmitDateTime == apptDT
+            && (e.ProviderUser.FirstName.Contains(firstName) || e.ProviderUser.LastName.Contains(lastName)) , includeProperties: "ProviderUser,SchAppt,Location,FinancialNumAlias");
+
+            var dashboardApptList = ApptList.Select(async i => new
+            {
+                i.SchApptId,
+                i.Id,
+                i.PatientId,
+                i.SchAppt.ProviderScheduleProfileId,
+                i.FinancialNumAlias.Fin,
+                i.ProviderUser.FirstName,
+                i.ProviderUser.LastName,
+                i.ProviderUser.MiddleName,
+                i.SchAppt.start_date,
+                i.SchAppt.end_date,
+                i.Location.Name,
+                i.SchAppt.ApptType,
+                i.SchAppt.ApptStatus
+            });
+
+            return Json(new { dashboardApptList });
 
         }
 
