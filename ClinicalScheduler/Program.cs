@@ -13,10 +13,16 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(options=>options.UseSqlServer(
     builder.Configuration.GetConnectionString("DefaultConnection")
     ));
-builder.Services.AddIdentity<IdentityUser,IdentityRole>().AddDefaultTokenProviders()
+builder.Services.AddIdentity<IdentityUser,IdentityRole>(
+    options => options.SignIn.RequireConfirmedAccount = true
+    ).AddDefaultTokenProviders()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddSingleton<IEmailSender, EmailSender>();
+//var provider = builder.Services.BuildServiceProvider();
+//var configuration = provider.GetService<IConfiguration>();
+//builder.Services.Configure<EmailOptions>(builder.Configuration.GetSection("EmailSender"));
+//EmailOptions.FromEmail = configuration.GetValue<string>("EmailSender:FromEmail");
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 builder.Services.ConfigureApplicationCookie(options =>
 {
@@ -39,11 +45,12 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapRazorPages();
 app.MapControllerRoute(
-    name: "default",
+    name: "default",    
     pattern: "{area=Scheduler}/{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

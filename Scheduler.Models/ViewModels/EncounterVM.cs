@@ -17,11 +17,13 @@ namespace Scheduler.Models.ViewModels
         
         [ValidateNever]
         public ApplicationUser ProviderUser { get; set; }
-        [ValidateNever]
         
+        [ValidateNever]
         public SchAppt SchAppt { get; set; }
+        
         [ValidateNever]
         public Insurance Insurance { get; set; }    
+
         [ValidateNever]
         public Location Location { get; set; }
 

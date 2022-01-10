@@ -145,17 +145,27 @@ function GetEncounters(id) {
             {
                 "data": {
                     schApptId: "result.schApptId", id: "result.id", patientId: "result.patientId",
-                    providerScheduleProfileId: "result.providerScheduleProfileId"
+                    providerScheduleProfileId: "result.providerScheduleProfileId", name: "result.apptStatus.name"
                 },
                 "render": function (data) {
-                    return `
-                        <td><div class="w-100 btn-group" role="group">
-                        <a href="/Scheduler/ScheduleAppointment/Upsert?schApptId=${data.result.schApptId}&enctrId=${data.result.id}&patientId=${data.result.patientId}&providerScheduleProfileId=${data.result.providerScheduleProfileId}" class="btn btn-primary small mx-2">
-                        <i class="bi bi-pencil-square"></i> Edit</a>
-                        <a href="/Provider/Chart/EncounterSchAppt?enctrId=${data.result.id}" class="btn btn-info small mx-2">
-                        <i class="bi bi-file-earmark-text"></i> Chart</a>
-                </div></td>
-                    `
+                    var apptStatus = data.result.apptStatus.name
+                    if (apptStatus == "Confirmed" || apptStatus == "Open") {
+                        return `
+                            <td><div class="w-100 btn-group" role="group">
+                            <a href="/Scheduler/ScheduleAppointment/Upsert?schApptId=${data.result.schApptId}&enctrId=${data.result.id}&patientId=${data.result.patientId}&providerScheduleProfileId=${data.result.providerScheduleProfileId}" class="btn btn-primary small mx-2">
+                            <i class="bi bi-pencil-square"></i> Edit</a>
+                            <a href="/Provider/Chart/EncounterSchAppt?enctrId=${data.result.id}" class="btn btn-info small mx-2">
+                            <i class="bi bi-file-earmark-text"></i> Chart</a>
+                    </div></td>
+                        `
+                    } else {
+                        return `
+                            <td><div class="w-100 btn-group" role="group">
+                            <a href="/Provider/Chart/EncounterSchAppt?enctrId=${data.result.id}" class="btn btn-info small mx-2">
+                            <i class="bi bi-file-earmark-text"></i> Chart</a>
+                    </div></td>
+                        `
+                    }
                 },
                 "width": "20%"
             },

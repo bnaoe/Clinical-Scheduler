@@ -101,6 +101,28 @@ namespace Scheduler.DataAccess
                .WithMany()
                .HasForeignKey(m => m.PatientId)
                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder
+               .Entity<Patient>()
+               .HasOne(m => m.Ethnicity)
+               .WithMany()
+               .HasForeignKey(m => m.EthnicityId)
+               .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder
+               .Entity<Patient>()
+               .HasOne(m => m.Gender)
+               .WithMany()
+               .HasForeignKey(m => m.GenderId)
+               .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder
+               .Entity<Patient>()
+               .HasOne(m => m.Race)
+               .WithMany()
+               .HasForeignKey(m => m.RaceId)
+               .OnDelete(DeleteBehavior.Restrict);
+
         }
     }
 }

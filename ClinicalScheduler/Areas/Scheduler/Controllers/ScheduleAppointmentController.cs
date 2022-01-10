@@ -112,12 +112,10 @@ namespace ClinicalScheduler.Controllers
             //Update schAppt.color property
             if (apptType.Name.Contains("Initial"))
             {
-                //ModelState.SetModelValue("schApptVM.SchAppt.color", new ValueProviderResult("#9575CD", CultureInfo.InvariantCulture));
                 schApptObj.SchAppt.color = "#9575CD";
             }
             else if (apptType.Name.Contains("Follow-Up"))
             {
-                //ModelState.SetModelValue("schApptVM.SchAppt.color", new ValueProviderResult("#FF9633", CultureInfo.InvariantCulture));
                 schApptObj.SchAppt.color = "#FF9633";
             }
             else 
@@ -131,12 +129,21 @@ namespace ClinicalScheduler.Controllers
             //Update schAppt.text property
             schApptObj.SchAppt.text = patient.FirstName + " " + patient.LastName + "\n" + loction.Name + " " + apptType.Name;
             
+
+
             ModelState["schApptVM.SchAppt.text"].ValidationState = ModelValidationState.Valid;
 
             if (encntrObj.Encounter.InsuranceId==0)
             {
                 ModelState["encounterVM.Encounter.Insurance.Name"].ValidationState = ModelValidationState.Invalid;
                 ModelState.AddModelError("encounterVM.Encounter.Insurance.Name", "Insurance Not Found");
+            }
+
+            var admittedStatusId = await _unitOfWork.CodeValue.GetFirstOrDefaultAsync(c => c.Name == SD.Admitted);
+
+            if (schApptObj.SchAppt.ApptStatusId == admittedStatusId.Id)
+            {
+                encntrObj.Encounter.AdmitDateTime = schApptObj.SchAppt.start_date;
             }
 
             if (ModelState.IsValid)

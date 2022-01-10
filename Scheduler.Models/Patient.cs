@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,11 +30,16 @@ namespace Scheduler.Models
         
         [Required]
         public string State { get; set; }
-        public string Zip { get; set; }
         
+        public string Zip { get; set; }
+
+        public string? ReferringPhysician { get; set; }
+
+        public string? PrimaryPhysician { get; set; }
+
         [Required]
         [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
+        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime BirthDate { get; set; }
 
         [Display(Name ="Phone Number")]
@@ -50,6 +57,35 @@ namespace Scheduler.Models
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:###-##-####}")]
         [RegularExpression(@"^(\([0-9]{3}\) |[0-9]{3}-)[0-9]{3}-[0-9]{4}$", ErrorMessage = "The Work Number field is not a valid phone number")]
         public string?  WorkNumber { get; set; }
+
+        [Required(ErrorMessage = "SSN is Required")]
+        [RegularExpression(@"^\d{9}|\d{3}-\d{2}-\d{4}$", ErrorMessage = "Invalid Social Security Number")]
+        public string SSN { get; set; }
+
+        [Required]
+        [ForeignKey("GenderId")]
+        [InverseProperty("GenderCodeValues")]
+        public int GenderId { get; set; }
+
+        [ValidateNever]
+        public CodeValue Gender { get; set; }
+
+        [Required]
+        [ForeignKey("RaceId")]
+        [InverseProperty("RaceCodeValues")]
+        public int RaceId { get; set; }
+
+        [ValidateNever]
+        public CodeValue Race { get; set; }
+
+        [Required]
+        [ForeignKey("EthnicityId")]
+        [InverseProperty("EthnicityCodeValues")]
+        public int EthnicityId { get; set; }
+
+        [ValidateNever]
+        public CodeValue Ethnicity { get; set; }
+
 
         public bool IsDeleted { get; set; } = false;
     }

@@ -24,10 +24,36 @@
         </div>
         <div class="mb-3 col-3">
             <label asp-for="Patient.BirthDate">Birth Date</label>
-            <input asp-for="Patient.BirthDate" class="form-control"/>
+            <input type="date" asp-for="Patient.BirthDate"  class="form-control"/>
             <span asp-validation-for ="Patient.BirthDate" class="text-danger"></span>
         </div>
-         <div class="mb-3">
+        <div class="mb-3 col-3">
+            <label asp-for="Patient.SSN">SSN</label>
+            <input asp-for="Patient.SSN" id="ssn" class="form-control"/>
+            <span asp-validation-for ="Patient.SSN" class="text-danger"></span>
+        </div>
+         <div class="mb-3 col-3">
+            <label asp-for="Patient.GenderId">Gender</label>
+            <select asp-for="Patient.GenderId" asp-items="@Model.GenderList" class="form-select">
+                <option disabled selected>- Select Gender -</option>
+            </select>
+            <span asp-validation-for ="Patient.GenderId" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-3">
+            <label asp-for="Patient.RaceId">Race</label>
+            <select asp-for="Patient.RaceId" asp-items="@Model.RaceList" class="form-select">
+                <option disabled selected>- Select Race -</option>
+            </select>
+            <span asp-validation-for ="Patient.RaceId" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-3">
+            <label asp-for="Patient.EthnicityId">Ethnicity</label>
+            <select asp-for="Patient.EthnicityId" asp-items="@Model.EthnicityList" class="form-select">
+                <option disabled selected>- Select Ethnicity -</option>
+            </select>
+            <span asp-validation-for ="Patient.EthnicityId" class="text-danger"></span>
+        </div>
+         <div class="mb-3 col-12">
             <label asp-for="Patient.StreetAddress">Street Address</label>
             <input asp-for="Patient.StreetAddress" class="form-control"/>
             <span asp-validation-for ="Patient.StreetAddress" class="text-danger"></span>
@@ -62,6 +88,17 @@
              <input asp-for="Patient.WorkNumber" class="form-control" onKeyup="formatPhone(this)"/>
             <span asp-validation-for ="Patient.WorkNumber" class="text-danger"></span>
         </div>
+        <div class="mb-3 col-6">
+            <label asp-for="Patient.ReferringPhysician">Referring Physician</label>
+             <input asp-for="Patient.ReferringPhysician" class="form-control"/>
+            <span asp-validation-for ="Patient.ReferringPhysician" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-6">
+            <label asp-for="Patient.PrimaryPhysician">Primary Physician</label>
+             <input asp-for="Patient.PrimaryPhysician" class="form-control"/>
+            <span asp-validation-for ="Patient.PrimaryPhysician" class="text-danger"></span>
+        </div>
+
         <div class="mb-3">
             <label asp-for="Patient.IsDeleted">Deleted</label>
             <input asp-for="Patient.IsDeleted" type="checkbox" data-val="true" data-val-required="Patient.IsDeleted" id="Patient.IsDeleted" name="Patient.IsDeleted" value="true" />               
@@ -81,5 +118,6 @@
     @{
         <partial name="_ValidationScriptsPartial"/>
         <script src="~/js/CustomMask.js"></script>
+        <script src="~/js/SSN.js"></script>
     }
 }

@@ -28,9 +28,34 @@ namespace ClinicalScheduler.Controllers
         //get
         public async Task<IActionResult> Upsert(int? id)
         {
+
+            var GenderCSId = await _unitOfWork.CodeSet.GetFirstOrDefaultAsync(c => c.Name == SD.Gender);
+            var GenderCVs = await _unitOfWork.CodeValue.GetAllAsync(c => c.CodeSetId == GenderCSId.Id && c.IsDeleted == false);
+
+            var RaceCSId = await _unitOfWork.CodeSet.GetFirstOrDefaultAsync(c => c.Name == SD.Race);
+            var RaceCVs = await _unitOfWork.CodeValue.GetAllAsync(c => c.CodeSetId == RaceCSId.Id && c.IsDeleted == false);
+
+            var EthnicityCSId = await _unitOfWork.CodeSet.GetFirstOrDefaultAsync(c => c.Name == SD.Ethnicity);
+            var EthnicityCVs = await _unitOfWork.CodeValue.GetAllAsync(c => c.CodeSetId == EthnicityCSId.Id && c.IsDeleted == false);
+
             PatientVM patientVM = new()
             {
                 Patient = new(),
+                GenderList = GenderCVs.Select(i => new SelectListItem
+                {
+                    Text = i.Name,
+                    Value = i.Id.ToString()
+                }),
+                RaceList = RaceCVs.Select(i => new SelectListItem
+                {
+                    Text= i.Name,
+                    Value = i.Id.ToString(),
+                }),
+                EthnicityList = EthnicityCVs.Select(i => new SelectListItem
+                {
+                    Text = i.Name,
+                    Value= i.Id.ToString(),
+                })
             };
             if (id==null || id ==0)
             {

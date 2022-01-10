@@ -36,6 +36,8 @@ namespace ClinicalScheduler.Areas.Identity.Pages.Account
         private readonly IEmailSender _emailSender;
         private readonly RoleManager<IdentityRole> _roleManager;
         private IUnitOfWork _unitOfWork;
+        private readonly IWebHostEnvironment _hostEnvironment;
+
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
@@ -44,10 +46,12 @@ namespace ClinicalScheduler.Areas.Identity.Pages.Account
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
             RoleManager<IdentityRole> roleManager,
-            IUnitOfWork unitOfWork)
+            IUnitOfWork unitOfWork,
+            IWebHostEnvironment hostEnvironment)
 
         {
             _unitOfWork = unitOfWork;
+            _hostEnvironment = hostEnvironment;
             _roleManager = roleManager;
             _userManager = userManager;
             _userStore = userStore;
@@ -202,8 +206,40 @@ namespace ClinicalScheduler.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    var PathToFile = _hostEnvironment.WebRootPath + Path.DirectorySeparatorChar.ToString()
+                    + "Templates" + Path.DirectorySeparatorChar.ToString() + "EmailTemplates"
+                    + Path.DirectorySeparatorChar.ToString() + "Confirm_Account_Registration.html";
+
+                    var subject = "Confirm Account Registration";
+                    string HtmlBody = "";
+                    using (StreamReader streamReader = System.IO.File.OpenText(PathToFile))
+                    {
+                        HtmlBody = streamReader.ReadToEnd();
+                    }
+
+                    //{0} : Subject
+                    //{1} : DateTime
+                    //{2} : Name
+                    //{3} : Email
+                    //{4} : Message
+                    //{5} : callbackURL
+
+                    string Message = $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.";
+
+
+                    string messageBody = string.Format(HtmlBody,
+                        subject,
+                        string.Format("{0:dddd, d MMMMM yyyy}", DateTime.Now),
+                        user.FirstName + ' ' + user.LastName,
+                        user.Email,
+                        Message,
+                        callbackUrl
+                        );
+
+
+                    //await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                    //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email", messageBody);
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {

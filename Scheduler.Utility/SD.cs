@@ -20,6 +20,10 @@ namespace Scheduler.Utility
         public const string AdminTime = "Administration Time";
         public const string OrdetStatus = "Order Status";
         public const string Presciption = "Medication";
+        public const string Admitted = "Admitted";
+        public const string Gender = "Gender";
+        public const string Race = "Race";
+        public const string Ethnicity = "Ethnicity";
 
         public const string Role_Admin = "Admin";
         public const string Role_Scheduler = "Resgistration";

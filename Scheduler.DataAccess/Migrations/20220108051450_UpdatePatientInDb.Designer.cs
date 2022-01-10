@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Scheduler.DataAccess;
 
@@ -11,9 +12,10 @@ using Scheduler.DataAccess;
 namespace ClinicalScheduler.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220108051450_UpdatePatientInDb")]
+    partial class UpdatePatientInDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -249,7 +251,7 @@ namespace ClinicalScheduler.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CodeSets", (string)null);
+                    b.ToTable("CodeSets");
                 });
 
             modelBuilder.Entity("Scheduler.Models.CodeValue", b =>
@@ -280,7 +282,7 @@ namespace ClinicalScheduler.Migrations
 
                     b.HasIndex("CodeSetId");
 
-                    b.ToTable("CodeValues", (string)null);
+                    b.ToTable("CodeValues");
                 });
 
             modelBuilder.Entity("Scheduler.Models.Diagnosis", b =>
@@ -322,7 +324,7 @@ namespace ClinicalScheduler.Migrations
 
                     b.HasIndex("ProviderUserId");
 
-                    b.ToTable("Diagnoses", (string)null);
+                    b.ToTable("Diagnoses");
                 });
 
             modelBuilder.Entity("Scheduler.Models.Document", b =>
@@ -407,7 +409,7 @@ namespace ClinicalScheduler.Migrations
 
                     b.HasIndex("ProviderUserId");
 
-                    b.ToTable("Documents", (string)null);
+                    b.ToTable("Documents");
                 });
 
             modelBuilder.Entity("Scheduler.Models.DxCode", b =>
@@ -431,7 +433,7 @@ namespace ClinicalScheduler.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DxCodes", (string)null);
+                    b.ToTable("DxCodes");
                 });
 
             modelBuilder.Entity("Scheduler.Models.Encounter", b =>
@@ -513,7 +515,7 @@ namespace ClinicalScheduler.Migrations
 
                     b.HasIndex("SchApptId");
 
-                    b.ToTable("Encounters", (string)null);
+                    b.ToTable("Encounters");
                 });
 
             modelBuilder.Entity("Scheduler.Models.FinancialNumAlias", b =>
@@ -536,7 +538,7 @@ namespace ClinicalScheduler.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("FinancialNumAliases", (string)null);
+                    b.ToTable("FinancialNumAliases");
                 });
 
             modelBuilder.Entity("Scheduler.Models.Insurance", b =>
@@ -560,7 +562,7 @@ namespace ClinicalScheduler.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Insurances", (string)null);
+                    b.ToTable("Insurances");
                 });
 
             modelBuilder.Entity("Scheduler.Models.Location", b =>
@@ -599,7 +601,7 @@ namespace ClinicalScheduler.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Locations", (string)null);
+                    b.ToTable("Locations");
                 });
 
             modelBuilder.Entity("Scheduler.Models.Order", b =>
@@ -664,7 +666,7 @@ namespace ClinicalScheduler.Migrations
 
                     b.HasIndex("PatientId");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("Scheduler.Models.OrderCatalog", b =>
@@ -696,7 +698,7 @@ namespace ClinicalScheduler.Migrations
 
                     b.HasIndex("CodeValueId");
 
-                    b.ToTable("OrderCatalogs", (string)null);
+                    b.ToTable("OrderCatalogs");
                 });
 
             modelBuilder.Entity("Scheduler.Models.Patient", b =>
@@ -776,7 +778,7 @@ namespace ClinicalScheduler.Migrations
 
                     b.HasIndex("RaceId");
 
-                    b.ToTable("Patients", (string)null);
+                    b.ToTable("Patients");
                 });
 
             modelBuilder.Entity("Scheduler.Models.ProviderScheduleProfile", b =>
@@ -830,7 +832,7 @@ namespace ClinicalScheduler.Migrations
 
                     b.HasIndex("ProviderUserId");
 
-                    b.ToTable("ProviderScheduleProfiles", (string)null);
+                    b.ToTable("ProviderScheduleProfiles");
                 });
 
             modelBuilder.Entity("Scheduler.Models.SchAppt", b =>
@@ -882,7 +884,7 @@ namespace ClinicalScheduler.Migrations
 
                     b.HasIndex("RegistrarUserId");
 
-                    b.ToTable("SchAppts", (string)null);
+                    b.ToTable("SchAppts");
                 });
 
             modelBuilder.Entity("Scheduler.Models.ApplicationUser", b =>

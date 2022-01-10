@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Scheduler.DataAccess;
@@ -11,6 +12,7 @@ using System.Security.Claims;
 namespace ClinicalScheduler.Controllers
 {
     [Area("Shared")]
+    [Authorize]
     public class SearchController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -275,13 +277,9 @@ namespace ClinicalScheduler.Controllers
         public async Task<IActionResult> GetAllEncounters(int id)
         {
             IEnumerable<Encounter> encounterSchApptList;
-            var ApptTypeCSId = await _unitOfWork.CodeSet.GetFirstOrDefaultAsync(c => c.Name == SD.ApptType);
-            var ApptTypeCVs = await _unitOfWork.CodeValue.GetAllAsync(c => c.CodeSetId == ApptTypeCSId.Id && c.IsDeleted == false);
+          
 
-            var ApptStatusCSId = await _unitOfWork.CodeSet.GetFirstOrDefaultAsync(c => c.Name == SD.ApptStatus);
-            var ApptStatusCVs = await _unitOfWork.CodeValue.GetAllAsync(c => c.CodeSetId == ApptStatusCSId.Id && c.IsDeleted == false);
-
-            encounterSchApptList = await _unitOfWork.Encounter.GetAllAsync(e=>e.PatientId== id,includeProperties: "ProviderUser,SchAppt,Location,FinancialNumAlias");
+            encounterSchApptList = await _unitOfWork.Encounter.GetAllAsync(e=>e.PatientId== id,includeProperties: "ProviderUser,SchAppt,Location,FinancialNumAlias,,SchAppt.ApptType,SchAppt.ApptStatus");
 
             var patientEncounterSchApptList = encounterSchApptList.Select(async i => new
             {
@@ -308,8 +306,22 @@ namespace ClinicalScheduler.Controllers
         {
             IEnumerable<Encounter> ApptList;
 
-            ApptList = await _unitOfWork.Encounter.GetAllAsync(e => e.LocationId == locId && e.AdmitDateTime == apptDT
-            && (e.ProviderUser.FirstName.Contains(firstName) || e.ProviderUser.LastName.Contains(lastName)) , includeProperties: "ProviderUser,SchAppt,Location,FinancialNumAlias");
+            if (firstName != null && lastName != null)
+            {
+                ApptList = await _unitOfWork.Encounter.GetAllAsync(e => e.LocationId == locId && e.SchAppt.start_date.Date == apptDT.Date
+                    && e.ProviderUser.FirstName.Contains(firstName) && e.ProviderUser.LastName.Contains(lastName)
+                        , includeProperties: "ProviderUser,SchAppt,Location,FinancialNumAlias,SchAppt.ApptType,SchAppt.ApptStatus");
+            }
+            else if (firstName != null || lastName != null)
+            {
+                ApptList = await _unitOfWork.Encounter.GetAllAsync(e => e.LocationId == locId && e.SchAppt.start_date.Date == apptDT.Date
+                        && (e.ProviderUser.FirstName.Contains(firstName) || e.ProviderUser.LastName.Contains(lastName))
+                        , includeProperties: "ProviderUser,SchAppt,Location,FinancialNumAlias,SchAppt.ApptType,SchAppt.ApptStatus");
+            } else 
+            {
+                ApptList = await _unitOfWork.Encounter.GetAllAsync(e => e.LocationId == locId && e.SchAppt.start_date.Date == apptDT.Date
+                           , includeProperties: "Patient,ProviderUser,SchAppt,Location,FinancialNumAlias,SchAppt.ApptType,SchAppt.ApptStatus");
+            }
 
             var dashboardApptList = ApptList.Select(async i => new
             {
@@ -318,15 +330,13 @@ namespace ClinicalScheduler.Controllers
                 i.PatientId,
                 i.SchAppt.ProviderScheduleProfileId,
                 i.FinancialNumAlias.Fin,
-                i.ProviderUser.FirstName,
-                i.ProviderUser.LastName,
-                i.ProviderUser.MiddleName,
+                ProvName = i.ProviderUser.LastName + ", " + i.ProviderUser.FirstName + " " + i.ProviderUser.MiddleName + " " + i.ProviderUser.Suffix,
+                PtName = i.Patient.LastName + ", " + i.Patient.FirstName + " " + i.Patient.MiddleName, 
                 i.SchAppt.start_date,
                 i.SchAppt.end_date,
-                i.Location.Name,
                 i.SchAppt.ApptType,
                 i.SchAppt.ApptStatus
-            });
+            });;
 
             return Json(new { dashboardApptList });
 
