@@ -3,6 +3,18 @@
 @model CcApptSched
 
 <partial name="_PatientDetails" model="Model.patientVM" />
+<style media="screen">
+	.blocked {
+        background: repeating-linear-gradient(
+          45deg,
+          rgba(0, 0, 0, 0.2),
+          rgba(0, 0, 0, 0.2) 10px,
+          rgba(0, 0, 0, 0.3) 10px,
+          rgba(0, 0, 0, 0.3) 20px
+        );
+	}
+</style>
+
 
  <div class="border p-3 mt-4 row">
     <div class="row pb-2">
@@ -11,7 +23,7 @@
             @Model.providerScheduleProfileVM.ProviderScheduleProfile.ProviderUser.Suffix Calendar</h4>
         <hr/>
         <div id="scheduler_here" class="dhx_cal_container" 
-            style='width:100%; height:400px;'>
+            style='width:100%; height:600px;'>
             <div class="dhx_cal_navline">
                 <div class="dhx_cal_prev_button">&nbsp;</div>
                 <div class="dhx_cal_next_button">&nbsp;</div>
@@ -54,6 +66,14 @@
     <input asp-for="schApptVM.SchAppt.start_valid" id="startValid" hidden/>
     <input asp-for="schApptVM.SchAppt.end_valid" id="endValid" hidden/>
     <input asp-for="encounterVM.Encounter.InsuranceId" id="updateInsId" class="form-control" hidden/>
+    <input asp-for="providerScheduleProfileVM.ProviderScheduleProfile.Monday" id="mon" hidden/>
+    <input asp-for="providerScheduleProfileVM.ProviderScheduleProfile.Tuesday" id="tue" hidden/>
+    <input asp-for="providerScheduleProfileVM.ProviderScheduleProfile.Wednesday" id="wed" hidden/>
+    <input asp-for="providerScheduleProfileVM.ProviderScheduleProfile.Thursday" id="thu" hidden/>
+    <input asp-for="providerScheduleProfileVM.ProviderScheduleProfile.Friday" id="fri" hidden/>
+    <input asp-for="providerScheduleProfileVM.ProviderScheduleProfile.Saturday" id="sat" hidden/>
+    <input asp-for="providerScheduleProfileVM.ProviderScheduleProfile.Sunday" id="sun" hidden/>
+    
     <div class="border p-3 mt-4 row">
             <h4 class="text-primary">@(Model.schApptVM.SchAppt.Id!=0?"Update":"Create") Appointment</h4>
             <hr/>

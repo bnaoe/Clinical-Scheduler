@@ -18,6 +18,7 @@ $('#find').click(function () {
 function loadDataTable() {
     dataTable = $('#tblData').DataTable({
             "destroy":true,
+            "order": [[1, "asc"], [2, "asc"], [3, "asc"]],
             "ajax": {
                 "url": "/Shared/Search/GetAllPatients?firstName=" + firstName + "&lastName=" + lastName+ "&birthDate=" + birthDate,
                 "dataSrc": "patientList"
@@ -104,6 +105,7 @@ function GetEncounters(id) {
     });
     $('#encounterTbl').DataTable({
         "destroy": true,
+        "order": [[5, "asc"]],
         "ajax": {
             "url": "/Shared/Search/GetAllEncounters?id=" + id,
             "dataSrc": "patientEncounterSchApptList"

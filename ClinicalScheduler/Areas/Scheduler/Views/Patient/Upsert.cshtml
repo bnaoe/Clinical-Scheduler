@@ -27,11 +27,22 @@
             <input type="date" asp-for="Patient.BirthDate"  class="form-control"/>
             <span asp-validation-for ="Patient.BirthDate" class="text-danger"></span>
         </div>
+        @if (@Model.Patient.Id == 0)
+        {
         <div class="mb-3 col-3">
             <label asp-for="Patient.SSN">SSN</label>
             <input asp-for="Patient.SSN" id="ssn" class="form-control"/>
             <span asp-validation-for ="Patient.SSN" class="text-danger"></span>
         </div>
+        } else
+        {
+        <div class="mb-3 col-3">
+            <label>SSN</label>
+            <label class="form-control bg-secondary">@Model.Patient.SSN</label>
+        </div>
+        }
+
+
          <div class="mb-3 col-3">
             <label asp-for="Patient.GenderId">Gender</label>
             <select asp-for="Patient.GenderId" asp-items="@Model.GenderList" class="form-select">
@@ -104,7 +115,7 @@
             <input asp-for="Patient.IsDeleted" type="checkbox" data-val="true" data-val-required="Patient.IsDeleted" id="Patient.IsDeleted" name="Patient.IsDeleted" value="true" />               
         </div>
         <div class="col-12">
-			<button type="submit" class="btn btn-primary" style="width:150px">@(Model.Patient.Id!=0?"Update":"Register")</button>
+			<button type="submit" id="save" class="btn btn-primary" style="width:150px">@(Model.Patient.Id!=0?"Update":"Register")</button>
             <a asp-area="Shared" asp-controller="Search" asp-action="PatientSearch" class="btn btn-secondary" style="width:150px">
                Patient search
             </a>

@@ -3,6 +3,7 @@ var pSchedProfileId;
 var providerId;
 var start;
 var end
+var blockedSched = new Array();
 
 $(document).ready(function () {
 
@@ -11,6 +12,28 @@ $(document).ready(function () {
     providerId = $('#providerId').val();
     start = $('#start').val();
     end = $('#end').val();
+
+    if (!$('#sun').prop('checked')) {
+        blockedSched.push(0)
+    }
+    if (!$('#mon').prop('checked')) {
+        blockedSched.push(1)
+    }
+    if (!$('#tue').prop('checked')) {
+        blockedSched.push(2)
+    }
+    if (!$('#wed').prop('checked')) {
+        blockedSched.push(3)
+    }
+    if (!$('#thu').prop('checked')) {
+        blockedSched.push(4)
+    }
+    if (!$('#fri').prop('checked')) {
+        blockedSched.push(5)
+    }
+    if (!$('#sat').prop('checked')) {
+        blockedSched.push(6)
+    }
     loadCalendar();
 })
 
@@ -42,13 +65,13 @@ function loadCalendar() {
         scheduler.load("/Scheduler/ScheduleAppointment/GetProviderAppointments?providerId=" + providerId, "json");
     //marks and blocks dates
     // Setting up holidays
-    //scheduler.addMarkedTimespan({
-    //    days: [0, 2, 6],    
-    //    zones: "fullday",       // marks the entire day
-    //    type: "dhx_time_block",
-    //    css: "blue_section" // the name of applied CSS class
-    //});
-    //scheduler.updateView();
+        scheduler.addMarkedTimespan({
+        days: blockedSched,
+        zones: "fullday",       // marks the entire day
+        type: "dhx_time_block",
+        css: "blocked" // the name of applied CSS class
+    });
+    scheduler.updateView();
 };
 
 

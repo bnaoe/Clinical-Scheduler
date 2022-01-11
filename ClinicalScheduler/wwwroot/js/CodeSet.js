@@ -6,8 +6,7 @@ $(document).ready(function () {
 
 function loadDataTable() {
     dataTable = $('#tblData').DataTable({
-        "pageLength": 3,
-        "bLengthChange": false,
+        "order": [[1, "asc"]],
         "ajax": {
             "url": "/Admin/CodeSet/GetAll",
             "dataSrc": "codeSetList"

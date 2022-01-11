@@ -17,6 +17,7 @@ $('#find').click(function () {
 function loadDataTable() {
     dataTable = $('#tblData').DataTable({
             "destroy":true,
+        "order": [[1, "asc"], [3, "asc"], [2, "asc"]],
             "ajax": {
                 "url": "/Shared/Search/GetAllProviders?firstName=" + firstName + "&lastName=" + lastName,
                 "dataSrc": "providerList"

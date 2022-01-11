@@ -6,6 +6,7 @@ $(document).ready(function () {
 
 function loadDataTable() {
     dataTable = $('#tblData').DataTable({
+        "order": [[1, "asc"]],
         "ajax": {
             "url": "/Admin/Insurance/GetAll",
             "dataSrc": "insuranceList"

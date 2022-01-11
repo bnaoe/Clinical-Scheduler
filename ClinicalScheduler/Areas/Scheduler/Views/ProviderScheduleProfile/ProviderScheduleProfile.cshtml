@@ -3,39 +3,39 @@
 <input asp-for="Id" id="userId" name="userId" hidden/>   
     <div class="border p-3 mt-4 row">
         <div class="row pb-2">
-            <h2 class="text-primary">Provider Details</h2>
+            <h4 class="text-primary">Provider Details</h4>
             <hr/>
         </div>
         <div class="mb-3 col-3" >
             <label asp-for="FirstName">First Name</label>
-            <input asp-for="FirstName" class="form-control"/>
+            <input asp-for="FirstName" class="form-control" readonly/>
         </div>
         <div class="mb-3 col-3">
             <label asp-for="MiddleName">Middle Name</label>
-            <input asp-for="MiddleName" class="form-control"/>
+            <input asp-for="MiddleName" class="form-control" readonly/>
         </div>
         <div class="mb-3 col-3">
            <label asp-for="LastName">Last Name</label>
-           <input asp-for="LastName" class="form-control"/>
+           <input asp-for="LastName" class="form-control" readonly/>
         </div>
         <div class="mb-3 col-3">
-           <label asp-for="Specialization">Specialization</label>
-           <input asp-for="Specialization" class="form-control"/>
+           <label asp-for="Specialization">Specialization</label>   
+           <input asp-for="Specialization" class="form-control" readonly/>
         </div>
     </div>
-<div class="container p-3 border">
-    <div class="row pt-4 border">
+<div class="container p-3">
+    <div class="row pt-4">
         <div class="col-6">
-            <h2 class="primary">Schedule Profile List</h2>
+            <h4 class="primary">Schedule Profile List</h4>
         </div>
-        <div class="col-6 text-end">
+        <div class="col-6 pb-3 text-end">
             <a asp-area="Scheduler" asp-controller ="ProviderScheduleProfile" asp-action="Upsert" asp-route-userId="@Model.Id" class="btn btn-primary">
                 <i class="bi bi-plus-circle"></i> &nbsp; Create New
             </a> 
         </div>
     </div>
 
-<table id ="tblData" class="table table-bordered table-striped" style="width:100%">
+<table id ="tblData" class="display compact" style="width:100%">
         <thead>
             <tr>
                 <th>Id</th>

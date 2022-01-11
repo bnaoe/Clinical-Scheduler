@@ -1,3 +1,3 @@
 ﻿$(function () {
-    $('input[type="text"], textarea, checkbox').attr('readonly', 'readonly');
+    $('input, textarea, checkbox').attr('readonly', 'readonly');
 });

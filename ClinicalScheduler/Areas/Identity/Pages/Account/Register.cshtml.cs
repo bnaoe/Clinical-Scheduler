@@ -150,9 +150,18 @@ namespace ClinicalScheduler.Areas.Identity.Pages.Account
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             var Locations = await _unitOfWork.Location.GetAllAsync();
+            IOrderedQueryable<IdentityRole> roleList;
+            if (User.IsInRole(SD.Role_Admin))
+            {
+                 roleList = _roleManager.Roles.OrderBy(r => r.Name);
+            } else
+            {
+                 roleList = _roleManager.Roles.Where(r=>r.Name != SD.Role_Admin).OrderBy(r => r.Name);
+            }
+
             Input = new InputModel()
             {
-                RoleList = _roleManager.Roles.OrderBy(r=>r.Name).Select(r => r.Name).Select(i => new SelectListItem
+                RoleList = roleList.Select(r => r.Name).Select(i => new SelectListItem
                 {
                     Text = i,
                     Value = i

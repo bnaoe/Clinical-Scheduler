@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Scheduler.DataAccess;
 using Scheduler.DataAccess.Repository.IRepository;
@@ -64,6 +65,8 @@ namespace ClinicalScheduler.Controllers
             {
                 //Update Patient
                 patientVM.Patient = await _unitOfWork.Patient.GetFirstOrDefaultAsync(p => p.Id == id);
+                patientVM.Patient.SSN = "XXX-XX-" + patientVM.Patient.SSN.Substring(7, 4);
+
                 return View(patientVM);
             }   
         }
@@ -73,6 +76,12 @@ namespace ClinicalScheduler.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Upsert(PatientVM obj)
         {
+            if (obj.Patient.Id != 0)
+            {
+                obj.Patient.SSN = _unitOfWork.Patient.GetFirstOrDefaultAsync(p => p.Id == obj.Patient.Id).Result.SSN;
+                ModelState["Patient.SSN"].ValidationState = ModelValidationState.Valid;
+
+            }
             if (ModelState.IsValid)
             {
                 if (obj.Patient.Id==0) {

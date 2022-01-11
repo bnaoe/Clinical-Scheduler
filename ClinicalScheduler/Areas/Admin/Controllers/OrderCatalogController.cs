@@ -29,14 +29,12 @@ namespace ClinicalScheduler.Controllers
         public async Task<IActionResult> Upsert(int? id)
         {
             var OrderTypeCodeSetId = await _unitOfWork.CodeSet.GetFirstOrDefaultAsync(c => c.Name == SD.OrderType);
-            var CodeSetId = OrderTypeCodeSetId.Id;
-
-            var CodeValues = await _unitOfWork.CodeValue.GetAllAsync();
+            var CodeValues = await _unitOfWork.CodeValue.GetAllAsync(c => c.CodeSetId == OrderTypeCodeSetId.Id && c.IsDeleted==false, orderBy: c => c.OrderBy(x => x.Name));
 
             OrderCatalogVM orderCatalogVM = new()
             {
                 OrderCatalog = new(),
-                CodeValueList = CodeValues.Where(c=>c.IsDeleted==false && c.CodeSetId == CodeSetId).Select(c => new SelectListItem
+                CodeValueList = CodeValues.Select(c => new SelectListItem
                 {
                     Text = c.Name,
                     Value = c.Id.ToString()
@@ -75,6 +73,16 @@ namespace ClinicalScheduler.Controllers
                 _unitOfWork.Save();
                 return RedirectToAction("Index");
             }
+
+            var OrderTypeCodeSetId = await _unitOfWork.CodeSet.GetFirstOrDefaultAsync(c => c.Name == SD.OrderType);
+            var CodeValues = await _unitOfWork.CodeValue.GetAllAsync(c => c.CodeSetId == OrderTypeCodeSetId.Id && c.IsDeleted==false, orderBy: c => c.OrderBy(x => x.Name));
+
+            obj.CodeValueList = CodeValues.Select(c => new SelectListItem
+            {
+                Text = c.Name,
+                Value = c.Id.ToString()
+            });
+
             return View(obj);
         }
 

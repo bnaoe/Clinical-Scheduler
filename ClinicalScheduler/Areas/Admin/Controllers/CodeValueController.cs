@@ -70,6 +70,13 @@ namespace ClinicalScheduler.Controllers
                 _unitOfWork.Save();
                 return RedirectToAction("Index");
             }
+            IEnumerable<CodeSet> CodeSetList = await _unitOfWork.CodeSet.GetAllAsync();
+            obj.CodeSetList = CodeSetList.Where(c => c.IsDeleted == false).OrderBy(c => c.Name).Select(c => new SelectListItem
+            {
+                Text = c.Name,
+                Value = c.Id.ToString()
+            });
+
             return View(obj);
         }
 
@@ -77,7 +84,7 @@ namespace ClinicalScheduler.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var codeValueList = await _unitOfWork.CodeValue.GetAllAsync(includeProperties:"CodeSet");
+            var codeValueList = await _unitOfWork.CodeValue.GetAllAsync(orderBy: c=>c.OrderBy(x=>x.CodeSet.Name),includeProperties:"CodeSet");
             return Json(new { codeValueList });
         }
 

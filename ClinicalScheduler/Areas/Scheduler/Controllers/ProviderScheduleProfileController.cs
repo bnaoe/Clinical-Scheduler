@@ -83,8 +83,17 @@ namespace ClinicalScheduler.Controllers
                 }
 
                 _unitOfWork.Save();
+                return RedirectToAction("GetProviderDetails", new { id = obj.providerScheduleProfileVM.ProviderScheduleProfile.ProviderUserId });
+
             }
-            return RedirectToAction("GetProviderDetails", new { id = obj.providerScheduleProfileVM.ProviderScheduleProfile.ProviderUserId } );
+            IEnumerable<Location> LocationList = await _unitOfWork.Location.GetAllAsync();
+            obj.providerScheduleProfileVM.LocationList = LocationList.Where(l => l.IsDeleted == false).OrderBy(l => l.Name).Select(c => new SelectListItem
+            {
+                Text = c.Name,
+                Value = c.Id.ToString()
+            });
+            return View(obj);
+
         }
 
         #region API CALLS

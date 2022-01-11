@@ -13,27 +13,27 @@
         </div>
         <div class="mb-3 col-3" >
             <label asp-for="providerUser.FirstName">First Name</label>
-            <input asp-for="providerUser.FirstName" class="form-control"/>
+            <input asp-for="providerUser.FirstName" class="form-control" readonly/>
         </div>
         <div class="mb-3 col-3">
             <label asp-for="providerUser.MiddleName">Middle Name</label>
-            <input asp-for="providerUser.MiddleName" class="form-control"/>
+            <input asp-for="providerUser.MiddleName" class="form-control" readonly/>
         </div>
         <div class="mb-3 col-3">
            <label asp-for="providerUser.LastName">Last Name</label>
-           <input asp-for="providerUser.LastName" class="form-control"/>
+           <input asp-for="providerUser.LastName" class="form-control" readonly/>
         </div>
         <div class="mb-3 col-3">
            <label asp-for="providerUser.Specialization">Specialization</label>
-           <input asp-for="providerUser.Specialization" class="form-control"/>
+           <input asp-for="providerUser.Specialization" class="form-control" readonly/>
         </div>
     </div>
 
     <input asp-for="providerScheduleProfileVM.ProviderScheduleProfile.Id" hidden />
     <input asp-for="providerScheduleProfileVM.ProviderScheduleProfile.ProviderUserId" hidden />
     <div class="border p-3 mt-4 row">
-        <div class="row pb-2 border">
-            <h2 class="text-primary">@(Model.providerScheduleProfileVM.ProviderScheduleProfile.Id!=0?"Update":"Create") Code Set</h2>
+        <div class="row pb-2">
+            <h4 class="text-primary">@(Model.providerScheduleProfileVM.ProviderScheduleProfile.Id!=0?"Update":"Create") Schedule Profile</h4>
             <hr/>
         </div>
         <div class="mb-3 col-4">

@@ -68,7 +68,7 @@ namespace ClinicalScheduler.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var codeSetList = await _unitOfWork.CodeSet.GetAllAsync();
+            var codeSetList = await _unitOfWork.CodeSet.GetAllAsync(orderBy: c=>c.OrderBy(x=>x.Name));
             return Json(new { codeSetList });
         }
 
