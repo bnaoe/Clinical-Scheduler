@@ -11,7 +11,7 @@ using Scheduler.Utility;
 namespace ClinicalScheduler.Controllers
 {
     [Area("Provider")]
-    [Authorize(Roles = SD.Role_Admin + "," + "," + SD.Role_NP + "," + SD.Role_PA + "," + SD.Role_Physician)]
+    [Authorize(Roles = SD.Role_Admin + "," + "," + SD.Role_NP + "," + SD.Role_PA + "," + SD.Role_Physician + "," + SD.Role_RN + "," + SD.Role_MA)]
     public class DocumentController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -81,7 +81,7 @@ namespace ClinicalScheduler.Controllers
                     var DocStatusCV = await _unitOfWork.CodeValue.GetFirstOrDefaultAsync(c => c.Name == SD.FinalDocStatus && c.IsDeleted == false);
                     obj.Document.DocStatusId = DocStatusCV.Id;
                 }
-                obj.Document.ProviderUserId = "83af9bcc-4112-49fb-9bda-3e9d4b715e9e";
+                obj.Document.ProviderUserId = _userManager.GetUserId(User);
 
                 if (obj.Document.Id==0) {
                     obj.Document.DocStatus = null;
@@ -100,35 +100,48 @@ namespace ClinicalScheduler.Controllers
             return View(obj);
         }
 
-        #region API CALLS
-        [HttpGet]
-        public async Task<IActionResult> GetAllDocuments(int encntrId)
+        public async Task<IActionResult> Preview(int docId, int encntrId )
         {
-            IEnumerable<Document> docList;
 
-            docList = await _unitOfWork.Document.GetAllAsync(d => d.EncounterId == encntrId, orderBy: d => d.OrderByDescending(x => x.CreateDateTime)
-            , includeProperties: "ProviderUser,DocType,DocStatus");
-
-            var encounterDocList = docList.Select(async i => new
+            EncounterVM encounterVM = new()
             {
-                i.Id,
-                i.Title,
-                i.CreateDateTime,
-                i.ModifiedDateTime,
-                i.ProviderUser.LastName,
-                i.ProviderUser.FirstName,
-                i.ProviderUser.MiddleName,
-                i.ProviderUser.Suffix,
-                i.DocType,
-                i.DocStatus,
-                i.InError
-            });
+                Encounter = await _unitOfWork.Encounter.GetFirstOrDefaultAsync(e => e.Id == encntrId, includeProperties: "Patient,SchAppt.ApptType,SchAppt.ApptStatus,FinancialNumAlias,Insurance,ProviderUser,Location"),
+                LastDocument = await _unitOfWork.Document.GetFirstOrDefaultAsync(d=>d.Id == docId, includeProperties:"DocStatus,DocType")
 
-            return Json(new { encounterDocList });
+            };
+            return View(encounterVM);
         }
+    
 
-        //post
-        [HttpPost]
+    #region API CALLS
+    //[HttpGet]
+    //public async Task<IActionResult> GetAllDocuments(int encntrId)
+    //{
+    //    IEnumerable<Document> docList;
+
+    //    docList = await _unitOfWork.Document.GetAllAsync(d => d.EncounterId == encntrId, orderBy: d => d.OrderByDescending(x => x.CreateDateTime)
+    //    , includeProperties: "ProviderUser,DocType,DocStatus");
+
+    //    var encounterDocList = docList.Select(async i => new
+    //    {
+    //        i.Id,
+    //        i.Title,
+    //        i.CreateDateTime,
+    //        i.ModifiedDateTime,
+    //        i.ProviderUser.LastName,
+    //        i.ProviderUser.FirstName,
+    //        i.ProviderUser.MiddleName,
+    //        i.ProviderUser.Suffix,
+    //        i.DocType,
+    //        i.DocStatus,
+    //        i.InError
+    //    });
+
+    //    return Json(new { encounterDocList });
+    //}
+
+    //post
+    [HttpPost]
         public async Task<IActionResult> InError(int? id)
         {
 

@@ -127,7 +127,7 @@ namespace ClinicalScheduler.Controllers
             if (ModelState.IsValid)
             {
                 obj.Order.OrderCatalog = null;
-                obj.Order.OrderingUserId = "83af9bcc-4112-49fb-9bda-3e9d4b715e9e";
+                obj.Order.OrderingUserId = _userManager.GetUserId(User);
                 var orderDetails="";
 
                 if (obj.Order.AdminRouteId != null)

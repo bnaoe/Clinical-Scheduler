@@ -31,6 +31,7 @@ namespace Scheduler.DataAccess.Repository
                 diagnosisInDb.PatientId = obj.PatientId;
                 diagnosisInDb.EncounterId = obj.EncounterId;
                 diagnosisInDb.DxCodeId = obj.DxCodeId;
+                diagnosisInDb.ActiveDtTm = obj.ActiveDtTm;
                 diagnosisInDb.EndDtTm = obj.EndDtTm;
                 diagnosisInDb.ProviderUserId = obj.ProviderUserId;
                 diagnosisInDb.IsActive = obj.IsActive;

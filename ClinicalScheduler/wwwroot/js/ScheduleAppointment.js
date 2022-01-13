@@ -3,9 +3,32 @@ var endDate;
 var apptType;
 var myStartDtTmpicker = document.getElementById("startDate");
 var schApptId = $('#schApptId').val();
+var blockedSched = new Array();
+
 
 $(document).ready(function () {
     if (schApptId == 0) { changeStartDateTime() };
+    if (!$('#sun').prop('checked')) {
+        blockedSched.push(0)
+    }
+    if (!$('#mon').prop('checked')) {
+        blockedSched.push(1)
+    }
+    if (!$('#tue').prop('checked')) {
+        blockedSched.push(2)
+    }
+    if (!$('#wed').prop('checked')) {
+        blockedSched.push(3)
+    }
+    if (!$('#thu').prop('checked')) {
+        blockedSched.push(4)
+    }
+    if (!$('#fri').prop('checked')) {
+        blockedSched.push(5)
+    }
+    if (!$('#sat').prop('checked')) {
+        blockedSched.push(6)
+    }
 })
 
 window.onload = function () {
@@ -23,8 +46,27 @@ function changeDateTime(d, h, m) {
     var newValue = d + "T" + h + ":" + m;
 
     validateStartTime(h);
+    validateStartDay(newValue);
 
     return newValue;
+}
+
+function validateStartDay(dt) {
+    var newDt = new Date(dt);
+    if ($.inArray(newDt.getDay(), blockedSched) >= 0) {
+        $("#startValid").prop("checked", false);
+    } else {
+        $("#startValid").prop("checked", true);
+    }
+}
+
+function validateEndDay(dt) {
+    var newDt = new Date(dt);
+    if ($.inArray(newDt.getDay(), blockedSched) >= 0) {
+        $("#endValid").prop("checked", false);
+    } else {
+        $("#endValid").prop("checked", true);
+    }
 }
 
 function changeStartDateTime() {
@@ -57,8 +99,8 @@ function changeEndDateTime(startDate) {
     }
     
     myEndDtTmpicker.value = dates + "T" + hours + ":" + minutes;
-    validateEndTime(h);
-
+    validateEndTime(hours);
+    validateEndDay(myEndDtTmpicker.value);
 }
 
 function validateStartTime(h) {

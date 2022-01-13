@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Scheduler.DataAccess.Repository.IRepository;
 using Scheduler.Models;
 using Scheduler.Models.ViewModels;
@@ -10,10 +11,13 @@ namespace ClinicalScheduler.Areas.Provider.Controllers
     public class ChartController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public ChartController(IUnitOfWork unitOfWork)
+
+        public ChartController(IUnitOfWork unitOfWork, UserManager<IdentityUser> userManager)
         {
             _unitOfWork = unitOfWork;
+            _userManager = userManager;
         }
 
 
@@ -28,7 +32,7 @@ namespace ClinicalScheduler.Areas.Provider.Controllers
             EncounterVM encounterVM = new()
             {
                 Encounter = await _unitOfWork.Encounter.GetFirstOrDefaultAsync(e => e.Id == enctrId, includeProperties: "Patient,SchAppt.ApptType,SchAppt.ApptStatus,FinancialNumAlias,Insurance,ProviderUser,Location"),
-                LastDocument = docList.FirstOrDefault(),
+                LastDocument = docList.FirstOrDefault(d=>d.ProviderUserId == _userManager.GetUserId(User))
 
             };
 

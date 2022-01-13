@@ -29,6 +29,7 @@ namespace Scheduler.DataAccess.Repository
             Order = new OrderRepository(_db);
             Diagnosis = new DiagnosisRepository(_db);
             DxCode = new DxCodeRepository(_db);
+            Allergy = new AllergyRepository(_db);
         }
 
         public ICodeSetRepository CodeSet { get; private set; }
@@ -59,6 +60,8 @@ namespace Scheduler.DataAccess.Repository
         public IDiagnosisRepository Diagnosis { get; private set; }
 
         public IDxCodeRepository DxCode { get; private set; }
+
+        public IAllergyRepository Allergy { get; private set; }
 
         public void Save()
         {

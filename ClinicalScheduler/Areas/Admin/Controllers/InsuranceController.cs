@@ -76,19 +76,20 @@ namespace ClinicalScheduler.Controllers
 
         //post
         [HttpPost]
-        public async Task<IActionResult> Delete(int? id)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
         {
 
             var insuranceInDb = await _unitOfWork.Insurance.GetFirstOrDefaultAsync(i => i.Id == id);
             if (insuranceInDb == null)
             {
-                return Json(new { Success = false, message = "Error while deleting" });
+                return Json(new { Success = false, message = "Error while inactivating" });
             }
 
             insuranceInDb.IsDeleted = true;
             _unitOfWork.Save();
 
-            return Json(new { Success = true, message = "Delete successful" });
+            return Json(new { Success = true, message = "Successfully inactivated" });
 
         }
         #endregion

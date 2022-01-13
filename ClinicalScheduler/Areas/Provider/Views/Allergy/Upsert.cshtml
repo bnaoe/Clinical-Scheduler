@@ -1,0 +1,47 @@
+﻿@model Scheduler.Models.ViewModels.AllergyVM
+
+<div>
+   <partial name="_EncounterDetails" model="Model.EncounterVM"/>
+</div>
+
+<form method="post" asp-action="Upsert">
+    <input asp-for="Allergy.Id" hidden />
+    <input asp-for="Allergy.PatientId" hidden/>
+    <input asp-for="EncounterVM.Encounter.Id" hidden/>
+
+
+    <div class="border p-3 mt-4 row">
+        <div class="row pb-2">
+            <h4 class="text-primary">@(Model.Allergy.Id!=0?"Update":"Add") Allergy</h4>
+            <hr/>
+        </div>
+       <div class="mb-3 col-12">
+            <label asp-for="Allergy.AllergyName">Allergy</label>
+            <input asp-for="Allergy.AllergyName" type="text" class="form-control"/>
+            <span asp-validation-for ="Allergy.AllergyName"  class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-3">
+            <label asp-for="Allergy.ActiveDtTm">Active Date</label>
+            <input asp-for="Allergy.ActiveDtTm" id="activeDate" type="date" class="form-control"/>
+            <span asp-validation-for ="Allergy.ActiveDtTm" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3 col-2">
+            <label asp-for="Allergy.IsActive">Active Allergy</label>
+            <input asp-for="Allergy.IsActive" type="checkbox" data-val="true" data-val-required="Allergy.IsActive" id="Allergy.IsActive" name="Allergy.IsActive" value="true" />
+        </div>
+
+        <div class="col-12">
+			<button type="submit" class="btn btn-primary" style="width:150px" name="save" value="save" id="save">@(Model.Allergy.Id!=0?"Update":"Create")</button>
+            <a asp-controller="Chart" asp-action="EncounterSchAppt" asp-route-enctrId="@Model.EncounterVM.Encounter.Id" class="btn btn-secondary" style="width:150px">
+                Back to chart
+            </a>
+        </div>
+    </div>
+</form>
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial"/>
+    }
+}
+

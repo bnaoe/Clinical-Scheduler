@@ -82,7 +82,7 @@ namespace ClinicalScheduler.Controllers
 
             if (ModelState.IsValid)
             {
-                obj.Diagnosis.ProviderUserId = "83af9bcc-4112-49fb-9bda-3e9d4b715e9e";
+                obj.Diagnosis.ProviderUserId = _userManager.GetUserId(User);
 
                 if (obj.Diagnosis.Id==0) {
                     await _unitOfWork.Diagnosis.AddAsync(obj.Diagnosis);

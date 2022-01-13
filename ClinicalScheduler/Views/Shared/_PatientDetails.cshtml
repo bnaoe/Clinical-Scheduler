@@ -1,17 +1,26 @@
 ﻿@model Scheduler.Models.ViewModels.PatientVM
 
 <input asp-for="Patient.Id" id="patientId" name="patientId" hidden/>   
+    <input asp-for="Patient.BirthDate" id="dob" name="dob" hidden/>   
     <div class="border p-3 mt-4 row">
         <h4 class="text-primary">Patient Details</h4>
         <hr/>
-         <div class="mb-3 col-4" >
+         <div class="mb-1 col-4" >
              <label asp-for="Patient.Id" class="row-md-2 control-label" style="font-size:20px;font-weight: bold">Patient Name: @(Model.Patient.LastName) , @(Model.Patient.FirstName) @(Model.Patient.MiddleName) </label> 
         </div>
 
-        <div class="mb-3 col-4">
+        <div class="mb-1 col-4">
             <label asp-for="Patient.Id" class="row-md-2 control-label">MRN: @(Model.Patient.Id)</label> 
         </div>
-        <div class="mb-3 col-4">
+        <div class="mb-1 col-4">
             <label asp-for="Patient.Id" class="row-md-2 control-label">DOB: @(Model.Patient.BirthDate.ToString("dd/MM/yyyy"))</label> 
         </div>
+        <div class="mb-1 col-4">
+            <label asp-for="Patient.Id" class="row-md-2 control-label">Gender: @(Model.Patient.Gender.Name)</label> 
+        </div>
+        <div class="mb-1 col-4">
+            <label>Age (yrs.)</label>
+            <label class="row-md-2 control-label" id="age"></label> 
+        </div>
     </div>
+

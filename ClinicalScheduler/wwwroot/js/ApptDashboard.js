@@ -84,15 +84,89 @@ function loadDataTable() {
                         <td><div class="w-100 btn-group" role="group">
                         <a href="/Scheduler/ScheduleAppointment/Upsert?schApptId=${data.result.schApptId}&enctrId=${data.result.id}&patientId=${data.result.patientId}&providerScheduleProfileId=${data.result.providerScheduleProfileId}" class="btn btn-primary small mx-2">
                         <i class="bi bi-pencil-square"></i> Edit</a>
+                        <a onClick=Cancel('/Scheduler/ScheduleAppointment/CancelAppt?schApptId=${data.result.schApptId}') class="btn btn-danger small mx-2">
+                        <i class="bi bi-x-octagon"></i> Cancel Appointment</a>
                         <a href="/Provider/Chart/EncounterSchAppt?enctrId=${data.result.id}" class="btn btn-info small mx-2">
                         <i class="bi bi-file-earmark-text"></i> Chart</a>
                         </div></td>
                         `
-                    } else {return null}
+                    } else if (apptStatus == "Admitted") {
+                        return `
+                        <td><div class="w-100 btn-group" role="group">
+                         <a onClick=Cancel('/Scheduler/ScheduleAppointment/CancelAppt?schApptId=${data.result.schApptId}') class="btn btn-danger small mx-2">
+                        <i class="bi bi-x-octagon"></i> Cancel Appointment</a>
+                        <a onClick=Discharge('/Scheduler/ScheduleAppointment/DischEncounter?schApptId=${data.result.schApptId}&encntrId=${data.result.id}') class="btn btn-warning small mx-2">
+                        <i class="bi bi-box-arrow-left"></i> Discharge</a>
+                        <a href="/Provider/Chart/EncounterSchAppt?enctrId=${data.result.id}" class="btn btn-info small mx-2">
+                        <i class="bi bi-file-earmark-text"></i> Chart</a>
+                        </div></td>
+                        `
+                    }
+                    else { return null }
                 },
                 "width": "20%"
             },
 
         ]
+    })
+}
+
+function Cancel(url) {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "This will cancel the appointment permanently",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: { '__RequestVerificationToken': $('[name=__RequestVerificationToken]').val() },
+                success: function (data) {
+                    if (data.success) {
+                        dataTable.ajax.reload();
+                        toastr.success(data.message);
+                    }
+                    else {
+                        toastr.error(data.message);
+                    }
+
+                }
+            })
+        }
+    })
+}
+
+function Discharge(url) {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "Patient appointment will be discharged at same date/time the appointment ends",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: { '__RequestVerificationToken': $('[name=__RequestVerificationToken]').val() },
+                success: function (data) {
+                    if (data.success) {
+                        dataTable.ajax.reload();
+                        toastr.success(data.message);
+                    }
+                    else {
+                        toastr.error(data.message);
+                    }
+
+                }
+            })
+        }
     })
 }

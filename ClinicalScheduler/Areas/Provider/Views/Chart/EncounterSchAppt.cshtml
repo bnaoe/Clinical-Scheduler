@@ -1,15 +1,18 @@
 ﻿@model Scheduler.Models.ViewModels.EncounterVM;
-
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<IdentityUser> UserManager
 
 <div>
    <partial name="_EncounterDetails" model="Model"/>
 </div>
 <div class="mt-3">
+    <label class="row-md-2 control-label" id="currentUser" hidden>@UserManager.GetUserId(User)</label>
     <h4 class="primary">Clinical Summarry</h4>
     <hr />
     <div class="p-3 border">
         <button id="patientDx" class="btn btn-info">Show Complete Diagnosis</button>
         <button id="prescriptions" class="btn btn-success">Show Prescriptions</button>
+        <button id="patientallergies" class="btn btn-danger">Show Allergies</button>
         <button id="last_doc" class="btn btn-warning">Show Last Note</button>
     </div>
 </div>
@@ -48,6 +51,25 @@
                 <th>Order Details</th>
                 <th>Ordered by</th>
                 <th>Order Status</th>
+                <th>Active</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+<div class="container mt-4 row" id="hidden_allergies">
+   <div class="row pb-2">
+            <h4 class="text-primary">Allergies</h4>
+            <hr/>
+   </div>
+    <table id ="tblPatientAllergyData" class="display compact" style="width:100%">
+        <thead>
+            <tr>
+                <th>Allergy ID</th>
+                <th>Allergies </th>
+                <th>Provider </th>
+                <th>Active Dt/Tm</th>
+                <th>End Dt/Tm</th>
                 <th>Active</th>
             </tr>
         </thead>
@@ -147,6 +169,9 @@
       <li class="nav-item">
         <a class="nav-link" data-bs-toggle="tab" href="#order">Orders</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="tab" href="#allergy">Allergies</a>
+      </li>
     </ul>
 
     <div id="myTabContent" class="tab-content">
@@ -229,6 +254,30 @@
                     </table>
             </div>
          </div>
+
+         <div class="tab-pane fade" id="allergy" >
+                <div class="container bg-white border">
+                 <div class="col-12 bg-white text-end mb-2 mt-2">
+                    <a asp-area="Provider" asp-controller ="Allergy" asp-action="Upsert" asp-route-encntrId="@Model.Encounter.Id" class="btn btn-primary">
+                        <i class="bi bi-plus-circle"></i> &nbsp; New Allergy
+                    </a> 
+                 </div>
+                   <table id ="tblAllergyData" class="display compact" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Allergy ID</th>
+                                <th>Allergies </th>
+                                <th>Provider </th>
+                                <th>Active Dt/Tm</th>
+                                <th>End Dt/Tm</th>
+                                <th>Active</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+
    </div>   
 </div>
 @section Scripts{

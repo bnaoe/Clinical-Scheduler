@@ -23,6 +23,7 @@ namespace Scheduler.DataAccess.Repository.IRepository
         IOrderRepository Order { get; }
         IDiagnosisRepository Diagnosis { get; }
         IDxCodeRepository DxCode { get; }    
+        IAllergyRepository Allergy { get; }
 
         void Save();
 

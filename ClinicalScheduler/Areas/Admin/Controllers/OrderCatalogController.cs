@@ -96,19 +96,20 @@ namespace ClinicalScheduler.Controllers
 
         //post
         [HttpPost]
-        public async Task<IActionResult> Delete(int? id)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
         {
 
             var orderCatalogInDb = await _unitOfWork.OrderCatalog.GetFirstOrDefaultAsync(c => c.Id == id);
             if (orderCatalogInDb == null)
             {
-                return Json(new { Success = false, message = "Error while deleting" });
+                return Json(new { Success = false, message = "Error while inactivating" });
             }
 
             orderCatalogInDb.IsDeleted = true;
             _unitOfWork.Save();
 
-            return Json(new { Success = true, message = "Delete successful" });
+            return Json(new { Success = true, message = "Successfully inactivated" });
 
         }
         #endregion

@@ -51,6 +51,6 @@ app.UseAuthorization();
 app.MapRazorPages();
 app.MapControllerRoute(
     name: "default",    
-    pattern: "{area=Scheduler}/{controller=Home}/{action=Index}/{id?}");
+    pattern: "{area=Shared}/{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

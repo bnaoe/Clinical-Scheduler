@@ -18,7 +18,7 @@ namespace ClinicalScheduler.Areas.Scheduler.Controllers
         public async Task<IActionResult> GetPatientDetails(int id)
         {
             PatientVM patientVM = new();
-            patientVM.Patient = await _unitOfWork.Patient.GetFirstOrDefaultAsync(p => p.Id == id);
+            patientVM.Patient = await _unitOfWork.Patient.GetFirstOrDefaultAsync(p => p.Id == id,includeProperties:"Gender");
 
             if (patientVM == null) {
                 TempData["Error"] = "Not Found";

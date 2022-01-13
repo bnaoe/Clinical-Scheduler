@@ -24,6 +24,8 @@ namespace Scheduler.Utility
         public const string Gender = "Gender";
         public const string Race = "Race";
         public const string Ethnicity = "Ethnicity";
+        public const string CancelledAppt = "Cancelled (Appt)";
+        public const string Discharged = "Discharged";
 
         public const string Role_Admin = "Admin";
         public const string Role_Scheduler = "Resgistration";

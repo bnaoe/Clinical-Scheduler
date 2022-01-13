@@ -1,6 +1,7 @@
 ﻿var dataTable;
 var encntrId = $('#encntrId').val();
 var patientId = $('#patientId').val();
+var currentUserID = $('#currentUser').text();
 
 $(document).ready(function () {
     loadDataTable();
@@ -51,17 +52,27 @@ function loadDataTable() {
             },
             {
                 "data": {
-                    id: "result.id", encounterId: "result.encounterId"
+                    id: "result.id", encounterId: "result.encounterId", providerUserId: "result.providerUserId"
                 },
                 "render": function (data) {
-                    return `
+                    if (data.result.providerUserId == currentUserID) {
+                        return `
                         <td><div class="w-100 btn-group" role="group">
                         <a href="/Provider/Document/Upsert?docId=${data.result.id}&encntrId=${data.result.encounterId}" class="btn btn-primary small mx-2">
                         <i class="bi bi-pencil-square"></i> Edit</a>
-                        <a  class="btn btn-success small mx-2">
+                        <a href="/Provider/Document/Preview?docId=${data.result.id}&encntrId=${data.result.encounterId}" class="btn btn-success small mx-2">
                         <i class="bi bi-file-earmark-pdf"></i> Preview</a>
-                </div></td>
-                    `
+                        </div></td>
+                        `
+                    } else {
+                        return `
+                        <td><div class="w-100 btn-group" role="group">
+                        <a href="/Provider/Document/Preview?docId=${data.result.id}&encntrId=${data.result.encounterId}" class="btn btn-success small mx-2">
+                        <i class="bi bi-file-earmark-pdf"></i> Preview</a>
+                        </div></td>
+                        `
+                    }
+
                 },
                 "width": "15%"
             }
@@ -276,6 +287,107 @@ function loadDataTable() {
             }
         ]
     });
+    patientAllergydataTable = $('#tblAllergyData').DataTable({
+        "responsive": true,
+        "ajax": {
+            "url": "/Shared/Search/GetAllAllergiesPatient?patientId=" + patientId,
+            "dataSrc": "patientAllergyList"
+        },
+        "columns": [
+            { "data": "result.id", "visible": false },
+            { "data": "result.allergyName", "wdith": "30%" },
+            { "data": "result.provName", "width": "20%"},
+            {
+                "data": "result.activeDtTm",
+                "render": function (data) {
+                    newData = moment(data).format('MM/DD/YYYY h:mm a')
+                    return newData;
+                },
+                "width": "15%"
+            },
+            {
+                "data": "result.endDtTm",
+                "render": function (data) {
+                    newData = moment(data).format('MM/DD/YYYY h:mm a')
+                    return newData;
+                },
+                "width": "15%"
+            },
+            {
+                "data": "result.isActive",
+                "render": function (data) {
+                    if (data) {
+                        return `<input type="checkbox" disabled checked/>`
+                    }
+                    else {
+                        return `<input type="checkbox" disabled/>`
+                    }
+                },
+                "width": "5%",
+                "className": "text-center"
+            },
+            {
+                "data": {
+                    id: "result.id", isActive: "result.isActive"
+                },
+                "render": function (data) {
+                    var isActive = data.result.isActive;
+                    if (isActive == true) {
+                        return `
+                        <td><div class="w-100 btn-group" role="group">
+                        <a href="/Provider/Allergy/Upsert?allergyId=${data.result.id}&encntrId=${encntrId}" class="btn btn-primary small mx-2">
+                        <i class="bi bi-pencil-square"></i> Edit</a>
+                        </div></td>
+                            `;
+                    } else {
+                        return null;
+                    }
+                },
+                "width": "5%"
+            }
+        ]
+    });
+    patientAllergydataTable = $('#tblPatientAllergyData').DataTable({
+        "responsive": true,
+        "ajax": {
+            "url": "/Shared/Search/GetAllAllergiesPatient?patientId=" + patientId,
+            "dataSrc": "patientAllergyList"
+        },
+        "columns": [
+            { "data": "result.id", "visible": false },
+            { "data": "result.allergyName", "wdith": "30%" },
+            { "data": "result.provName", "width": "20%" },
+            {
+                "data": "result.activeDtTm",
+                "render": function (data) {
+                    newData = moment(data).format('MM/DD/YYYY h:mm a')
+                    return newData;
+                },
+                "width": "15%"
+            },
+            {
+                "data": "result.endDtTm",
+                "render": function (data) {
+                    newData = moment(data).format('MM/DD/YYYY h:mm a')
+                    return newData;
+                },
+                "width": "15%"
+            },
+            {
+                "data": "result.isActive",
+                "render": function (data) {
+                    if (data) {
+                        return `<input type="checkbox" disabled checked/>`
+                    }
+                    else {
+                        return `<input type="checkbox" disabled/>`
+                    }
+                },
+                "width": "5%",
+                "className": "text-center"
+            }
+        ]
+    });
 
     // FOR OPENING AND CLOSING THE ACCORDION
     $('#tblEnctrDiagnosisData tbody').on('click', 'td.dt-control', function () {
@@ -324,7 +436,7 @@ function loadDataTable() {
     // Handle click on "Expand All" button
     $('#btn-show-all-children').on('click', function () {
         // Enumerate all rows
-        dataTable.rows().every(function () {
+        encntrdxdataTable.rows().every(function () {
             // If row has details collapsed
             if (!this.child.isShown()) {
                 // Open this row
@@ -337,7 +449,7 @@ function loadDataTable() {
     // Handle click on "Collapse All" button
     $('#btn-hide-all-children').on('click', function () {
         // Enumerate all rows
-        dataTable.rows().every(function () {
+        encntrdxdataTable.rows().every(function () {
             // If row has details expanded
             if (this.child.isShown()) {
                 // Collapse row details
@@ -387,6 +499,9 @@ document.getElementById('last_doc').onclick = function last_doc () {
         if ($('#hidden_pres').outerHeight() != 0) {
             $('#prescriptions').trigger('click');
         }
+        if ($('#hidden_allergies').outerHeight() != 0) {
+            $('#patientallergies').trigger('click');
+        }
     }   
     else {
         target.style.height = 0;
@@ -403,6 +518,9 @@ document.getElementById('patientDx').onclick = function () {
 
         if ($('#hidden_pres').outerHeight() != 0) {
             $('#prescriptions').trigger('click');
+        }
+        if ($('#hidden_allergies').outerHeight() != 0) {
+            $('#patientallergies').trigger('click');
         }
         if ($('#hidden_lastdoc').outerHeight() > 20) {
             var h = $('#hidden_lastdoc').outerHeight();
@@ -425,6 +543,9 @@ document.getElementById('prescriptions').onclick = function () {
         if ($('#hidden_dx').outerHeight() != 0) {
             $('#patientDx').trigger('click');
         }
+        if ($('#hidden_allergies').outerHeight() != 0) {
+            $('#patientallergies').trigger('click');
+        }
         if ($('#hidden_lastdoc').outerHeight() > 20) {
             var h = $('#hidden_lastdoc').outerHeight();
             var c = h;
@@ -437,4 +558,29 @@ document.getElementById('prescriptions').onclick = function () {
     }
 }
 
+document.getElementById('patientallergies').onclick = function () {
+    this.__toggle = !this.__toggle;
+    var target = document.getElementById('hidden_allergies');
+    if (this.__toggle) {
+        target.style.height = target.scrollHeight + "px";
+        this.firstChild.nodeValue = "Hide Allergies";
+
+        if ($('#hidden_dx').outerHeight() != 0) {
+            $('#patientDx').trigger('click');
+        }
+        if ($('#hidden_pres').outerHeight() != 0) {
+            $('#prescriptions').trigger('click');
+        }
+        if ($('#hidden_lastdoc').outerHeight() > 20) {
+            var h = $('#hidden_lastdoc').outerHeight();
+            var c = h;
+            $('#last_doc').trigger('click');
+        }
+
+    }
+    else {
+        target.style.height = 0;
+        this.firstChild.nodeValue = "Show Allergies";
+    }
+}
 

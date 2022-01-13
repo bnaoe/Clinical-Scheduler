@@ -44,7 +44,7 @@ namespace ClinicalScheduler.Controllers
             {
                 patientVM = new()
                 {
-                    Patient = await _unitOfWork.Patient.GetFirstOrDefaultAsync(p => p.Id == patientId)
+                    Patient = await _unitOfWork.Patient.GetFirstOrDefaultAsync(p => p.Id == patientId, includeProperties: "Gender")
                 }, // _PatientDetails View
                 schApptVM = new() 
                 {
@@ -106,7 +106,7 @@ namespace ClinicalScheduler.Controllers
         {
 
             var apptType = await _unitOfWork.CodeValue.GetFirstOrDefaultAsync(c => c.Id == schApptObj.SchAppt.ApptTypeId);
-            var patient = await _unitOfWork.Patient.GetFirstOrDefaultAsync(p => p.Id == encntrObj.Encounter.PatientId);
+            var patient = await _unitOfWork.Patient.GetFirstOrDefaultAsync(p => p.Id == encntrObj.Encounter.PatientId,includeProperties:"Gender");
             var loction = providerScheduleProfileObj.ProviderScheduleProfile.Location;
 
             //Update schAppt.color property
@@ -239,6 +239,54 @@ namespace ClinicalScheduler.Controllers
             var appointmentList = schApptList.Select(a => new { a.start_date, a.end_date, a.text, a.color });
             return Ok(appointmentList );
         }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CancelAppt(int schApptId)
+        {
+            var schApptInDb = await _unitOfWork.SchAppt.GetFirstOrDefaultAsync(s => s.Id == schApptId);
+
+            if (schApptInDb == null)
+            {
+                return Json(new { Success = false, message = "Error while cancelling appointment" });
+            }
+            
+            var cancelledApptId = await _unitOfWork.CodeValue.GetFirstOrDefaultAsync(c => c.Name == SD.CancelledAppt && c.IsDeleted == false);
+            schApptInDb.ApptStatusId = cancelledApptId.Id;
+
+            _unitOfWork.Save();
+            
+            return Json(new { Success = true, message = "Cancel successful" });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DischEncounter(int schApptId, int encntrId)
+        {
+            var schApptInDb = await _unitOfWork.SchAppt.GetFirstOrDefaultAsync(s => s.Id == schApptId);
+            var encntrInDb = await _unitOfWork.Encounter.GetFirstOrDefaultAsync(e=>e.Id == encntrId, includeProperties: "SchAppt");
+            var dischargeApptId = await _unitOfWork.CodeValue.GetFirstOrDefaultAsync(c => c.Name == SD.Discharged && c.IsDeleted == false);
+
+            if (schApptInDb.ApptStatusId == dischargeApptId.Id)
+            {
+                return Json(new { Success = false, message = "Appointment had already been discharged" });
+            }
+
+            if (schApptInDb == null|| encntrInDb == null)
+            {
+                return Json(new { Success = false, message = "Error while discharging appointment" });
+            }
+
+            schApptInDb.ApptStatusId = dischargeApptId.Id;
+            _unitOfWork.Save();
+
+            encntrInDb.DschDateTime = encntrInDb.SchAppt.end_date;
+            _unitOfWork.Save();
+
+            return Json(new { Success = true, message = "Discharge successful" });
+        }
+
         #endregion
     }
 }

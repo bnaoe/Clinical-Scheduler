@@ -26,7 +26,7 @@ namespace Scheduler.DataAccess
         public DbSet<Order> Orders { get; set; }
         public DbSet<DxCode> DxCodes { get; set; }
         public DbSet<Diagnosis> Diagnoses { get; set; }
-
+        public DbSet<Allergy> Allergies { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

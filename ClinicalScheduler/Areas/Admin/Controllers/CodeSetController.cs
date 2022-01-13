@@ -74,13 +74,14 @@ namespace ClinicalScheduler.Controllers
 
         //post
         [HttpPost]
-        public async Task<IActionResult> Delete(int? id)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
         {
 
             var codeSetInDb = await _unitOfWork.CodeSet.GetFirstOrDefaultAsync(c => c.Id == id);
             if (codeSetInDb == null)
             {
-                return Json(new { Success = false, message = "Error while deleting" });
+                return Json(new { Success = false, message = "Error while inactivating" });
             }
 
             //_unitOfWork.CodeSet.Remove(codeSetInDb);
@@ -88,7 +89,7 @@ namespace ClinicalScheduler.Controllers
             codeSetInDb.IsDeleted = true;
             _unitOfWork.Save();
 
-            return Json(new { Success = true, message = "Delete successful" });
+            return Json(new { Success = true, message = "Successfully inactivated" });
         }
         #endregion
 

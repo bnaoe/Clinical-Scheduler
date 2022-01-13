@@ -12668,6 +12668,12 @@ fieldset:disabled .btn {
     transition: height 0.8s ease;
 }
 
+#hidden_allergies {
+    height: 0;
+    overflow: hidden;
+    transition: height 0.8s ease;
+}
+
 td.details-control {
     background: url('../resources/details_open.png') no-repeat center center;
     cursor: pointer;
@@ -12684,3 +12690,4 @@ div.slider {
 table.dataTable tbody td.no-padding {
     padding: 0;
 }
+

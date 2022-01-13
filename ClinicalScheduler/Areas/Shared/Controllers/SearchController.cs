@@ -156,6 +156,29 @@ namespace ClinicalScheduler.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> GetAllAllergiesPatient(int patientId)
+        {
+            IEnumerable<Allergy> allergyList;
+
+            allergyList = await _unitOfWork.Allergy.GetAllAsync(a => a.PatientId == patientId, orderBy: d => d.OrderBy(x => x.IsActive)
+            , includeProperties: "Patient,ProviderUser");
+
+            var patientAllergyList = allergyList.Select(async i => new
+            {
+                i.Id,
+                i.AllergyName,
+                ProvName = i.ProviderUser.LastName + ", " + i.ProviderUser.FirstName + " " + i.ProviderUser.MiddleName + " " + i.ProviderUser.Suffix,
+                i.IsActive,
+                i.ActiveDtTm,
+                i.EndDtTm,
+                i.PatientId,
+                i.ProviderUserId
+            });
+
+            return Json(new { patientAllergyList });
+        }
+
+        [HttpGet]
         public async Task<IActionResult> GetAllDiagnosisPatient(int patientId)
         {
             IEnumerable<Diagnosis> diagnosisList;
@@ -261,6 +284,7 @@ namespace ClinicalScheduler.Controllers
                 i.EncounterId,
                 i.CreateDateTime,
                 i.ModifiedDateTime,
+                i.ProviderUserId,
                 i.ProviderUser.LastName,
                 i.ProviderUser.FirstName,
                 i.ProviderUser.MiddleName,
