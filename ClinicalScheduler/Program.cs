@@ -5,6 +5,7 @@ using Scheduler.DataAccess.Repository.IRepository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Scheduler.Utility;
+using Scheduler.DataAccess.DbInitializer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,11 +19,8 @@ builder.Services.AddIdentity<IdentityUser,IdentityRole>(
     ).AddDefaultTokenProviders()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 builder.Services.AddSingleton<IEmailSender, EmailSender>();
-//var provider = builder.Services.BuildServiceProvider();
-//var configuration = provider.GetService<IConfiguration>();
-//builder.Services.Configure<EmailOptions>(builder.Configuration.GetSection("EmailSender"));
-//EmailOptions.FromEmail = configuration.GetValue<string>("EmailSender:FromEmail");
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 builder.Services.ConfigureApplicationCookie(options =>
 {
@@ -30,6 +28,7 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.LogoutPath = $"/Identity/Account/Logout";
     options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
 });
+
 
 var app = builder.Build();
 
@@ -45,6 +44,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+SeedDatabase();
 
 app.UseAuthentication();
 app.UseAuthorization();
@@ -54,3 +54,12 @@ app.MapControllerRoute(
     pattern: "{area=Shared}/{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+
+void SeedDatabase()
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+        dbInitializer.Initialize();
+    }
+}

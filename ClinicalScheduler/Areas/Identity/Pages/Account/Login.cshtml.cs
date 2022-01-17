@@ -120,23 +120,28 @@ namespace ClinicalScheduler.Areas.Identity.Pages.Account
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                var user = await _userManager.FindByEmailAsync(Input.Email);
+
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
                     //return LocalRedirect(returnUrl);
 
                     return RedirectToAction("Go", "HomePage", new { area = "Shared" });
-
                 }
 
-                var user = await _userManager.FindByEmailAsync(Input.Email);
+                if (user == null)
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid Email/Password or User does not exist.");
+                    return Page();
+                }
 
                 if (user.EmailConfirmed == false)
                 {
                     ModelState.AddModelError(string.Empty, "Need to confirm account please check your email.");
                     return Page();
                 }
-                
+
                 if (result.RequiresTwoFactor)
                 {
                     return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });

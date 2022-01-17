@@ -209,7 +209,7 @@ function loadDataTable() {
             {
                 "data": "result.activeDtTm",
                 "render": function (data) {
-                    newData = moment(data).format('MM/DD/YYYY h:mm a')
+                    newData = moment(data).format('MM/DD/YYYY')
                     return newData;
                 },
                 "width": "15%"
@@ -267,7 +267,7 @@ function loadDataTable() {
             {
                 "data": "result.activeDtTm",
                 "render": function (data) {
-                    newData = moment(data).format('MM/DD/YYYY h:mm a')
+                    newData = moment(data).format('MM/DD/YYYY')
                     return newData;
                 },
                 "width": "15%"

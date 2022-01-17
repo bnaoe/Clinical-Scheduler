@@ -136,16 +136,16 @@ namespace ClinicalScheduler.Areas.Identity.Pages.Account
         public async Task OnGetAsync(string returnUrl = null)
         {
 
-            if (!_roleManager.RoleExistsAsync(SD.Role_Admin).GetAwaiter().GetResult())
-            {
-                _roleManager.CreateAsync(new IdentityRole(SD.Role_Admin)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(SD.Role_Scheduler)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(SD.Role_Physician)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(SD.Role_NP)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(SD.Role_PA)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(SD.Role_MA)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(SD.Role_RN)).GetAwaiter().GetResult();
-            }
+            //if (!_roleManager.RoleExistsAsync(SD.Role_Admin).GetAwaiter().GetResult())
+            //{
+            //    _roleManager.CreateAsync(new IdentityRole(SD.Role_Admin)).GetAwaiter().GetResult();
+            //    _roleManager.CreateAsync(new IdentityRole(SD.Role_Scheduler)).GetAwaiter().GetResult();
+            //    _roleManager.CreateAsync(new IdentityRole(SD.Role_Physician)).GetAwaiter().GetResult();
+            //    _roleManager.CreateAsync(new IdentityRole(SD.Role_NP)).GetAwaiter().GetResult();
+            //    _roleManager.CreateAsync(new IdentityRole(SD.Role_PA)).GetAwaiter().GetResult();
+            //    _roleManager.CreateAsync(new IdentityRole(SD.Role_MA)).GetAwaiter().GetResult();
+            //    _roleManager.CreateAsync(new IdentityRole(SD.Role_RN)).GetAwaiter().GetResult();
+            //}
 
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();

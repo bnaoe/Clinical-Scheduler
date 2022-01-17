@@ -2,16 +2,14 @@
     ViewData["Title"] = "Home Page";
 }
 <head>
-    <style>
-        .bckimg{
-            background-image:url('/jpg/health-still-life-with-copy-space.jpg');
-            width:129.8%;
-            height:170%;
-            background-repeat: no-repeat;
-            background-size:cover;
-        }
-        #lowerleft
-        {
+
+  <!-- responsive-full-background-image.css stylesheet contains the code you want -->
+  <link rel="stylesheet" href="/css/responsive-full-background-image.css">
+  <!-- Not required: jquery.min.js and presentational-only.js is only used to demonstrate scrolling behavior of the viewport  -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="/js/presentational-only.js"></script>
+  <style>
+        #lowerleft{
             margin-bottom: 1px;
             margin-left : 1px;
             width: 400px;
@@ -19,13 +17,16 @@
             position: fixed;
             bottom: 0;
         }
-    </style>
+  </style>
+
 </head>
+
+
 <body>
     <form>
-        <div style="height:720px; margin-left:-43%; text-align:justify;">
-            <div class="bckimg">
-                <div style="position:absolute;top:50%;left:50%; justify-content:space-evenly">
+        <div style="text-align:justify;">
+            <div>
+                <div id="more-content" style="position:absolute;top:40%;left:40%">
                      <h1>Clinic Appointment Scheduler and EMR demo</h1>
                      <br /><br />
                      <p style="text-indent:30px">The application is a fully functioning Electronic Medical Record System (EMR) demo,that includes patient registration, appointment calendar scheduling,</p>

@@ -34,9 +34,9 @@ function loadDataTable() {
                 "render": function (data) {
                     return `
                         <td><div class="w-100 btn-group" role="group">
-                        <a href="/Admin/CodeValue/Upsert?id=${data}" class="btn btn-primary small mx-2">
+                        <a href="/Admin/CodeValue/Upsert?id=${data}" class="btn btn-primary small mx-2 disabled">
                         <i class="bi bi-pencil-square"></i> Edit</a>
-                        <a onClick=Delete('/Admin/CodeValue/Delete?id=${data}') class="btn btn-danger small mx-2">
+                        <a onClick=Delete('/Admin/CodeValue/Delete?id=${data}') class="btn btn-danger small mx-2 disabled">
                         <i class="bi bi-trash-fill"></i> Delete</a>
                 </div></td>
                     `

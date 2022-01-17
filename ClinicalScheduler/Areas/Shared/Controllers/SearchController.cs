@@ -214,7 +214,7 @@ namespace ClinicalScheduler.Controllers
             IEnumerable<Order> orderList;
 
             orderList = await _unitOfWork.Order.GetAllAsync(o => o.PatientId == patientId && o.OrderCatalog.CodeValue.Name==SD.Presciption
-            , includeProperties: "Patient,OrderingUser,OrderStatus,OrderCatalog,OrderCatalog.CodeValue,OrderCatalog.CodeValue.CodeSet,Encounter,AdminRoute,AdminFreq,AdminTime");
+            , includeProperties: "Patient,OrderingUser,OrderStatus,OrderCatalog,OrderCatalog.CodeValue,OrderCatalog.CodeValue.CodeSet,Encounter");
 
             var prescriptionList =  orderList.Select(async i => new
             {
@@ -228,9 +228,9 @@ namespace ClinicalScheduler.Controllers
                 i.OrderingUser.FirstName,
                 i.OrderingUser.MiddleName,
                 i.OrderingUser.Suffix,
-                Route = i.AdminRoute.Name,
-                Freq = i.AdminFreq.Name,
-                Time = i.AdminTime.Name,
+                i.AdminRoute,
+                i.AdminFreq,
+                i.AdminTime,
                 OrderStatusName = i.OrderStatus.Name,
                 i.IsActive
             });
