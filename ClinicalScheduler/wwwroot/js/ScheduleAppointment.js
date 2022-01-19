@@ -45,8 +45,8 @@ function changeDateTime(d, h, m) {
 
     var newValue = d + "T" + h + ":" + m;
 
-    validateStartTime(h);
     validateStartDay(newValue);
+    validateStartTime(h);
 
     return newValue;
 }
@@ -99,8 +99,9 @@ function changeEndDateTime(startDate) {
     }
     
     myEndDtTmpicker.value = dates + "T" + hours + ":" + minutes;
-    validateEndTime(hours);
     validateEndDay(myEndDtTmpicker.value);
+    validateEndTime(hours);
+
 }
 
 function validateStartTime(h) {
@@ -112,7 +113,7 @@ function validateStartTime(h) {
 }
 
 function validateEndTime(h) {
-    if (parseInt(h) < parseInt($('#end').val())) {
+    if (parseInt(h) > parseInt($('#end').val())) {
         $("#endValid").prop("checked", false);
     } else {
         $("#endValid").prop("checked", true);

@@ -45,6 +45,7 @@
             '<ul>' +
             '<li>  <i style="color:dodgerblue">Anne Thomas</i></li>' +
             '<li>  <i style="color:dodgerblue">John Thomas</i></li>' +
+            '<li>  <i style="color:dodgerblue">or search for any patients with last name zzTest</i></li>' +
             '</ul>' +
             '<h4><u>Clinical Locations:</u></h4>' +
             '<ul>' +
@@ -77,7 +78,7 @@
         focusConfirm: false,
         customClass: 'swal-wide',
         confirmButtonText:
-            '<i class="bi bi-hand-thumbs-up"></i>!',
+            '<i class="bi bi-hand-thumbs-up"></i>',
         confirmButtonAriaLabel: 'Thumbs up, great!',
         cancelButtonText:
             '<i class="bi bi-hand-thumbs-down"></i>',
