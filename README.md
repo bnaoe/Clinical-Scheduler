@@ -33,6 +33,7 @@ The application is a fully functioning Electronic Medical Record System (EMR) de
 
 # Screenshots
 #### Patient Registation
+        ![App Screenshot](Clinical-Scheduler/ClinicalScheduler/wwwroot/images/PatientReg.jpg)
 #### Search Functions
 #### Appointment Scheduling
 #### Medical Record Charting
