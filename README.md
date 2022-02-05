@@ -3,6 +3,9 @@
 
 The application is a fully functioning Electronic Medical Record System (EMR) demo,that includes patient registration, appointment calendar scheduling, medical charting, diagnosis entry with type search using database stored ICD-10 diagnosis code bank, medical documentation, clinical orders, prescription, allergy documentation, appointment dashboard for tracking appointments and managing appointments, access and roles management. The application also has the functionality to manage system foundational settings and values such as, proivider appointment template builds with schedule blocks, clinic location builds, medical insurance maintenance, clinical order builds, core builds for values that the application needs by default, and much more, to try the application, please click "Demo website instructions" icon at the bottom right. The application was developed in C# .Net 6 with MS SQL as database.
 
+***See the web app in action:*** <a href="https://clinicemrscheduler.azurewebsites.net/">Run Covid-19 Employeee Vaccine Scheduler</a>
+
+
 # Features
 
 * Patient Registration
