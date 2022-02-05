@@ -72,7 +72,7 @@ $(function () {
 function getAge(d) {
     var admitdttm;
     d = new Date(d);
-    if (admitdttm != '') {
+    if (admitDate != '') {
         admitdttm = new Date(admitDate);
     } else {
         admitdttm = new Date();
