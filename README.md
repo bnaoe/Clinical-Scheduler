@@ -24,20 +24,11 @@ The application is a fully functioning Electronic Medical Record System (EMR) de
     * Allergies documentation
     * Clinical Ordering 
 * System Mainteance
-    * User Management
+    * User/Role Management
     * System foundational/default values
     * Clinic locations
     * Insurance
     * Orders
-
-
-# Screenshots
-#### Patient Registation
-        ![](ClinicalScheduler/wwwroot/images/UserManagement.jpg)
-#### Search Functions
-#### Appointment Scheduling
-#### Medical Record Charting
-#### System Maintenance
 
 # Technology Stack
 > ![.Net](https://img.shields.io/badge/.NET%206-5C2D90?style=for-the-badge&logo=.net&logoColor=white)
@@ -46,3 +37,30 @@ The application is a fully functioning Electronic Medical Record System (EMR) de
 > ![Bootstrap](https://img.shields.io/badge/bootstrap-%23563D7C.svg?style=for-the-badge&logo=bootstrap&logoColor=white)
 > ![MicrosoftSQLServer](https://img.shields.io/badge/Microsoft%20SQL%20Sever-CC2927?style=for-the-badge&logo=microsoft%20sql%20server&logoColor=white)
 > ![Azure](https://img.shields.io/badge/azure-%230072C6.svg?style=for-the-badge&logo=microsoftazure&logoColor=white)
+
+
+# Screenshots
+#### Home
+![App Screenshot](ClinicalScheduler/wwwroot/images/Home.jpg)
+#### Patient Registation
+![App Screenshot](ClinicalScheduler/wwwroot/images/PatientReg.jpg)
+#### Search Functions
+![App Screenshot](ClinicalScheduler/wwwroot/images/PatientSearch.jpg)
+![App Screenshot](ClinicalScheduler/wwwroot/images/EncounterSearchSearch.jpg)
+#### Appointment Scheduling
+![App Screenshot](ClinicalScheduler/wwwroot/images/Scheduling.jpg)
+![App Screenshot](ClinicalScheduler/wwwroot/images/AppointementDashboard.jpg)
+#### Medical Record Charting
+![App Screenshot](ClinicalScheduler/wwwroot/images/MedicalCharting.jpg)
+![App Screenshot](ClinicalScheduler/wwwroot/images/EncounterDoc.jpg)
+![App Screenshot](ClinicalScheduler/wwwroot/images/Diagnosis.jpg)
+![App Screenshot](ClinicalScheduler/wwwroot/images/DiagnosisDetails.jpg)
+![App Screenshot](ClinicalScheduler/wwwroot/images/ICD10Search.jpg)
+![App Screenshot](ClinicalScheduler/wwwroot/images/Prescription.jpg)
+#### System Maintenance
+![App Screenshot](ClinicalScheduler/wwwroot/images/SystemManagement.jpg)
+#### User/Role Management
+![App Screenshot](ClinicalScheduler/wwwroot/images/UserManagement.jpg)
+![App Screenshot](ClinicalScheduler/wwwroot/images/AccountConfirm.jpg)
+
+
